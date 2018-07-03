@@ -1,16 +1,16 @@
 <template>
 	<div class="login-modal-container">
 		<div class="logo-img"><img src="../../../static/img/login/logo_03.png" alt=""></div>
-		<div class="login-title">渠道合作管理平台</div>
+		<div class="login-title">版权管理系统</div>
 		<div class="login-username relative">
 			<input type="text" placeholder="请输入用户名" @keydown.13="submit" v-model="username">
-			<i class="fa fa-user-o fa-2x blue login-fa-user"></i>
+			<i class="fa fa-user-o fa-2x skin-red login-fa-user"></i>
 			<div class="line-v-sm"></div>
 		</div>
 		<div class="login-username relative">
 			<input type="password" placeholder="请输入密码" @keydown.13="submit" v-model="password">
 			<div class="line-v-sm"></div>
-			<i class="fa fa-lock fa-2x blue login-fa-psd"></i>
+			<i class="fa fa-lock fa-2x skin-red login-fa-psd"></i>
 		</div>
 <!-- 		<div class="login-security-code clear">
 			<input type="text" maxlength="4" class="pull-left" @keydown.13="submit" style="color: #ababab;" placeholder="请输入验证码" v-model="validateCode">
@@ -189,7 +189,7 @@ export default {
 	.login-btn {
 		width:337px;
 		height:65px; 
-		background:rgba(76,161,255,1);
+		background: #e74c3c;
 		border-radius: 5px;
 		margin-top: 16px;
 		font-size: 24px;

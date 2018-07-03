@@ -17,6 +17,7 @@
     </div>
     <div class="lk-table m-t-sm">
       <ul class="table-thead clear">
+        <!-- <li class="col-lg-1 col-md-1 col-sm-1 col-xs-1 clear app-first-item" v-if="selectVal.indexOf('ID')!=-1"><div class="pull-left"><input type="checkbox" v-model="selectAll"></div><div class="pull-left">ID</div></li> -->
         <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1"><el-checkbox v-model="selectAll">全选</el-checkbox></li>
         <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
         <li class="col-xs-1 p-n" v-show="selectVal.indexOf('电影名称')!=-1">电影名称</li>

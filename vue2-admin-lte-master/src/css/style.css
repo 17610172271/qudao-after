@@ -65,17 +65,26 @@ textarea {
 }
 /*皮肤*/
 .skin-blue .main-header .navbar {
-  background-color: #28aafe;
+  background-color: #e74c3c;
 }
 .skin-blue .main-header .logo {
-  background-color: #2499e4;
+  background-color: #e43725;
 }
 .skin-blue .main-header .logo:hover {
-  background-color: #2499e4;
+  background-color: #e43725;
 }
 .navbar .link-home-icon:hover,
 .skin-blue .main-header .navbar .sidebar-toggle:hover {
-  background-color: #2499e4;
+  background-color: #e43725;
+}
+.navbar .link-home-icon:hover, .skin-blue .main-header .navbar .sidebar-toggle:hover {
+  background-color: #cf4436;
+}
+.skin-red {
+  color: #e74c3c;
+}
+.skin-blue .main-header li.user-header {
+  background-color: #e74c3c;
 }
 /*皮肤over*/
 .over-omit {

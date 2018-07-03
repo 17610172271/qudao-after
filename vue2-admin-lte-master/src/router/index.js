@@ -113,6 +113,21 @@ const router = new Router({
               path: 'letter',
               name: 'setting_letter',
               component: rs('setting/letter')
+            },
+            {
+              path: 'info',
+              name: 'setting_info',
+              component: rs('setting/info')
+            },
+            {
+              path: 'news',
+              name: 'setting_news',
+              component: rs('setting/news')
+            },
+            {
+              path: 'notice',
+              name: 'setting_notice',
+              component: rs('setting/notice')
             }
           ]
         },
@@ -125,6 +140,52 @@ const router = new Router({
               path: 'setting',
               name: 'normalsetting_person',
               component: rs('normalsetting/setting')
+            }
+          ]
+        },
+        {
+          path: '/copyright',
+          component: rs('copyright/index'),
+          meta: {requreAuth: true},
+          children: [
+            {
+              path: 'copyright',
+              name: 'copyright_list',
+              component: rs('copyright/list')
+            }
+          ]
+        },
+        {
+          path: '/financial',
+          component: rs('financial/index'),
+          meta: {requreAuth: true},
+          children: [
+            {
+              path: 'financial',
+              name: 'financial_list',
+              component: rs('financial/list')
+            },
+            {
+              path: 'income',
+              name: 'financial_income',
+              component: rs('financial/income')
+            }
+          ]
+        },
+        {
+          path: '/user',
+          component: rs('user/index'),
+          meta: {requreAuth: true},
+          children: [
+            {
+              path: 'admin',
+              name: 'user_admin',
+              component: rs('user/admin')
+            },
+            {
+              path: 'log',
+              name: 'user_log',
+              component: rs('user/log')
             }
           ]
         },

@@ -7,36 +7,36 @@
           <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
               <div class="home-data-item ">
-                <div class="data-item-icon bg-blue1"><i class="fa fa-wpforms"></i></div>
-                <div class="text-md data-item-title">今日录入影片</div>
+                <div class="data-item-icon bg-blue1"><i class="fa fa-copyright"></i></div>
+                <div class="text-md data-item-title">电影版权量</div>
                 <div class="text-lg data-item-content"><span class="text-bold text-xlg">1111</span> 部</div>
              </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
               <div class="home-data-item">
-                <div class="data-item-icon bg-green"><i class="fa fa-film"></i></div>
-                <div class="text-md data-item-title">影片量</div>
+                <div class="data-item-icon bg-green"><i class="fa fa-wpforms"></i></div>
+                <div class="text-md data-item-title">今日录入版权</div>
                 <div class="text-lg data-item-content"><span class="text-bold text-xlg">9999</span> 部</div>
              </div>
             </div>
            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
              <div class="home-data-item">
                 <div class="data-item-icon bg-orange"><i class="fa fa-question-circle-o text-40"></i></div>
-                <div class="text-md data-item-title">待审核影片量</div>
+                <div class="text-md data-item-title">未审核版权</div>
                 <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">9999</span> 部</div>
              </div>
            </div>
            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
              <div class="home-data-item">
                 <div class="data-item-icon bg-yellow"><i class="fa fa-check-circle-o text-40"></i></div>
-                <div class="text-md data-item-title">审核通过影片</div>
+                <div class="text-md data-item-title">审核通过版权</div>
                 <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">9999</span> 部</div>
              </div>
            </div>
            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
              <div class="home-data-item">
                 <div class="data-item-icon bg-red"><i class="fa fa-times-circle-o text-40"></i></div>
-                <div class="text-md data-item-title">审核未通过影片</div>
+                <div class="text-md data-item-title">审核未通过版权</div>
                 <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">9999</span>部</div>
              </div>
            </div>
@@ -60,15 +60,15 @@
         <div id="homeChart" class="chart-container"></div>
       </div>
       <div class="m-t-md">
-        <h3>电影录入员录入数据</h3>
+        <h3>电影版权录入员录入数据</h3>
         <div class="lk-table m-t-sm">
           <ul class="table-thead clear text-bold">
-            <li class="col-xs-2">录入人员姓名</li>
-            <li class="col-xs-2">录入影片</li>
-            <li class="col-xs-2">今日录入影片</li>
-            <li class="col-xs-2">审核通过影片</li>
-            <li class="col-xs-2">待审核影片</li>
-            <li class="col-xs-2">审核未通过影片</li>
+            <li class="col-xs-2">录入人姓名</li>
+            <li class="col-xs-2">总录入版权</li>
+            <li class="col-xs-2">今日录入版权</li>
+            <li class="col-xs-2">审核通过版权</li>
+            <li class="col-xs-2">待审核版权</li>
+            <li class="col-xs-2">审核未通过版权</li>
           </ul>
           <ul class="table-tbody clear">
             <li class="col-xs-2">李奎</li>
@@ -80,8 +80,8 @@
           </ul>
         </div>
       </div>
-      <div class="m-t-md">
-        <h3>电影审核员审核数据</h3>
+      <div class="m-t-md p-b-lg">
+        <h3>电影版权审核员审核数据</h3>
         <div class="lk-table m-t-sm">
           <ul class="table-thead clear text-bold">
             <li class="col-xs-3-5">审核员姓名</li>

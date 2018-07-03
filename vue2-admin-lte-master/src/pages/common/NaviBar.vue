@@ -3,9 +3,9 @@
     <!-- Logo -->
     <router-link :to="{name: 'home'}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini">SL</span>
+      <span class="logo-mini">CR</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>渠道合作管理平台</b></span>
+      <span class="logo-lg"><b>版权管理系统</b></span>
     </router-link>
 
     <!-- Header Navbar: style can be found in header.less -->

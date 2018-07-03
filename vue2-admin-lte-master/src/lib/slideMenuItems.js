@@ -14,47 +14,23 @@ module.exports = [
   },
   {
     type: 'tree',
-    icon: 'fa fa-film',
-    name: '影片管理',
+    icon: 'fa fa-copyright',
+    name: '版权管理',
     items: [
       {
         type: 'item',
         icon: 'fa fa-circle-o',
-        name: '影片列表',
+        name: '版权库',
         router: {
-          name: 'films_list'
-        }
-      },
-      {
-        type: 'item',
-        icon: 'fa fa-circle-o',
-        name: '添加影片',
-        router: {
-          name: 'films_add'
-        }
-      },
-      {
-        type: 'item',
-        icon: 'fa fa-circle-o',
-        name: '影片审核列表',
-        router: {
-          name: 'films_check_list'
-        }
-      },
-      {
-        type: 'item',
-        icon: 'fa fa-circle-o',
-        name: '影片回收站',
-        router: {
-          name: 'films_trash'
+          name: 'copyright_list'
         }
       }
     ]
   },
   {
     type: 'tree',
-    icon: 'fa fa-gg',
-    name: '影片属性管理',
+    icon: 'fa fa-gg-circle',
+    name: '财务管理',
     // badge: {
     //   type: 'Number',
     //   data: 4
@@ -63,60 +39,17 @@ module.exports = [
       {
         type: 'item',
         icon: 'fa fa-circle-o',
-        name: '影片地区管理',
+        name: '版权定价',
         router: {
-          name: 'attr_area'
+          name: 'financial_list'
         }
       },
       {
         type: 'item',
         icon: 'fa fa-circle-o',
-        name: '影片演员管理',
+        name: '收入统计',
         router: {
-          name: 'attr_actor'
-        }
-      },
-      {
-        type: 'item',
-        icon: 'fa fa-circle-o',
-        name: '影片类型管理',
-        router: {
-          name: 'attr_type'
-        }
-      },
-      {
-        type: 'item',
-        icon: 'fa fa-circle-o',
-        name: '影片语言管理',
-        router: {
-          name: 'attr_language'
-        }
-      }
-    ]
-  },
-  {
-    type: 'tree',
-    icon: 'fa fa-user-o',
-    name: '权限管理',
-    // badge: {
-    //   type: 'Number',
-    //   data: 4
-    // },
-    items: [
-      {
-        type: 'item',
-        icon: 'fa fa-circle-o',
-        name: '管理员管理',
-        router: {
-          name: 'right_admin'
-        }
-      },
-      {
-        type: 'item',
-        icon: 'fa fa-circle-o',
-        name: '管理员日志',
-        router: {
-          name: 'right_log'
+          name: 'financial_income'
         }
       }
     ]
@@ -124,30 +57,57 @@ module.exports = [
   {
     type: 'tree',
     icon: 'fa fa-cogs',
-    name: '系统基本设置',
+    name: '系统设置',
     items: [
       {
         type: 'item',
         icon: 'fa fa-circle-o',
-        name: '消息-电影录入员',
+        name: '版权商信息管理',
         router: {
-          name: 'setting_enter'
+          name: 'setting_info'
         }
       },
       {
         type: 'item',
         icon: 'fa fa-circle-o',
-        name: '消息-电影审核员',
+        name: '我的消息',
         router: {
-          name: 'setting_checker'
+          name: 'setting_news'
         }
       },
       {
         type: 'item',
         icon: 'fa fa-circle-o',
-        name: '审核员常用词汇设置',
+        name: '系统公告',
         router: {
-          name: 'setting_letter'
+          name: 'setting_notice'
+        }
+      }
+    ]
+  },
+  {
+    type: 'tree',
+    icon: 'fa fa-user-o',
+    name: '用户管理',
+    // badge: {
+    //   type: 'Number',
+    //   data: 4
+    // },
+    items: [
+      {
+        type: 'item',
+        icon: 'fa fa-circle-o',
+        name: '管理员日志',
+        router: {
+          name: 'user_log'
+        }
+      },
+      {
+        type: 'item',
+        icon: 'fa fa-circle-o',
+        name: '管理员管理',
+        router: {
+          name: 'user_admin'
         }
       }
     ]

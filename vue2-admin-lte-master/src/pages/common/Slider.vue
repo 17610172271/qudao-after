@@ -67,68 +67,52 @@ export default {
   data: () => ({
     restaurants: [
       {
-        value: '影片管理',
-        router: 'films_list'
+        value: '版权管理',
+        router: 'copyright_list'
       },
       {
-        value: '添加影片',
-        router: 'films_add'
+        value: '版权库',
+        router: 'copyright_list'
       },
       {
-        value: '影片审核列表',
-        router: 'films_check_list'
+        value: '财务管理',
+        router: 'financial_list'
       },
       {
-        value: '影片回收站',
-        router: 'films_trash'
+        value: '版权定价',
+        router: 'financial_list'
       },
       {
-        value: '影片属性管理',
-        router: 'attr_area'
+        value: '收入统计',
+        router: 'financial_income'
       },
       {
-        value: '影片地区管理',
-        router: 'attr_area'
+        value: '系统设置',
+        router: 'setting_info'
       },
       {
-        value: '影片演员管理',
-        router: 'attr_actor'
+        value: '版权信息管理',
+        router: 'setting_info'
       },
       {
-        value: '影片类型管理',
-        router: 'attr_type'
+        value: '我的消息',
+        router: 'setting_news'
       },
       {
-        value: '影片语言管理',
-        router: 'attr_language'
+        value: '系统公告',
+        router: 'setting_notice'
       },
       {
-        value: '权限管理',
-        router: 'right_admin'
-      },
-      {
-        value: '管理员管理',
-        router: 'right_admin'
+        value: '用户管理',
+        router: 'user_log'
       },
       {
         value: '管理员日志',
-        router: 'right_log'
+        router: 'user_log'
       },
       {
-        value: '系统基本设置',
-        router: 'setting_enter'
-      },
-      {
-        value: '消息-电影录入员',
-        router: 'setting_enter'
-      },
-      {
-        value: '消息-电影审核员',
-        router: 'setting_checker'
-      },
-      {
-        value: '审核员常用词汇设置',
-        router: 'setting_letter'
+        value: '管理员管理',
+        router: 'user_admin'
       },
       {
         value: '常规管理',
