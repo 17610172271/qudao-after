@@ -9,35 +9,35 @@
               <div class="home-data-item ">
                 <div class="data-item-icon bg-blue1"><i class="fa fa-copyright"></i></div>
                 <div class="text-md data-item-title">电影版权量</div>
-                <div class="text-lg data-item-content"><span class="text-bold text-xlg">1111</span> 部</div>
+                <div class="text-lg data-item-content"><span class="text-bold text-xlg">{{data.copyright_num}}</span> 部</div>
              </div>
             </div>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
               <div class="home-data-item">
                 <div class="data-item-icon bg-green"><i class="fa fa-wpforms"></i></div>
                 <div class="text-md data-item-title">今日录入版权</div>
-                <div class="text-lg data-item-content"><span class="text-bold text-xlg">9999</span> 部</div>
+                <div class="text-lg data-item-content"><span class="text-bold text-xlg">{{data.copyright_today}}</span> 部</div>
              </div>
             </div>
            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
              <div class="home-data-item">
                 <div class="data-item-icon bg-orange"><i class="fa fa-question-circle-o text-40"></i></div>
                 <div class="text-md data-item-title">未审核版权</div>
-                <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">9999</span> 部</div>
+                <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">{{data.copyright_wait}}</span> 部</div>
              </div>
            </div>
            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
              <div class="home-data-item">
                 <div class="data-item-icon bg-yellow"><i class="fa fa-check-circle-o text-40"></i></div>
                 <div class="text-md data-item-title">审核通过版权</div>
-                <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">9999</span> 部</div>
+                <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">{{data.copyright_pass}}</span> 部</div>
              </div>
            </div>
            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
              <div class="home-data-item">
                 <div class="data-item-icon bg-red"><i class="fa fa-times-circle-o text-40"></i></div>
                 <div class="text-md data-item-title">审核未通过版权</div>
-                <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">9999</span>部</div>
+                <div class="text-lg data-item-content"><span class="text-bold text-xlghttp://localhost/xg_film/public/">{{data.copyright_notpass}}</span>部</div>
              </div>
            </div>
           </div>
@@ -70,13 +70,16 @@
             <li class="col-xs-2">待审核版权</li>
             <li class="col-xs-2">审核未通过版权</li>
           </ul>
-          <ul class="table-tbody clear">
-            <li class="col-xs-2">李奎</li>
-            <li class="col-xs-2">999</li>
-            <li class="col-xs-2">999</li>
-            <li class="col-xs-2">999</li>
-            <li class="col-xs-2">999</li>
-            <li class="col-xs-2">999</li>
+          <ul class="table-tbody clear" v-for="item in enterData">
+            <li class="col-xs-2">{{item.name}}</li>
+            <li class="col-xs-2">{{item.all_films}}</li>
+            <li class="col-xs-2">{{item.today_films}}</li>
+            <li class="col-xs-2">{{item.wait_films}}</li>
+            <li class="col-xs-2">{{item.pass_films}}</li>
+            <li class="col-xs-2">{{item.notpass_films}}</li>
+          </ul>
+          <ul class="table-tbody clear cursor-p" v-if="data.enterData.length !== enterData.length" @click="enterData = data.enterData">
+            <li class="col-xs-12">点击查看更多</li>
           </ul>
         </div>
       </div>
@@ -90,12 +93,15 @@
             <li class="col-xs-3-5">审核通过影片</li>
             <li class="col-xs-3-5">审核未通过影片</li>
           </ul>
-          <ul class="table-tbody clear">
-            <li class="col-xs-3-5">李奎</li>
-            <li class="col-xs-3-5">999</li>
-            <li class="col-xs-3-5">999</li>
-            <li class="col-xs-3-5">999</li>
-            <li class="col-xs-3-5">999</li>
+          <ul class="table-tbody clear" v-for="item in checkData">
+            <li class="col-xs-3-5">{{item.name}}</li>
+            <li class="col-xs-3-5">{{item.all_films}}</li>
+            <li class="col-xs-3-5">{{item.wait_films}}</li>
+            <li class="col-xs-3-5">{{item.pass_films}}</li>
+            <li class="col-xs-3-5">{{item.notpass_films}}</li>
+          </ul>
+          <ul class="table-tbody clear cursor-p" v-if="data.checkData.length !== checkData.length" @click="checkData = data.checkData">
+            <li class="col-xs-12">点击查看更多</li>
           </ul>
         </div>
       </div>
@@ -113,112 +119,83 @@
       return {
         loading: false,
         data: {
-          all: {
-            allAgentIncome: '',
-            allSell: '',
-            allProfit: '',
-            allFilm: ''
-          },
-          echarts: {
-            column: [],
-            incomeData: [],
-            orderData: [],
-            profitData: []
-          },
-          today: {
-            todayClick: '',
-            todayAgentIncome: '',
-            todaySell: '',
-            todayProfit: ''
-          }
+          copyright_num: 0,
+          copyright_today: 0,
+          copyright_wait: 0,
+          copyright_pass: 0,
+          copyright_notpass: 0,
+          echartsData: [],
+          enterData: [],
+          checkData: []
         },
-        column: [],
-        incomeData: [],
-        sellData: [],
-        profitData: []
+        enterData: [],
+        checkData: []
       }
     },
     methods: {
       getData () {
-        // this.loading = true
-        // this.$http.get(api.home.home, {
-        //   params: {
-        //     token: this.$bus.token
-        //   }
-        // }).then(res => {
-        //   if (res.data.code === 1) {
-        //     this.loading = false
-        //     this.data = res.data.data
-        //     this.drawLine()
-        //     // this.changeChartsData()
-        //   } else {
-        //     this.loading = false
-        //     this.$message({
-        //       type: 'warning',
-        //       message: res.data.msg
-        //     })
-        //   }
-        // })
+        this.loading = 
+        this.$http.get(api.home.home, {
+          params: {
+          }
+        }).then(res => {
+          console.log(res)
+          if (res.data.code === 1) {
+            this.loading = false
+            this.data = res.data.data
+            if (this.data.enterData.length > 3) this.enterData = this.data.enterData.slice(0, 3)
+            if (this.data.checkData.length > 3) this.checkData = this.data.checkData.slice(0, 3)
+            this.drawLine()
+            // this.changeChartsData()
+          } else {
+            this.loading = false
+            this.$message({
+              type: 'warning',
+              message: res.data.msg
+            })
+          }
+        })
       },
-      drawLine (id=7) {
+      drawLine (id = 7) {
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('homeChart'))
         this.$router.replace({name: 'home', query: {chartData: id}})
-        let column = this.data.echarts.column.slice(0, id).reverse()
-        let profitData = this.data.echarts.profitData.slice(0, id).reverse()
-        let sellData = this.data.echarts.sellData.slice(0, id).reverse()
-        let incomeData = this.data.echarts.incomeData.slice(0, id).reverse()
+        let column = this.data.echartsData.slice(0, id).map(val => {
+            return val.date
+        })
+        let films = this.data.echartsData.slice(0, id).map(val => {
+            return val.num
+        })
         // 绘制图表
         myChart.setOption({
           tooltip: {trigger: 'axis'},
-          legend: {
-            data: ['每日营业额(元)', '每日净收入(元)', '待审核影片量量(部)'],
-            x: 'center',
-            y: 'bottom'
-          },
           grid: {
-            left: '2%', // 图表距边框的距离
-            top: '30px',
-            right: '4%',
-            bottom: '18%',
-            containLabel: true
+              left: '2%', // 图表距边框的距离
+              top: '30px',
+              right: '4%',
+              bottom: '18%',
+              containLabel: true
           },
           xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: column
+              type: 'category',
+              boundaryGap: false,
+              data: column
           },
           yAxis: {},
           series: [{
-            name: '每日营业额(元)',
-            color: ['#fcd683'],
-            type: 'line',
-            smooth: true,
-            itemStyle: {normal: {areaStyle: {type: 'default'}}},
-            data: profitData
-          },
-          {
-            name: '每日净收入(元)',
-            color: ['#9fc7f3'],
-            type: 'line',
-            smooth: true,
-            itemStyle: {normal: {areaStyle: {type: 'default'}}},
-            data: incomeData
-          },
-          {
-            name: '售卖影片量(部)',
-            color: ['#32af7f'],
-            type: 'line',
-            smooth: true,
-            itemStyle: {normal: {areaStyle: {type: 'default'}}},
-            data: sellData
+              name: '每日录入影片',
+              color: ['RGBA(76, 161, 255, 0.4)'],
+              type: 'line',
+              smooth: true,
+              itemStyle: {normal: {areaStyle: {type: 'default'}}},
+              data: films
           }]
         })
         myChart.resize()
       }
     },
     created () {
-      // this.getData()
+      this.getData()
     },
     mounted () {
       // this.drawLine()

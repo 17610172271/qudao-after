@@ -77,7 +77,7 @@
   </header>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
 import { mapGetters, mapActions } from 'vuex'
 import api from '@/api'
 export default {
@@ -95,33 +95,24 @@ export default {
     signOut () {
       this.$http.get(api.user.logout).then(res => {})
       window.localStorage.removeItem('Auth')
-      // this.$router.replace({name: 'login'})
+       this.$router.replace({name: 'login'})
     },
     getNewsData () {
-      // this.$http.get(api.common.news, {
-      //   params: {
-      //     token: this.$bus.token
-      //   }
-      // }).then(res => {
-      //   if (res.data.code === 1) {
-      //     this.saveNewsNum(res.data.data.message_num + res.data.data.notice_num)
-      //   } else {
-      //     this.saveNewsNum(0)
-      //   }
-      // })
+       this.$http.get(api.common.news, {
+         params: {
+//           token: this.$bus.token
+         }
+       }).then(res => {
+         if (res.data.code === 1) {
+           this.saveNewsNum(res.data.data.message_num + res.data.data.notice_num)
+         } else {
+           this.saveNewsNum(0)
+         }
+       })
     },
     ...mapActions([
       'saveNewsNum'
       ])
-    // getNewsData () {
-    //   $.ajax({
-    //     url: 'http://www.agent_api.com/v1/income/statistics',
-    //     data: {offset: 0, limit: 10, token: this.$bus.token},
-    //     success: function (data) {
-    //       console.log(data)
-    //     }
-    //   })
-    // }
   },
   created () {
     this.getNewsData()

@@ -27,7 +27,7 @@
                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('版权登记号')!=-1">版权登记号</li>
                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('作品/制品名称')!=-1">作品/制品名称</li>
                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('状态')!=-1">状态</li>
-                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('备注')!=-1">备注</li>
+                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('审核时间')!=-1">审核时间</li>
                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
             </ul>
             <ul class="table-tbody clear" v-for="(item, index) in data.rows">
@@ -37,7 +37,7 @@
                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('版权登记号')!=-1">{{item.copyright_id}}</li>
                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('作品/制品名称')!=-1">{{item.product_name}}</li>
                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
-                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('备注')!=-1">{{item.remark}}</li>
+                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('审核时间')!=-1">{{item.check_time}}</li>
                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
                     <a href="javascript:;" title="通过" class="candle-btn btn" @click="delItem"><i
                         class="fa fa-check"></i></a>
@@ -101,10 +101,10 @@
             },
             loading: false,
             centerDialogVisible: false,
-            selectVal: ['序号', '电影名称', '版权商', '版权登记号', '作品/制品名称', '状态', '备注', '操作'],
+            selectVal: ['序号', '电影名称', '版权商', '版权登记号', '作品/制品名称', '状态', '审核时间', '操作'],
             selectedGroup: [],
             selectAll: false,
-            showList: ['序号', '电影名称', '版权商', '版权登记号', '作品/制品名称', '状态', '备注', '操作'],
+            showList: ['序号', '电影名称', '版权商', '版权登记号', '作品/制品名称', '状态', '审核时间', '操作'],
             searchOptions: [
                 {
                     type: 'text',
@@ -147,7 +147,7 @@
                 },
                 {
                     type: 'text',
-                    name: '备注',
+                    name: '审核时间',
                     value: null
                 }
             ],

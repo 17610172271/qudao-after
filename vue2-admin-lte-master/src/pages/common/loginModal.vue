@@ -27,7 +27,7 @@
 		</div>
 	</div>
 </template>
-<script>
+<script type="text/ecmascript-6">
 import api from '@/api'
 import { mapGetters, mapActions } from 'vuex'
 export default {
@@ -41,58 +41,37 @@ export default {
   computed: {
   },
   methods: {
-  	submit () {
-  		this.$router.push({name: 'home'})
-		  // if (this.validateCode && this.username && this.password) {
-		  // 	this.$http.post(api.user.login, {
-			 //  	codeid: this.id,
-			 //  	captcha: this.validateCode,
-			 //  	account: this.username,
-			 //  	password: this.password
-			 //  }).then(res => {
-			 //    if (res.data.code === 1) {
-			 //    	if (this.remeberPwd) {
-			 //    		window.localStorage.setItem('account', this.username + 'aasd+aasd' + this.password)
-			 //    	} else {
-			 //    		window.localStorage.removeItem('account')
-			 //    	}
-			 //      window.localStorage.setItem('Auth', res.data.data.userinfo.token)
-			 //      window.localStorage.setItem('authInfo', JSON.stringify(res.data.data.userinfo))
-			 //      this.setAuthInfo(res.data.data.userinfo)
-			 //      this.$bus.token = window.localStorage.getItem('Auth')
-			 //      this.$router.push({name: 'home'})
-			 //    } else {
-			 //    	this.$message({
-	   //          type: 'warning',
-	   //          message: res.data.msg
-	   //        })
-	   //        this.updateId()
-	   //        this.validateCode = ''
-			 //    }
-			 //  })
-		  // } else if (!this.username || !this.password) {
-		  // 	this.$message({
-    //       type: 'error',
-    //       message: '请输入用户名或密码!'
-    //     })
-		  // } else if (!this.validateCode) {
-		  // 	this.$message({
-    //       type: 'error',
-    //       message: '请输入验证码!'
-    //     })
-		  // }
-  	},
+	  submit () {
+		  if (this.username && this.password) {
+			  this.$http.post(api.user.login, {
+//				  account: this.username,
+//				  password: this.password
+			  }).then(res => {
+				  if (res.data.code === 1) {
+					  window.localStorage.setItem('Auth', res.data.data.userinfo.token)
+					  window.localStorage.setItem('authInfo', JSON.stringify(res.data.data.userinfo))
+					  this.setAuthInfo(res.data.data.userinfo)
+					  this.$bus.token = window.localStorage.getItem('Auth')
+					  this.$router.push({name: 'home'})
+				  } else {
+					  this.$message({
+						  type: 'warning',
+						  message: res.data.msg
+					  })
+				  }
+			  })
+		  } else if (!this.username || !this.password) {
+			  this.$message({
+				  type: 'error',
+				  message: '请输入用户名或密码!'
+			  })
+		  }
+	  },
   	...mapActions([
       'setAuthInfo'
       ])
   },
   created () {
-  	// this.updateId()
-  	// if (window.localStorage.getItem('account')) {
-  	// 	this.remeberPwd = true
-  	// 	this.username = window.localStorage.getItem('account').split('aasd+aasd')[0]
-  	// 	this.password = window.localStorage.getItem('account').split('aasd+aasd')[1]
-  	// }
   }
 }
 </script>

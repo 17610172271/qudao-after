@@ -15,6 +15,7 @@ import EventBus from './lib/eventBus.js'
 import axios from 'axios'
 import echarts from 'echarts'
 import api from '@/api'
+import './mock.js'
 
 import 'element-ui/lib/theme-chalk/index.css'
 import './css/ionicons.min.css?v=2.0.1'
@@ -26,7 +27,7 @@ Vue.use(ElementUI)
 // 拦截器
 axios.interceptors.request.use(
   config => {
-    // config.headers.ContentType = 'application/x-www-form-urlencoded'
+    // config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
     return config
   },
   err => {
@@ -66,8 +67,7 @@ Vue.prototype.$echarts = echarts
 Vue.prototype.$bus = EventBus
 Vue.prototype.$http = axios
 Vue.prototype.$bus.token = window.localStorage.getItem('Auth') || ''
-Vue.prototype.$bus.url = window.location.host === 'localhost:8080' ? 'http://www.agent_api.com/' : 'http://192.168.120.216:8004/'
-// Vue.prototype.$bus.url = 'http://192.168.120.216:8004/'
+//Vue.prototype.$bus.url = window.location.host === 'localhost:8080' ? 'http://www.agent_api.com/' : 'http://192.168.120.216:8004/'
 Vue.prototype.$bus.authInfo = JSON.parse(window.localStorage.getItem('authInfo'))
 /* eslint-disable no-new */
 new Vue({

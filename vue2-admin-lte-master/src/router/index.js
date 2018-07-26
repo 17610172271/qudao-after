@@ -19,65 +19,6 @@ const router = new Router({
           component: rs('home/home')
         },
         {
-          path: '/films',
-          component: rs('films/index'),
-          meta: {requreAuth: true},
-          children: [
-            {
-              path: 'list',
-              name: 'films_list',
-              component: rs('films/list')
-            },
-            {
-              path: 'add',
-              name: 'films_add',
-              component: rs('films/add')
-            },
-            {
-              path: 'detail/:id',
-              name: 'films_detail',
-              component: rs('films/detail')
-            },
-            {
-              path: 'checkList',
-              name: 'films_check_list',
-              component: rs('films/checkList')
-            },
-            {
-              path: 'trash',
-              name: 'films_trash',
-              component: rs('films/trash')
-            }
-          ]
-        },
-        {
-          path: '/attr',
-          component: rs('attr/index'),
-          meta: {requreAuth: true},
-          children: [
-            {
-              path: 'area',
-              name: 'attr_area',
-              component: rs('attr/area')
-            },
-            {
-              path: 'actor',
-              name: 'attr_actor',
-              component: rs('attr/actor')
-            },
-            {
-              path: 'type',
-              name: 'attr_type',
-              component: rs('attr/type')
-            },
-            {
-              path: 'language',
-              name: 'attr_language',
-              component: rs('attr/language')
-            }
-          ]
-        },
-        {
           path: '/right',
           component: rs('right/index'),
           meta: {requreAuth: true},
@@ -99,21 +40,6 @@ const router = new Router({
           component: rs('setting/index'),
           meta: {requreAuth: true},
           children: [
-            {
-              path: 'enter',
-              name: 'setting_enter',
-              component: rs('setting/enter')
-            },
-            {
-              path: 'checker',
-              name: 'setting_checker',
-              component: rs('setting/checker')
-            },
-            {
-              path: 'letter',
-              name: 'setting_letter',
-              component: rs('setting/letter')
-            },
             {
               path: 'info',
               name: 'setting_info',
