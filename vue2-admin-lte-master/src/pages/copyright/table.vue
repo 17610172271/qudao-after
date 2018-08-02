@@ -3,11 +3,6 @@
         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
         <div class="page-toolbar clear">
             <div class="pull-left toolbar-candle">
-                <router-link :to="{name: 'films_add'}" title="添加" class="app-add btn bg-blue1 text-white"><i
-                    class="fa fa-plus-square"></i>添加
-                </router-link>
-                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i class="fa fa-trash"></i>删除</a>
-                <!-- <div class="app-del btn bg-red1 text-white"><i class="fa fa-minus-square"></i>删除</div> -->
                 <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i class="fa fa-refresh"></i></div>
             </div>
             <div class="pull-right clear">
@@ -43,11 +38,11 @@
                         class="fa fa-check"></i></a>
                     <a href="javascript:;" title="不通过" class="candle-btn btn" @click="delItem"><i
                         class="fa fa-close"></i></a>
-                    <a href="javascript:;" title="详情" class="candle-btn btn" @click="centerDialogVisible = true"><i
+                    <a href="javascript:;" title="详情" class="candle-btn btn" @click="showDetail(item.id)"><i
                         class="fa fa-search-plus"></i></a>
-                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click="delItem"><i class="fa fa-edit"></i></a>
-                    <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem"><i
-                        class="fa fa-trash"></i></a>
+                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click="editItem(item.id)"><i class="fa fa-edit"></i></a>
+                    <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem"><i class="fa fa-trash"></i></a>
+                    <a href="javascript:;" title="审核历史" class="candle-btn btn" @click="lookHistory(item.id)"><i class="fa fa-history"></i></a>
                 </li>
             </ul>
         </div>
@@ -75,31 +70,107 @@
             </div>
         </div>
         <el-dialog
-            title="基本信息"
+            title="审核历史"
+            :visible.sync="checkDailog"
+            custom-class="dialog-modal1 dailog-p-t-n"
+            :close-on-click-modal="false">
+            <history :id="history_id"></history>
+        </el-dialog>
+        <el-dialog
+            :title="type==='edit'?'编辑': '详情'"
             :visible.sync="centerDialogVisible"
             custom-class="dialog-modal1 dailog-p-t-n"
             :close-on-click-modal="false">
-            <detail></detail>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">电影名称:</div>
+                <div class="col-xs-12 col-md-9" v-if="type=='edit'">
+                    <el-input placeholder="请输入电影名称" style="max-width: 300px;" v-model="detailVal.film_name"></el-input>
+                </div>
+                <div class="col-xs-12 col-md-9 line-height-40" v-else>
+                    {{detailVal.film_name}}
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">版权商:</div>
+                <div class="col-xs-12 col-md-9" v-if="type=='edit'">
+                    <el-input placeholder="请输入版权商" style="max-width: 300px;" v-model="detailVal.copyright_name"></el-input>
+                </div>
+                <div class="col-xs-12 col-md-9 line-height-40" v-else>
+                    {{detailVal.copyright_name}}
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">版权登记号:</div>
+                <div class="col-xs-12 col-md-9" v-if="type=='edit'">
+                    <el-input placeholder="请输入版权登记号" style="max-width: 300px;" v-model="detailVal.copyright_id"></el-input>
+                </div>
+                <div class="col-xs-12 col-md-9 line-height-40" v-else>
+                    {{detailVal.copyright_id}}
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">作品/制品名称:</div>
+                <div class="col-xs-12 col-md-9" v-if="type=='edit'">
+                    <el-input placeholder="请输入作品/制品名称" style="max-width: 300px;" v-model="detailVal.product_name"></el-input>
+                </div>
+                <div class="col-xs-12 col-md-9 line-height-40" v-else>
+                    {{detailVal.product_name}}
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">状态:</div>
+                <div class="col-xs-12 col-md-9 line-height-40" v-if="type=='edit'">
+                    <el-radio v-model="detailVal.status" label="已上线">已上线</el-radio>
+                    <el-radio v-model="detailVal.status" label="已下线">已下线</el-radio>
+                </div>
+                <div class="col-xs-12 col-md-9 line-height-40" v-else>
+                    {{detailVal.status}}
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">备注:</div>
+                <div class="col-xs-12 col-md-9" v-if="type=='edit'">
+                    <el-input placeholder="请输入备注" type="textarea" :rows="3" style="max-width: 300px;" v-model="detailVal.remark"></el-input>
+                </div>
+                <div class="col-xs-12 col-md-9 line-height-40" v-else>
+                    {{detailVal.remark}}
+                </div>
+            </div>
+            <div class="text-center m-t-lg">
+                <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                <el-button @click="centerDialogVisible = false">取 消</el-button>
+            </div>
         </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import SelectCheckbox from '@/components/SelectCheckbox'
     import SearchIpts from '../common/searchIpts'
-    import Detail from './detail.vue'
-    import  api from '@/api'
+    import History from './history.vue'
+    import api from '@/api'
     export default {
         components: {
             SelectCheckbox,
             SearchIpts,
-            Detail
+            History
         },
         data: () => ({
             data: {
                 rows: [],
                 total: 1
             },
+            detailVal: {
+                film_name: null,
+                copyright_name: null,
+                copyright_id: null,
+                product_name: null,
+                status: null,
+                remark: null
+            },
             loading: false,
+            type: '',
+            history_id: '',
+            checkDailog: false,
             centerDialogVisible: false,
             selectVal: ['序号', '电影名称', '版权商', '版权登记号', '作品/制品名称', '状态', '备注', '操作'],
             selectedGroup: [],
@@ -119,35 +190,6 @@
                 {
                     type: 'text',
                     name: '版权登记号',
-                    value: null
-                },
-                {
-                    type: 'text',
-                    name: '作品/制品名称',
-                    value: null
-                },
-                {
-                    type: 'select',
-                    name: '审核状态',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '选项1'
-                        },
-                        {
-                            value: 2,
-                            label: '选项2'
-                        },
-                        {
-                            value: 3,
-                            label: '选项3'
-                        }
-                    ]
-                },
-                {
-                    type: 'text',
-                    name: '备注',
                     value: null
                 }
             ],
@@ -171,10 +213,9 @@
                     params: {
 //                        offset: this.offset,
 //                        limit: this.limit,
-//                        token: this.$bus.token,
-//                        webname: this.searchName,
-//                        audit_status: this.status ? this.status : null,
-//                        bind_time: this.calendarVal
+//                        film_name: this.searchOptions[0].value,
+//                        copyright_name: this.searchOptions[1].value,
+//                        copyright_id: this.searchOptions[2].value
                     }
                 }).then(res => {
                     this.loading = false
@@ -190,12 +231,38 @@
                     }
                 })
             },
+            getData (id) {
+                this.$http.get(api.copyright.detail).then(res => {
+                    if (res.data.code === 1) {
+                        this.detailVal = res.data.data
+                    } else {
+                        this.$message({
+                            type: 'warning',
+                            message: res.data.msg
+                        })
+                    }
+                })
+            },
             doSearch (data) {
                 this.searchOptions = data
-                console.log(this.searchOptions)
+                this.getList()
             },
             refresh () {
                 this.getList()
+            },
+            lookHistory (id) {
+                this.history_id = id
+                this.checkDailog = true
+            },
+            showDetail (id) {
+                this.type = 'detail'
+                this.centerDialogVisible = true
+                this.getData(id)
+            },
+            editItem (id) {
+              this.type = 'edit'
+                this.centerDialogVisible = true
+                this.getData(id)
             },
             delItem() {
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {

@@ -138,6 +138,47 @@ return {
 }
 Mock.mock('/v1/copyright/list', 'get', copyrightList) // 版权库列表
 
+const copyrightHistory = function () {
+    let list = []
+    for (let i = 0; i < 8; i++) {
+        let data = {
+            id: Random.id(),
+            film_name: Random.filmname(),
+            operator: Random.cname(),
+            operate_time: Random.datetime(),
+            status: Random.status(),
+            log: Random.csentence(5, 40)
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/v1/copyright/history', 'get', copyrightHistory) // 版权库列表
+
+const copyrightDetail = function () {
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            id: Random.id(),
+            film_name: Random.filmname(),
+            copyright_name: Random.csentence(4, 10),
+            copyright_id: Random.guid(),
+            product_name: '电影',
+            status: Random.status(),
+            remark: Random.csentence(5,30)
+        }
+    }
+}
+Mock.mock('/v1/copyright/detail', 'get', copyrightDetail) // 版权详情
+
 const priceList = function () {
     let list = []
     for (let i = 0; i < 10; i++) {
@@ -213,6 +254,36 @@ const infoList = function () {
 }
 Mock.mock('/v1/setting/info', 'get', infoList) // 版权商信息管理
 
+const infoDetail = function () {
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            id: Random.id(),
+            copyright_name: Random.cname(), // 版权商姓名
+            company_name: 'xxxx有限公司', // 公司名
+            regist_num: Random.guid(), // 营业注册号
+            contact_person: Random.cname(), // 联系人
+            license: Random.image(), // 营业执照
+            contact_tel: 13993412938, // 联系人电话
+            legal_person: Random.cname(), // 法人
+            company_num: 12345678, // 公司固话
+            organization_code: 123243465464564, // 组织机构代码
+            registration_num: Random.guid(), // 纳税人识别号
+            company_type: '有限责任公司', // 公司类型
+            setup_time: Random.date(), //成立日期
+            regist_address: '北京市朝阳区', // 注册地址
+            regist_address1: '朝外街道', // 街道地址
+            operate_address: '北京市朝阳区1', // 经营地址
+            operate_address1: '朝外大街', //街道地址
+            collection_name: Random.cname(), // 收款人姓名
+            bank_num: 62293100034586574, // 银行账号
+            bank_name: '中国工商银行' // 开户行
+        }
+    }
+}
+Mock.mock('/v1/setting/infoDetail', 'get', infoDetail) // 版权商信息-详情
+
 const newsList = function () {
     let list = []
     for (let i = 0; i < 10; i++) {
@@ -264,11 +335,9 @@ const notice = function () {
     for (let i = 0; i < 10; i++) {
         let data = {
             id: Random.id(),
-            film_name: Random.filmname(),
-            check_name: Random.cname(),
-            check_status: Random.checkstatus(),
+            title: Random.filmname(),
             create_time: Random.datetime(),
-            reason: Random.csentence(5,20),
+            update_time: Random.datetime(),
             status: Random.status()
         }
         list.push(data)
@@ -282,7 +351,7 @@ const notice = function () {
         }
     }
 }
-Mock.mock('/v1/setting/notice', 'get', notice) // 我的消息 - 系统公告
+Mock.mock('/v1/setting/notice', 'get', notice) // 系统公告
 
 const adminList = function () {
     let list = []

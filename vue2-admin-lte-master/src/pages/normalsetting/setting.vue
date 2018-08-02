@@ -7,7 +7,7 @@
                     <div class="border-top-blue bg-white">
                         <h3 class="text-md p-l-sm">个人配置</h3>
                         <div class="avatar-other-container">
-                            <div class="setting-avatar-container"></div>
+                            <div class="setting-avatar-container"><img :src="userData.avatar || '../../../static/img/home/avatar.png'" alt="avatar" width="100%" height="100%"></div>
                             <div class="text-xxlg text-center m-t-sm">李奎</div>
                             <div class="text-sm text-muted text-center">601351324@qq.com</div>
                         </div>
@@ -284,7 +284,7 @@
     .setting-avatar-container {
         width: 100px;
         height: 100px;
-        border: 1px solid #000;
+        border: 0.5px solid #f5f5f5;
         margin: 0 auto;
     }
 

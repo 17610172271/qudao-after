@@ -8,14 +8,8 @@
                         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
                         <div class="page-toolbar clear">
                             <div class="pull-left toolbar-candle">
-                                <router-link :to="{name: 'films_add'}" title="添加"
-                                             class="app-add btn bg-blue1 text-white"><i class="fa fa-plus-square"></i>添加
-                                </router-link>
-                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i
-                                    class="fa fa-trash"></i>删除</a>
-                                <!-- <div class="app-del btn bg-red1 text-white"><i class="fa fa-minus-square"></i>删除</div> -->
-                                <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i
-                                    class="fa fa-refresh"></i></div>
+                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i class="fa fa-trash"></i>删除</a>
+                                <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i class="fa fa-refresh"></i></div>
                             </div>
                             <div class="pull-right clear">
                                 <div class="pull-left m-r-sm opacity-8" title="列">
@@ -53,10 +47,8 @@
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('Browser')!=-1">{{item.browser}}</li>
                                 <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('创建时间')!=-1">{{item.create_time}}</li>
                                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                                    <a href="javascript:;" title="详情" class="candle-btn btn"><i
-                                        class="fa fa-search-plus"></i></a>
-                                    <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem"><i
-                                        class="fa fa-trash"></i></a>
+                                    <a href="javascript:;" title="详情" class="candle-btn btn" @click="showDetail(item.id)"><i class="fa fa-search-plus"></i></a>
+                                    <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem(item.id)"><i class="fa fa-trash"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -88,6 +80,74 @@
                 </div>
             </div>
         </div>
+        <el-dialog
+            title="详情"
+            :visible.sync="centerDialogVisible"
+            custom-class="dialog-modal1"
+            :close-on-click-modal="false">
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name text-bold">标题</div>
+                <div class="col-xs-12 col-md-10 line-height-40 text-bold">内容</div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">ID</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.id}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">admin_id</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.admin_id}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">用户名</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.username}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">Url</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.url}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">标题</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.title}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">内容</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.content}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">IP</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.ip}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">useragent</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.useragent}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">创建时间</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.createtime}}
+                </div>
+            </div>
+            <div class="text-center m-t-lg">
+                <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                <el-button @click="centerDialogVisible = false">重 置</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -101,6 +161,10 @@
             data: {
                 rows: [],
                 total: 1
+            },
+            centerDialogVisible: false,
+            dailogVal: {
+
             },
             selectVal: ['checkbox', 'ID', '用户名', '标题', 'Url', 'IP', 'Browser', '创建时间', '操作'],
             selectedGroup: [],
@@ -118,23 +182,19 @@
                     value: null
                 },
                 {
-                    type: 'select',
+                    type: 'text',
                     name: 'Url',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '选项1'
-                        },
-                        {
-                            value: 2,
-                            label: '选项2'
-                        },
-                        {
-                            value: 3,
-                            label: '选项3'
-                        }
-                    ]
+                    value: null
+                },
+                {
+                    type: 'text',
+                    name: 'IP',
+                    value: null
+                },
+                {
+                    type: 'time',
+                    name: '创建时间',
+                    value: null
                 }
             ],
             options: [10, 25, 50],
@@ -176,12 +236,13 @@
                 this.loading = true
                 this.$http.get(api.admin.log, {
                     params: {
-//                    offset: this.offset,
-//                    limit: this.limit,
-//                    token: this.$bus.token,
-//                    webname: this.searchName,
-//                    audit_status: this.status ? this.status : null,
-//                    bind_time: this.calendarVal
+//                        offset: this.offset,
+//                        limit: this.limit,
+//                        username: this.searchOptions[0].value,
+//                        title: this.searchOptions[1].value,
+//                        url: this.searchOptions[2].value,
+//                        ip: this.searchOptions[3].value,
+//                        create_time: this.searchOptions[4].value
                     }
                 }).then(res => {
                     this.loading = false
@@ -199,7 +260,7 @@
             },
             doSearch (data) {
                 this.searchOptions = data
-                console.log(this.searchOptions)
+                this.getList()
             },
             refresh () {
                 this.getList()
@@ -220,6 +281,9 @@
                         message: '已取消删除'
                     });
                 });
+            },
+            showDetail (id) {
+              this.centerDialogVisible = true
             },
             addPage () {
                 if (this.page < this.pages) this.page += 1
@@ -251,7 +315,7 @@
                 }
             },
             page (val) {
-                // this.$router.replace({name: 'application_list', query: {page: val}})
+                 this.$router.replace({name: 'user_log', query: {page: val}})
                 this.getList()
             },
             limit (val) {

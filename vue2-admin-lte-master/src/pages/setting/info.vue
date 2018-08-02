@@ -8,8 +8,10 @@
                         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
                         <div class="page-toolbar clear">
                             <div class="pull-left toolbar-candle">
-                                <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i
-                                    class="fa fa-refresh"></i></div>
+                                <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh">
+                                    <i class="fa fa-refresh"></i>
+                                </div>
+                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i class="fa fa-trash"></i>删除</a>
                             </div>
                             <div class="pull-right clear">
                                 <div class="pull-left m-r-sm opacity-8" title="列">
@@ -50,8 +52,9 @@
                                 <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('营业地址')!=-1">{{item.address}}</li>
                                 <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('街道地址')!=-1">{{item.address1}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                                    <a href="javascript:;" title="编辑" class="candle-btn btn"><i class="fa fa-edit"></i></a>
-                                    <a href="javascript:;" title="删除" class="candle-btn btn"><i class="fa fa-trash"></i></a>
+                                    <a href="javascript:;" title="详情" class="candle-btn btn" @click="showDetail(item.id)"><i class="fa fa-search-plus"></i></a>
+                                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click="editItem(item.id)"><i class="fa fa-edit"></i></a>
+                                    <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem(item.id)"><i class="fa fa-trash"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -83,6 +86,170 @@
                 </div>
             </div>
         </div>
+        <el-dialog
+            :title="type=='detail' ? '详情' : '编辑'"
+            :visible.sync="centerDialogVisible"
+            custom-class="dialog-modal1"
+            width="60%"
+            :close-on-click-modal="false">
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">版权商姓名:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.copyright_name}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.copyright_name" disabled></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">公司名称:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.company_name}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.company_name"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">营业注册号:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.regist_num}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.regist_num"></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">联系人:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.contact_person}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.contact_person"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">营业执照:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    <img :src="dailogVal.license" alt="" width="70%">
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.license"></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">联系人电话:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.contact_tel}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.contact_tel"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">法人:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.legal_person}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.legal_person"></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">公司固话:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.company_num}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.company_num"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">组织机构代码:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.organization_code}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.organization_code"></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">纳税人识别号:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.registration_num}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.registration_num"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">公司类型:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.company_type}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.company_type"></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">成立日期:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.setup_time}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.setup_time"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">注册地址:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.regist_address}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.regist_address"></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">街道地址:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.regist_address1}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.regist_address1"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">营业地址:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.operate_address}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.operate_address"></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">街道地址:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.operate_address1}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.operate_address1"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">收款人姓名:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.collection_name}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.collection_name"></el-input>
+                </div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">银行账号:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40 wrap-line" v-if="type==='detail'">
+                    {{dailogVal.bank_num}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.bank_num"></el-input>
+                </div>
+            </div>
+            <div class="clear" :class="{'m-b-md': type=='edit'}">
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">开户行:</div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
+                    {{dailogVal.bank_name}}
+                </div>
+                <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
+                    <el-input v-model="dailogVal.bank_name"></el-input>
+                </div>
+            </div>
+            <div class="text-center m-t-lg">
+                <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                <el-button @click="centerDialogVisible = false">重 置</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -97,6 +264,11 @@
                 rows: [],
                 total: 1
             },
+            dailogVal: {
+                copyright_name: null
+            },
+            type: '',
+            centerDialogVisible: false,
             selectVal: ['checkbox', '序号', '版权商姓名', '公司名称', '公司类型', '法人', '联系人', '联系电话', '营业地址', '街道地址', '操作'],
             selectedGroup: [],
             selectAll: false,
@@ -111,25 +283,6 @@
                     type: 'text',
                     name: '公司名称',
                     value: null
-                },
-                {
-                    type: 'select',
-                    name: '公司类型',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '选项1'
-                        },
-                        {
-                            value: 2,
-                            label: '选项2'
-                        },
-                        {
-                            value: 3,
-                            label: '选项3'
-                        }
-                    ]
                 }
             ],
             options: [10, 25, 50],
@@ -173,10 +326,8 @@
                     params: {
 //                        offset: this.offset,
 //                        limit: this.limit,
-//                        token: this.$bus.token,
-//                        webname: this.searchName,
-//                        audit_status: this.status ? this.status : null,
-//                        bind_time: this.calendarVal
+//                        copyright_name: this.searchOptions[0].value,
+//                        company_name: this.searchOptions[1].value
                     }
                 }).then(res => {
                     this.loading = false
@@ -192,11 +343,44 @@
                     }
                 })
             },
+            getData (id) {
+                this.$http.get(api.setting.infoDetail, {
+                    params: {
+//                        id: id
+                    }
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        this.dailogVal = res.data.data
+                    }
+                })
+            },
+            showDetail (id) {
+                this.type = 'detail'
+                this.getData(id)
+                this.centerDialogVisible = true
+            },
+            editItem (id) {
+                this.type = 'edit'
+                this.getData(id)
+                this.centerDialogVisible = true
+            },
+            delItem (id) {
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(res => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功'
+                    })
+                })
+            },
             refresh () {
             },
             doSearch (data) {
                 this.searchOptions = data
-                console.log(this.searchOptions)
+                this.getList()
             },
             refresh () {
                 this.getList()

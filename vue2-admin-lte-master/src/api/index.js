@@ -25,7 +25,9 @@ export const user = {
 // 版权管理
 export const copyright = {
     list: '/v1/copyright/list', // 版权库列表
-    options: 'v1/film/get_search' // 影片类型选项
+    history: '/v1/copyright/history', // 版权审核历史列表
+    options: '/v1/film/get_search', // 影片类型选项
+    detail: '/v1/copyright/detail' // 版权详情
 }
 
 // 用户管理
@@ -42,6 +44,7 @@ export const financial = {
 // 系统设置
 export const setting = {
     info: '/v1/setting/info', // 版权商信息管理
+    infoDetail: '/v1/setting/infoDetail', //版权商信息-详情
     newsList: '/v1/setting/newsList', //消息通知tab列表
     noticeList: '/v1/setting/noticeList', //消息公告tab列表
     notice: '/v1/setting/notice' //系统公告列表

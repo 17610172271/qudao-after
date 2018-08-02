@@ -8,12 +8,8 @@
                         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
                         <div class="page-toolbar clear">
                             <div class="pull-left toolbar-candle">
-                                <router-link :to="{name: 'films_add'}" title="添加"
-                                             class="app-add btn bg-blue1 text-white"><i class="fa fa-plus-square"></i>添加
-                                </router-link>
-                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i
-                                    class="fa fa-trash"></i>删除</a>
-                                <!-- <div class="app-del btn bg-red1 text-white"><i class="fa fa-minus-square"></i>删除</div> -->
+                                <a href="javascript:;" title="添加" class="app-add btn bg-blue1 text-white"><i class="fa fa-plus-square"></i>添加</a>
+                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i class="fa fa-trash"></i>删除</a>
                                 <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i
                                     class="fa fa-refresh"></i></div>
                             </div>
@@ -32,7 +28,7 @@
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox v-model="selectAll">全选</el-checkbox>
                                 </li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('ID')!=-1">ID</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('用户名')!=-1">用户名</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('姓名')!=-1">姓名</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('性别')!=-1">性别</li>
@@ -47,7 +43,7 @@
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox label="1" v-model="selectedGroup"></el-checkbox>
                                 </li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('ID')!=-1">{{item.id}}</li>
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('用户名')!=-1">{{item.username}}</li>
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('姓名')!=-1">{{item.name}}</li>
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('性别')!=-1">{{item.gender}}</li>
@@ -107,11 +103,16 @@
                 rows: [],
                 total: 1
             },
-            selectVal: ['checkbox', '序号', '用户名', '姓名', '性别', '角色', '邮箱', '手机号', '状态', '最后登录', '操作'],
+            selectVal: ['checkbox', 'ID', '用户名', '姓名', '性别', '角色', '邮箱', '手机号', '状态', '最后登录', '操作'],
             selectedGroup: [],
             selectAll: false,
-            showList: ['checkbox', '序号', '用户名', '姓名', '性别', '角色', '邮箱', '手机号', '状态', '最后登录', '操作'],
+            showList: ['checkbox', 'ID', '用户名', '姓名', '性别', '角色', '邮箱', '手机号', '状态', '最后登录', '操作'],
             searchOptions: [
+                {
+                    type: 'text',
+                    name: 'ID',
+                    value: null
+                },
                 {
                     type: 'text',
                     name: '用户名',
@@ -128,18 +129,44 @@
                     value: null,
                     options: [
                         {
+                            value: 0,
+                            label: '男'
+                        },
+                        {
                             value: 1,
-                            label: '选项1'
-                        },
-                        {
-                            value: 2,
-                            label: '选项2'
-                        },
-                        {
-                            value: 3,
-                            label: '选项3'
+                            label: '女'
                         }
                     ]
+                },
+                {
+                    type: 'text',
+                    name: '邮箱',
+                    value: null
+                },
+                {
+                    type: 'text',
+                    name: '手机号',
+                    value: null
+                },
+                {
+                    type: 'select',
+                    name: '状态',
+                    value: null,
+                    options: [
+                        {
+                            value: 0,
+                            label: '正常'
+                        },
+                        {
+                            value: 1,
+                            label: '隐藏'
+                        }
+                    ]
+                },
+                {
+                    type: 'time',
+                    name: '最后登录',
+                    value: null
                 }
             ],
             options: [10, 25, 50],
@@ -181,12 +208,16 @@
                 this.loading = true
                 this.$http.get(api.admin.admin, {
                     params: {
-//                    offset: this.offset,
-//                    limit: this.limit,
-//                    token: this.$bus.token,
-//                    webname: this.searchName,
-//                    audit_status: this.status ? this.status : null,
-//                    bind_time: this.calendarVal
+//                        offset: this.offset,
+//                        limit: this.limit,
+//                        id: this.searchOptions[0].value,
+//                        username: this.searchOptions[1].value,
+//                        name: this.searchOptions[2].value,
+//                        gender: this.searchOptions[3].value,
+//                        email: this.searchOptions[4].value,
+//                        tel: this.searchOptions[5].value,
+//                        status: this.searchOptions[6].value,
+//                        end_time: this.searchOptions[7].value
                     }
                 }).then(res => {
                     this.loading = false
@@ -204,7 +235,7 @@
             },
             doSearch (data) {
                 this.searchOptions = data
-                console.log(this.searchOptions)
+                this.getList()
             },
             refresh () {
                 this.getList()
@@ -256,7 +287,7 @@
                 }
             },
             page (val) {
-                // this.$router.replace({name: 'application_list', query: {page: val}})
+                 this.$router.replace({name: 'user_log', query: {page: val}})
                 this.getList()
             },
             limit (val) {

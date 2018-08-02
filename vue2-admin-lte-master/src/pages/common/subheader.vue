@@ -16,16 +16,16 @@
     data: () => ({
       navList: {
         parentNode: {
-          name: '影片管理',
+          name: '',
           router: {
-            name: 'films_list'
+            name: 'home'
           }
         },
         childNode: {
-          name: '影片列表',
+          name: '',
           desc: '页面功能性描述，简要解释该模块做什么用的',
           router: {
-            name: 'films_list'
+            name: 'home'
           }
         }
       }

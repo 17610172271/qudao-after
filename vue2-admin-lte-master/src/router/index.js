@@ -19,23 +19,6 @@ const router = new Router({
           component: rs('home/home')
         },
         {
-          path: '/right',
-          component: rs('right/index'),
-          meta: {requreAuth: true},
-          children: [
-            {
-              path: 'admin',
-              name: 'right_admin',
-              component: rs('right/admin')
-            },
-            {
-              path: 'log',
-              name: 'right_log',
-              component: rs('right/log')
-            }
-          ]
-        },
-        {
           path: '/setting',
           component: rs('setting/index'),
           meta: {requreAuth: true},
@@ -135,15 +118,15 @@ const router = new Router({
   ],
   linkActiveClass: 'active'
 })
-// router.beforeEach((to, from, next) => {
-//   // 判断去往的页面是否需要登录
-//   if (to.matched.some(record => record.meta.requreAuth) && !window.localStorage.getItem('Auth')) {
-//     next({
-//       path: '/login',
-//       query: { from: to.fullPath }
-//     })
-//   } else {
-//     next()
-//   }
-// })
+ router.beforeEach((to, from, next) => {
+   // 判断去往的页面是否需要登录
+   if (to.matched.some(record => record.meta.requreAuth) && !window.localStorage.getItem('Auth')) {
+     next({
+       path: '/login',
+       query: { from: to.fullPath }
+     })
+   } else {
+     next()
+   }
+ })
 export default router

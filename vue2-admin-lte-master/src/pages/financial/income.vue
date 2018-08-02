@@ -8,12 +8,6 @@
                         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
                         <div class="page-toolbar clear">
                             <div class="pull-left toolbar-candle">
-                                <router-link :to="{name: 'films_add'}" title="添加"
-                                             class="app-add btn bg-blue1 text-white"><i class="fa fa-plus-square"></i>添加
-                                </router-link>
-                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i
-                                    class="fa fa-trash"></i>删除</a>
-                                <!-- <div class="app-del btn bg-red1 text-white"><i class="fa fa-minus-square"></i>删除</div> -->
                                 <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i
                                     class="fa fa-refresh"></i></div>
                             </div>
@@ -37,23 +31,13 @@
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('分成比例(%)')!=-1">分成比例(%)</li>
                             </ul>
                             <ul class="table-tbody clear" v-for="(item,index) in data.rows">
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}
-                                </li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('日期')!=-1">{{item.date}}
-                                </li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('电影编号')!=-1">{{item.id}}
-                                </li>
-                                <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('电影名称')!=-1">
-                                    {{item.film_name}}
-                                </li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('购买数量')!=-1">{{item.num}}
-                                </li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('收入(元)')!=-1">
-                                    {{item.income}}
-                                </li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('分成比例(%)')!=-1">
-                                    {{item.ratio}}
-                                </li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
+                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('日期')!=-1">{{item.date}}</li>
+                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('电影编号')!=-1">{{item.id}}</li>
+                                <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('电影名称')!=-1">{{item.film_name}}</li>
+                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('购买数量')!=-1">{{item.num}}</li>
+                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('收入(元)')!=-1">{{item.income}}</li>
+                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('分成比例(%)')!=-1">{{item.ratio}}</li>
                             </ul>
                         </div>
                         <div class="footer clear m-t-md">
@@ -176,33 +160,19 @@
         showList: ['序号', '日期', '电影编号', '电影名称', '购买数量', '收入(元)', '分成比例(%)'],
         searchOptions: [
             {
-                type: 'text',
+                type: 'time',
                 name: '日期',
                 value: null
             },
             {
                 type: 'text',
-                name: '电影编号',
+                name: '电影名称',
                 value: null
             },
             {
-                type: 'select',
-                name: '电影名称',
-                value: null,
-                options: [
-                    {
-                        value: 1,
-                        label: '选项1'
-                    },
-                    {
-                        value: 2,
-                        label: '选项2'
-                    },
-                    {
-                        value: 3,
-                        label: '选项3'
-                    }
-                ]
+                type: 'text',
+                name: '电影类型',
+                value: null
             }
         ],
         options: [10, 25, 50],
@@ -246,16 +216,14 @@
                 params: {
 //                    offset: this.offset,
 //                    limit: this.limit,
-//                    token: this.$bus.token,
-//                    webname: this.searchName,
-//                    audit_status: this.status ? this.status : null,
-//                    bind_time: this.calendarVal
+//                    date: this.searchOptions[0].value,
+//                    film_name: this.searchOptions[1].value,
+//                    film_type: this.searchOptions[2].value
                 }
             }).then(res => {
                 this.loading = false
                 if (res.data.code === 1) {
                     this.data = res.data.data
-                    console.log(this.data)
                 } else {
                     this.data.rows = []
                     this.$message({
@@ -267,7 +235,7 @@
         },
         doSearch (data) {
             this.searchOptions = data
-            console.log(this.searchOptions)
+            this.getList()
         },
         refresh () {
             this.getList()

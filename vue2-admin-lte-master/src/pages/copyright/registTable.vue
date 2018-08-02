@@ -3,11 +3,6 @@
         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
         <div class="page-toolbar clear">
             <div class="pull-left toolbar-candle">
-                <router-link :to="{name: 'films_add'}" title="添加" class="app-add btn bg-blue1 text-white"><i
-                    class="fa fa-plus-square"></i>添加
-                </router-link>
-                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i class="fa fa-trash"></i>删除</a>
-                <!-- <div class="app-del btn bg-red1 text-white"><i class="fa fa-minus-square"></i>删除</div> -->
                 <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i class="fa fa-refresh"></i></div>
             </div>
             <div class="pull-right clear">
@@ -33,15 +28,7 @@
                 <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
                 <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('录入时间')!=-1">{{item.create_time}}</li>
                 <li class="col-xs-3 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                    <a href="javascript:;" title="通过" class="candle-btn btn" @click="delItem"><i
-                        class="fa fa-check"></i></a>
-                    <a href="javascript:;" title="不通过" class="candle-btn btn" @click="delItem"><i
-                        class="fa fa-close"></i></a>
-                    <a href="javascript:;" title="详情" class="candle-btn btn" @click="centerDialogVisible = true"><i
-                        class="fa fa-search-plus"></i></a>
-                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click="delItem"><i class="fa fa-edit"></i></a>
-                    <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem"><i
-                        class="fa fa-trash"></i></a>
+                    <a href="javascript:;" title="版权登记" class="candle-btn btn" @click="regist(item)"><i class="fa fa-paper-plane blue"></i> <span class="text-md">版权登记</span></a>
                 </li>
             </ul>
         </div>
@@ -69,11 +56,90 @@
             </div>
         </div>
         <el-dialog
-            title="基本信息"
+            title="版权登记"
             :visible.sync="centerDialogVisible"
             custom-class="dialog-modal1 dailog-p-t-n"
             :close-on-click-modal="false">
-            <detail></detail>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name"><span class="text-red">*</span>电影名称:</div>
+                <div class="col-xs-12 col-md-9 line-height-40">
+                    {{detailVal.film_name}}
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name"><span class="text-red">*</span>版权登记号:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入版权登记号" style="max-width: 300px;" v-model="detailVal.copyright_id"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name"><span class="text-red">*</span>作品/制品名称:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入作品/制品名称" style="max-width: 300px;" v-model="detailVal.product_name"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">作品类别:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入作品类别" style="max-width: 300px;" v-model="detailVal.product_type"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">作者:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入作者" style="max-width: 300px;" v-model="detailVal.writer"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">著作权人:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入著作权人" style="max-width: 300px;" v-model="detailVal.copyrighter"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">首次发表时间:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-date-picker
+                        v-model="detailVal.first_time"
+                        type="date"
+                        style="width: 100%;max-width: 300px;"
+                        placeholder="选择首次发表时间">
+                    </el-date-picker>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">首次出版/制作时间:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-date-picker
+                        v-model="detailVal.first_time1"
+                        type="date"
+                        style="width: 100%;max-width: 300px;"
+                        placeholder="选择首次出版/制作时间">
+                    </el-date-picker>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name"><span class="text-red">*</span>附件:</div>
+                <div class="col-xs-12 col-md-9">
+                    <div class="clear">
+                        <div class="col-xs-9 p-n p-r-sm" style="max-width: 310px;">
+                            <el-input placeholder="上传文件" v-model="detailVal.atta"></el-input>
+                        </div>
+                        <div class="col-xs-3 p-n">
+                            <el-upload
+                                action="https://jsonplaceholder.typicode.com/posts/"
+                                :on-success="handlePreview"
+                                list-type="text">
+                                <a href="javascript:;" class="btn bg-blue1 text-white add-upload-btn">上传文件</a>
+                            </el-upload>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center m-t-lg">
+                <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                <el-button @click="centerDialogVisible = false">取 消</el-button>
+            </div>
         </el-dialog>
     </div>
 </template>
@@ -93,6 +159,15 @@
                 rows: [],
                 total: 1
             },
+            detailVal: {
+                id: null,
+                film_name: null,
+                copyright_name: null,
+                copyright_id: null,
+                product_name: null,
+                status: null,
+                remark: null
+            },
             loading: false,
             centerDialogVisible: false,
             selectVal: ['序号', '电影名称', '状态', '录入时间', '操作'],
@@ -106,41 +181,7 @@
                     value: null
                 },
                 {
-                    type: 'text',
-                    name: '版权商',
-                    value: null
-                },
-                {
-                    type: 'text',
-                    name: '版权登记号',
-                    value: null
-                },
-                {
-                    type: 'text',
-                    name: '作品/制品名称',
-                    value: null
-                },
-                {
-                    type: 'select',
-                    name: '审核状态',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '选项1'
-                        },
-                        {
-                            value: 2,
-                            label: '选项2'
-                        },
-                        {
-                            value: 3,
-                            label: '选项3'
-                        }
-                    ]
-                },
-                {
-                    type: 'text',
+                    type: 'time',
                     name: '录入时间',
                     value: null
                 }
@@ -165,10 +206,8 @@
                     params: {
 //                        offset: this.offset,
 //                        limit: this.limit,
-//                        token: this.$bus.token,
-//                        webname: this.searchName,
-//                        audit_status: this.status ? this.status : null,
-//                        bind_time: this.calendarVal
+//                        film_name: this.searchOptions[0].value,
+//                        create_time: this.searchOptions[1].value
                     }
                 }).then(res => {
                     this.loading = false
@@ -184,10 +223,17 @@
                     }
                 })
             },
+
+            regist (item) {
+                this.detailVal.id = item.id
+                this.detailVal.film_name = item.film_name
+                this.centerDialogVisible = true
+            },
             doSearch (data) {
                 this.searchOptions = data
-                console.log(this.searchOptions)
+                this.getList()
             },
+            handlePreview () {},
             refresh () {
                 this.getList()
             },

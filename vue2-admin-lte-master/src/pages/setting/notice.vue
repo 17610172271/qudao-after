@@ -23,24 +23,20 @@
                         <div class="lk-table m-t-sm">
                             <ul class="table-thead clear">
                                 <!-- <li class="col-lg-1 col-md-1 col-sm-1 col-xs-1 clear app-first-item" v-if="selectVal.indexOf('ID')!=-1"><div class="pull-left"><input type="checkbox" v-model="selectAll"></div><div class="pull-left">ID</div></li> -->
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('电影名称')!=-1">电影名称</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('审核人')!=-1">审核人</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
+                                <li class="col-xs-3 p-n" v-show="selectVal.indexOf('标题')!=-1">标题</li>
                                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('创建时间')!=-1">创建时间</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('审核状态')!=-1">审核状态</li>
-                                <li class="col-xs-3 p-n" v-show="selectVal.indexOf('原因')!=-1">原因</li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('状态')!=-1">状态</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
+                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('更新时间')!=-1">更新时间</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('状态')!=-1">状态</li>
+                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
                             </ul>
                             <ul class="table-tbody clear" v-for="(item, index) in data.rows">
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('电影名称')!=-1">{{item.film_name}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('审核人')!=-1">{{item.check_name}}</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
+                                <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('标题')!=-1">{{item.title}}</li>
                                 <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('创建时间')!=-1">{{item.create_time}}</li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('审核状态')!=-1">{{item.check_status}}</li>
-                                <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('原因')!=-1">{{item.reason}}</li>
-                                <li class="col-xs-24 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
+                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('更新时间')!=-1">{{item.update_time}}</li>
+                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
+                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
                                     <a href="javascript:;" title="编辑" class="candle-btn btn"><i class="fa fa-edit"></i></a>
                                     <a href="javascript:;" title="删除" class="candle-btn btn"><i class="fa fa-trash"></i></a>
                                 </li>
@@ -88,37 +84,38 @@
                 rows: [],
                 total: 1
             },
-            selectVal: ['序号', '电影名称', '审核人', '创建时间', '审核状态', '原因', '状态', '操作'],
+            selectVal: ['序号', '标题', '创建时间', '更新时间', '状态', '操作'],
             selectedGroup: [],
             selectAll: false,
-            showList: ['序号', '电影名称', '审核人', '创建时间', '审核状态', '原因', '状态', '操作'],
+            showList: ['序号', '标题', '创建时间', '更新时间', '状态', '操作'],
             searchOptions: [
                 {
                     type: 'text',
-                    name: '电影名称',
+                    name: '标题',
                     value: null
                 },
                 {
-                    type: 'text',
-                    name: '审核人',
+                    type: 'time',
+                    name: '创建时间',
+                    value: null
+                },
+                {
+                    type: 'time',
+                    name: '更新时间',
                     value: null
                 },
                 {
                     type: 'select',
-                    name: '创建时间',
+                    name: '状态',
                     value: null,
                     options: [
                         {
+                            value: 0,
+                            label: '隐藏'
+                        },
+                        {
                             value: 1,
-                            label: '选项1'
-                        },
-                        {
-                            value: 2,
-                            label: '选项2'
-                        },
-                        {
-                            value: 3,
-                            label: '选项3'
+                            label: '正常'
                         }
                     ]
                 }
@@ -164,10 +161,10 @@
                     params: {
 //                        offset: this.offset,
 //                        limit: this.limit,
-//                        token: this.$bus.token,
-//                        webname: this.searchName,
-//                        audit_status: this.status ? this.status : null,
-//                        bind_time: this.calendarVal
+//                        title: this.searchOptions[0].value,
+//                        create_time: this.searchOptions[1].value,
+//                        update_time: this.searchOptions[2].value,
+//                        status: this.searchOptions[3].value
                     }
                 }).then(res => {
                     this.loading = false
@@ -183,11 +180,9 @@
                     }
                 })
             },
-            refresh () {
-            },
             doSearch (data) {
                 this.searchOptions = data
-                console.log(this.searchOptions)
+                this.getList()
             },
             refresh () {
                 this.getList()
@@ -222,7 +217,7 @@
                 }
             },
             page (val) {
-                // this.$router.replace({name: 'application_list', query: {page: val}})
+                this.$router.replace({name: 'setting_notice', query: {page: val}})
                 this.getList()
             },
             limit (val) {
