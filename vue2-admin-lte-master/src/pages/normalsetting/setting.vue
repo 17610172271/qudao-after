@@ -43,8 +43,8 @@
                                 </div>
                             </div>
                             <div class="form-item-container m-t-md">
-                                <button class="btn bg-blue1 text-white">提交</button>
-                                <button class="btn bg-gray1 text-white">重置</button>
+                                <button class="btn bg-blue1 text-white" @click="submit">提交</button>
+                                <button class="btn bg-gray1 text-white" @click="reset">重置</button>
                             </div>
                         </div>
                     </div>
@@ -232,7 +232,27 @@
                     }
                 })
             },
-            refresh () {
+            submit () {
+                this.$http.get(api.user.userEdit, {
+                    params: {
+//                        ...this.userData
+                    }
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        this.$message({
+                            type: 'success',
+                            message: '保存成功'
+                        })
+                    } else {
+                        this.$message({
+                            type: 'warning',
+                            message: res.data.msg
+                        })
+                    }
+                })
+            },
+            reset () {
+                this.userData = JSON.parse(JSON.stringify(this.getAuthInfo))
             },
             doSearch (data) {
                 this.searchOptions = data

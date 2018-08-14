@@ -238,6 +238,30 @@
             refresh () {
                 this.getList()
             },
+            dailogSubmit () {
+                if (this.type === 'edit') {
+                    this.$http.get(api.copyright.edit, {
+                        params: {
+//                            ...this.detailVal
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.centerDialogVisible = false
+                            this.$message({
+                                type: 'success',
+                                message: '修改成功'
+                            })
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: res.data.msg
+                            })
+                        }
+                    })
+                } else {
+                    this.centerDialogVisible = false
+                }
+            },
             delItem() {
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',

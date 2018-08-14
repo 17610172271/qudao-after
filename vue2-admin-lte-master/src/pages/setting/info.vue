@@ -11,7 +11,7 @@
                                 <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh">
                                     <i class="fa fa-refresh"></i>
                                 </div>
-                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i class="fa fa-trash"></i>删除</a>
+                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white" @click="delItem(selectedGroup.join(','))"><i class="fa fa-trash"></i>删除</a>
                             </div>
                             <div class="pull-right clear">
                                 <div class="pull-left m-r-sm opacity-8" title="列">
@@ -38,9 +38,9 @@
                                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('街道地址')!=-1">街道地址</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
                             </ul>
-                            <ul class="table-tbody clear" v-for="(item, index) in data.rows">
+                            <ul class="table-tbody clear" v-for="(item, index) in data.rows" @click="selectItem(item.id)">
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
-                                    <el-checkbox label="1" v-model="selectedGroup"></el-checkbox>
+                                    <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('版权商姓名')!=-1">{{item.copyright_name}}</li>
@@ -52,9 +52,9 @@
                                 <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('营业地址')!=-1">{{item.address}}</li>
                                 <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('街道地址')!=-1">{{item.address1}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                                    <a href="javascript:;" title="详情" class="candle-btn btn" @click="showDetail(item.id)"><i class="fa fa-search-plus"></i></a>
-                                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click="editItem(item.id)"><i class="fa fa-edit"></i></a>
-                                    <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem(item.id)"><i class="fa fa-trash"></i></a>
+                                    <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="showDetail(item.id)"><i class="fa fa-search-plus"></i></a>
+                                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click.stop="editItem(item.id)"><i class="fa fa-edit"></i></a>
+                                    <a href="javascript:;" title="删除" class="candle-btn btn" @click.stop="delItem(item.id)"><i class="fa fa-trash"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -246,7 +246,7 @@
                 </div>
             </div>
             <div class="text-center m-t-lg">
-                <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="dailogSubmit">确 定</el-button>
                 <el-button @click="centerDialogVisible = false">重 置</el-button>
             </div>
         </el-dialog>
@@ -292,7 +292,7 @@
             loading: false,
             subNavList: {
                 parentNode: {
-                    name: '影片管理',
+                    name: '系统设置',
                     router: {
                         name: 'setting_info'
                     }
@@ -330,6 +330,7 @@
 //                        company_name: this.searchOptions[1].value
                     }
                 }).then(res => {
+                    this.selectedGroup = []
                     this.loading = false
                     if (res.data.code === 1) {
                         this.data = res.data.data
@@ -354,10 +355,42 @@
                     }
                 })
             },
+            selectItem (id) {
+                if (this.selectedGroup.indexOf(id) !== -1) {
+                    this.selectedGroup.splice(this.selectedGroup.indexOf(id), 1)
+                } else {
+                    this.selectedGroup.push(id)
+                }
+            },
             showDetail (id) {
                 this.type = 'detail'
                 this.getData(id)
                 this.centerDialogVisible = true
+            },
+            dailogSubmit () {
+                if (this.type === 'edit') {
+                    this.$http.get(api.setting.infoEdit, {
+                        params: {
+//                            ...this.dailogVal
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.centerDialogVisible = false
+                            this.$message({
+                                type: 'success',
+                                message: '保存成功'
+                            })
+                            this.getList()
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: res.data.msg
+                            })
+                        }
+                    })
+                } else {
+                    this.centerDialogVisible = false
+                }
             },
             editItem (id) {
                 this.type = 'edit'
@@ -365,18 +398,37 @@
                 this.centerDialogVisible = true
             },
             delItem (id) {
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(res => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功'
+                if (id) {
+                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(res => {
+                        this.$http.get(api.setting.infoDel, {
+                            params: {
+//                            id: id
+                            }
+                        }).then(res => {
+                            if (res.data.code === 1) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                })
+                                this.getList()
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
                     })
-                })
-            },
-            refresh () {
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: '请选中需要操作的项'
+                    })
+                }
             },
             doSearch (data) {
                 this.searchOptions = data
@@ -402,6 +454,8 @@
                 console.log(val)
                 if (val.length === this.data.rows.length) {
                     this.selectAll = true
+                } else  {
+                    this.selectAll = false
                 }
             },
             selectAll (val) {
@@ -411,7 +465,9 @@
                         this.selectedGroup.push(val.id)
                     })
                 } else {
-                    this.selectedGroup = []
+                    if (this.selectedGroup.length !== this.data.rows.length - 1) {
+                        this.selectedGroup = []
+                    }
                 }
             },
             page (val) {

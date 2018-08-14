@@ -6,8 +6,8 @@
                 <div class="page-toolbar clear">
                     <div class="pull-left toolbar-candle">
                         <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i class="fa fa-refresh"></i></div>
-                        <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i class="fa fa-trash"></i>删除</a>
-                        <a href="javascript:;" title="标记已读" class="app-add btn bg-blue1 text-white"><i class="fa fa-eye"></i>标记已读</a>
+                        <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white" @click="delItem(selectedGroup.join(','))"><i class="fa fa-trash"></i>删除</a>
+                        <a href="javascript:;" title="标记已读" class="app-add btn bg-blue1 text-white" @click="readItem(selectedGroup.join(','))"><i class="fa fa-eye"></i>标记已读</a>
                     </div>
                     <div class="pull-right clear">
                         <div class="pull-left m-r-sm opacity-8" title="列">
@@ -28,7 +28,7 @@
                     <li class="col-xs-1 p-n" v-show="selectVal.indexOf('状态')!=-1">状态</li>
                     <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
                 </ul>
-                <ul class="table-tbody clear" v-for="(item,index) in data.rows">
+                <ul class="table-tbody clear" v-for="(item,index) in data.rows" @click="selectItem(item.id)">
                     <li class="col-xs-1 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                         <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                     </li>
@@ -37,9 +37,9 @@
                     <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('发送时间')!=-1">{{item.send_time}}</li>
                     <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
                     <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                        <a href="javascript:;" title="标记已读" class="candle-btn btn"><i class="fa fa-check-square-o"></i></a>
-                        <a href="javascript:;" title="详情" class="candle-btn btn"><i class="fa fa-search-plus"></i></a>
-                        <a href="javascript:;" title="删除" class="candle-btn btn"><i class="fa fa-trash"></i></a>
+                        <a href="javascript:;" title="标记已读" class="candle-btn btn" @click="readItem(item.id)"><i class="fa fa-check-square-o"></i></a>
+                        <a href="javascript:;" title="详情" class="candle-btn btn" @click="showDetail(item.id)"><i class="fa fa-search-plus"></i></a>
+                        <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem(item.id)"><i class="fa fa-trash"></i></a>
                     </li>
                 </ul>
             </div>
@@ -142,6 +142,7 @@
 //                        bind_time: this.calendarVal
                     }
                 }).then(res => {
+                    this.selectedGroup = []
                     this.loading = false
                     if (res.data.code === 1) {
                         this.data = res.data.data
@@ -154,6 +155,74 @@
                         })
                     }
                 })
+            },
+            readItem (id) {
+                if (id) {
+                    this.$http.get(api.setting.noticeListRead, {
+                        params: {
+//                        id: id
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$message({
+                                type: 'success',
+                                message: '标记已读成功'
+                            })
+                            this.getList()
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: res.data.msg
+                            })
+                        }
+                    })
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: '请选中需要操作的项'
+                    })
+                }
+            },
+            showDetail (id) {},
+            delItem (id) {
+                if (id) {
+                    this.$confirm('此操作将永久删除该消息, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$http.get(api.setting.noticeListDel, {
+                            params: {
+//                            id: id
+                            }
+                        }).then(res => {
+                            if (res.data.code === 1) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                })
+                                this.getList()
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
+                    }).catch(() => {})
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: '请选中需要操作的项'
+                    })
+                }
+            },
+            selectItem (id) {
+                if (this.selectedGroup.indexOf(id) !== -1) {
+                    this.selectedGroup.splice(this.selectedGroup.indexOf(id), 1)
+                } else {
+                    this.selectedGroup.push(id)
+                }
             },
             doSearch (data) {
                 this.searchOptions = data
@@ -179,6 +248,8 @@
                 console.log(val)
                 if (val.length === this.data.rows.length) {
                     this.selectAll = true
+                } else  {
+                    this.selectAll = false
                 }
             },
             selectAll (val) {
@@ -188,7 +259,9 @@
                         this.selectedGroup.push(val.id)
                     })
                 } else {
-                    this.selectedGroup = []
+                    if (this.selectedGroup.length !== this.data.rows.length - 1) {
+                        this.selectedGroup = []
+                    }
                 }
             },
             page (val) {

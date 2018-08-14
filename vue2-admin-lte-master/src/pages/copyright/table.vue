@@ -34,9 +34,9 @@
                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
                 <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('备注')!=-1">{{item.remark}}</li>
                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                    <a href="javascript:;" title="通过" class="candle-btn btn" @click="delItem"><i
+                    <a href="javascript:;" title="通过" class="candle-btn btn" @click="checkItem(item.id, 'pass')"><i
                         class="fa fa-check"></i></a>
-                    <a href="javascript:;" title="不通过" class="candle-btn btn" @click="delItem"><i
+                    <a href="javascript:;" title="不通过" class="candle-btn btn" @click="checkItem(item.id, 'notpass')"><i
                         class="fa fa-close"></i></a>
                     <a href="javascript:;" title="详情" class="candle-btn btn" @click="showDetail(item.id)"><i
                         class="fa fa-search-plus"></i></a>
@@ -137,7 +137,7 @@
                 </div>
             </div>
             <div class="text-center m-t-lg">
-                <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="dailogSubmit">确 定</el-button>
                 <el-button @click="centerDialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
@@ -243,6 +243,51 @@
                     }
                 })
             },
+            checkItem (id, type) {
+                this.$confirm('此操作将通过审核,是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$http.get(api.copyright.check, {
+                        params: {
+//                            id: id,
+//                            type: type
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$message({
+                                type: 'success',
+                                message: '审核通过/不通过'
+                            })
+                        }
+                    })
+                }).catch(() => {})
+            },
+            dailogSubmit () {
+                if (this.type === 'edit') {
+                    this.$http.get(api.copyright.edit, {
+                        params: {
+//                            ...this.detailVal
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.centerDialogVisible = false
+                            this.$message({
+                                type: 'success',
+                                message: '修改成功'
+                            })
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: res.data.msg
+                            })
+                        }
+                    })
+                } else {
+                    this.centerDialogVisible = false
+                }
+            },
             doSearch (data) {
                 this.searchOptions = data
                 this.getList()
@@ -264,22 +309,30 @@
                 this.centerDialogVisible = true
                 this.getData(id)
             },
-            delItem() {
+            delItem(id) {
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
+                    this.$http.get(api.copyright.del, {
+                        params: {
+//                            id: id
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            })
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: res.data.msg
+                            })
+                        }
+                    })
+                }).catch(() => {})
             },
             addPage () {
                 if (this.page < this.pages) this.page += 1

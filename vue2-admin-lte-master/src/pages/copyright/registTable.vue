@@ -137,7 +137,7 @@
                 </div>
             </div>
             <div class="text-center m-t-lg">
-                <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="dailogSubmit">确 定</el-button>
                 <el-button @click="centerDialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
@@ -228,6 +228,27 @@
                 this.detailVal.id = item.id
                 this.detailVal.film_name = item.film_name
                 this.centerDialogVisible = true
+            },
+
+            dailogSubmit () {
+                this.$http.get(api.copyright.regist, {
+                    params: {
+//                        ...this.detailVal
+                    }
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        this.centerDialogVisible = false
+                        this.$message({
+                            type: 'success',
+                            message: '保存成功'
+                        })
+                    } else {
+                        this.$message({
+                            type: 'warning',
+                            message: res.data.msg
+                        })
+                    }
+                })
             },
             doSearch (data) {
                 this.searchOptions = data

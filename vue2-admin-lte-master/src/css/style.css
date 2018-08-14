@@ -202,6 +202,7 @@ textarea {
     background-color: #ddd;
 }
 
+
 .el-checkbox__inner:hover,
 .el-checkbox__input.is-focus .el-checkbox__inner {
     border: 1px solid #a6a6a6;
@@ -218,6 +219,7 @@ textarea {
 .candle-btn:visited .fa,
 .candle-btn:focus .fa {
     color: #232323;
+
 }
 
 .candle-btn:active .fa,

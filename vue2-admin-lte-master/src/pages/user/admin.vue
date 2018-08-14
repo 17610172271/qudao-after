@@ -8,8 +8,8 @@
                         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
                         <div class="page-toolbar clear">
                             <div class="pull-left toolbar-candle">
-                                <a href="javascript:;" title="添加" class="app-add btn bg-blue1 text-white"><i class="fa fa-plus-square"></i>添加</a>
-                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white"><i class="fa fa-trash"></i>删除</a>
+                                <a href="javascript:;" title="添加" class="app-add btn bg-blue1 text-white" @click="addItem"><i class="fa fa-plus-square"></i>添加</a>
+                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white" @click="delItem(selectedGroup.join(','))"><i class="fa fa-trash"></i>删除</a>
                                 <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i
                                     class="fa fa-refresh"></i></div>
                             </div>
@@ -39,9 +39,9 @@
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('最后登录')!=-1">最后登录</li>
                                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
                             </ul>
-                            <ul class="table-tbody clear" v-for="(item, index) in data.rows">
+                            <ul class="table-tbody clear" v-for="(item, index) in data.rows" @click="selectItem(item.id)">
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
-                                    <el-checkbox label="1" v-model="selectedGroup"></el-checkbox>
+                                    <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('ID')!=-1">{{item.id}}</li>
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('用户名')!=-1">{{item.username}}</li>
@@ -53,10 +53,10 @@
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('最后登录')!=-1">{{item.end_time}}</li>
                                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                                    <a href="javascript:;" title="重置密码" class="candle-btn btn"><i
+                                    <a href="javascript:;" title="重置密码" class="candle-btn btn" @click.stop="resetPsd(item.id)"><i
                                         class="fa fa-undo"></i></a>
-                                    <a href="javascript:;" title="编辑" class="candle-btn btn"><i class="fa fa-edit"></i></a>
-                                    <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem(item.id)"><i
+                                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click.stop="editItem(item.id)"><i class="fa fa-edit"></i></a>
+                                    <a href="javascript:;" title="删除" class="candle-btn btn" @click.stop="delItem(item.id)"><i
                                         class="fa fa-trash"></i></a>
                                 </li>
                             </ul>
@@ -89,6 +89,72 @@
                 </div>
             </div>
         </div>
+        <el-dialog
+            title="编辑"
+            :visible.sync="centerDialogVisible"
+            custom-class="dialog-modal1 dailog-p-t-n"
+            :close-on-click-modal="false">
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">角色:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入角色" style="max-width: 300px;" v-model="detailVal.role"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">用户名:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入用户名" style="max-width: 300px;" v-model="detailVal.username"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">邮箱:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入邮箱" style="max-width: 300px;" v-model="detailVal.email"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">手机号:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入手机号" style="max-width: 300px;" v-model="detailVal.tel"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">姓名:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入姓名" style="max-width: 300px;" v-model="detailVal.name"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">性别:</div>
+                <div class="col-xs-12 col-md-9 line-height-40">
+                    <el-radio v-model="detailVal.gender" label="男">男</el-radio>
+                    <el-radio v-model="detailVal.gender" label="女">女</el-radio>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">密码:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入密码" type="password" style="max-width: 300px;" v-model="detailVal.password"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">登陆失败次数:</div>
+                <div class="col-xs-12 col-md-9">
+                    <el-input placeholder="请输入登陆失败次数" style="max-width: 300px;" v-model="detailVal.defeat_times"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-md">
+                <div class="col-xs-12 col-md-3 line-height-40 text-right attr-edit-name">状态:</div>
+                <div class="col-xs-12 col-md-9 line-height-40">
+                    <el-radio v-model="detailVal.status" label="已上线">已上线</el-radio>
+                    <el-radio v-model="detailVal.status" label="已下线">已下线</el-radio>
+                </div>
+            </div>
+            <div class="text-center m-t-lg">
+                <el-button type="primary" @click="dailogSubmit">确 定</el-button>
+                <el-button @click="centerDialogVisible = false">取 消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -103,6 +169,9 @@
                 rows: [],
                 total: 1
             },
+            type: '',
+            centerDialogVisible: false,
+            detailVal: {},
             selectVal: ['checkbox', 'ID', '用户名', '姓名', '性别', '角色', '邮箱', '手机号', '状态', '最后登录', '操作'],
             selectedGroup: [],
             selectAll: false,
@@ -220,6 +289,7 @@
 //                        end_time: this.searchOptions[7].value
                     }
                 }).then(res => {
+                    this.selectedGroup = []
                     this.loading = false
                     if (res.data.code === 1) {
                         this.data = res.data.data
@@ -233,6 +303,13 @@
                     }
                 })
             },
+            selectItem (id) {
+                if (this.selectedGroup.indexOf(id) !== -1) {
+                    this.selectedGroup.splice(this.selectedGroup.indexOf(id), 1)
+                } else {
+                    this.selectedGroup.push(id)
+                }
+            },
             doSearch (data) {
                 this.searchOptions = data
                 this.getList()
@@ -240,15 +317,97 @@
             refresh () {
                 this.getList()
             },
-            delItem() {
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+            getData (id) {
+                this.$http.get(api.admin.adminDetail, {
+                    params: {
+//                        id: id
+                    }
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        this.detailVal = res.data.data
+                    } else {
+                        this.$message({
+                            type: 'warning',
+                            message: res.data.msg
+                        })
+                    }
+                })
+            },
+            addItem () {
+                this.type = 'add'
+                this.centerDialogVisible = true
+                this.detailVal = {}
+            },
+            editItem (id) {
+                this.type = 'edit'
+                this.centerDialogVisible = true
+                this.getData(id)
+            },
+            dailogSubmit () {
+                if (this.type === 'edit') {
+                    this.$http.get(api.admin.adminEdit, {
+                        params: {
+//                        ...this.detailVal
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.centerDialogVisible = false
+                            this.$message({
+                                type: 'success',
+                                message: '保存成功'
+                            })
+                            this.getList()
+                        } else  {
+                            this.$message({
+                                type: 'warning',
+                                message: res.data.msg
+                            })
+                        }
+                    })
+                } else {
+                    this.$http.get(api.admin.adminAdd, {
+                        params: {
+//                        ...this.detailVal
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.centerDialogVisible = false
+                            this.$message({
+                                type: 'success',
+                                message: '添加成功'
+                            })
+                            this.getList()
+                        } else  {
+                            this.$message({
+                                type: 'warning',
+                                message: res.data.msg
+                            })
+                        }
+                    })
+                }
+            },
+            resetPsd (id) {
+                this.$confirm('此操作将重置该管理员密码, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
+                    this.$http.get(api.admin.adminReset, {
+                        params: {
+//                                id: id
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$message({
+                                type: 'success',
+                                message: '密码重置成功!'
+                            })
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: res.data.msg
+                            })
+                        }
                     })
                 }).catch(() => {
                     this.$message({
@@ -256,6 +415,44 @@
                         message: '已取消删除'
                     })
                 })
+            },
+            delItem(id) {
+                if (id) {
+                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$http.get(api.admin.logDel, {
+                            params: {
+//                                id: id
+                            }
+                        }).then(res => {
+                            if (res.data.code === 1) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                })
+                                this.getList()
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消删除'
+                        })
+                    })
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: '请选中需要操作的项'
+                    })
+                }
             },
             addPage () {
                 if (this.page < this.pages) this.page += 1
@@ -270,10 +467,12 @@
             this.getList()
         },
         watch: {
-            selectedGroup (val) {
+            selectedGroup (val, oldVal) {
                 console.log(val)
                 if (val.length === this.data.rows.length) {
                     this.selectAll = true
+                } else  {
+                    this.selectAll = false
                 }
             },
             selectAll (val) {
@@ -283,7 +482,9 @@
                         this.selectedGroup.push(val.id)
                     })
                 } else {
-                    this.selectedGroup = []
+                    if (this.selectedGroup.length !== this.data.rows.length - 1) {
+                        this.selectedGroup = []
+                    }
                 }
             },
             page (val) {

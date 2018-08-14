@@ -160,7 +160,7 @@ const copyrightHistory = function () {
         }
     }
 }
-Mock.mock('/v1/copyright/history', 'get', copyrightHistory) // 版权库列表
+Mock.mock('/v1/copyright/history', 'get', copyrightHistory) // 版权库审核历史列表
 
 const copyrightDetail = function () {
     return {
@@ -178,6 +178,38 @@ const copyrightDetail = function () {
     }
 }
 Mock.mock('/v1/copyright/detail', 'get', copyrightDetail) // 版权详情
+
+const copyrightCheck = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/copyright/check', 'get', copyrightCheck) // 版权库-审核
+
+const copyrightEdit = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/copyright/edit', 'get', copyrightEdit) // 版权库-编辑
+
+const copyrightDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/copyright/del', 'get', copyrightDel) // 版权库-删除
+
+const copyrightRegist = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/copyright/regist', 'get', copyrightRegist) // 版权库-版权登记
 
 const priceList = function () {
     let list = []
@@ -202,6 +234,14 @@ const priceList = function () {
     }
 }
 Mock.mock('/v1/financial/list', 'get', priceList) // 版权定价列表
+
+const priceSet = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/copyright/priceSet', 'get', priceSet) // 版权定价-定价
 
 const incomeList = function () {
     let list = []
@@ -284,6 +324,22 @@ const infoDetail = function () {
 }
 Mock.mock('/v1/setting/infoDetail', 'get', infoDetail) // 版权商信息-详情
 
+const infoEdit = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/setting/infoEdit', 'get', infoEdit) // 版权商信息管理-编辑
+
+const infoDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/setting/infoDel', 'get', infoDel) // 版权商信息管理-删除
+
 const newsList = function () {
     let list = []
     for (let i = 0; i < 10; i++) {
@@ -306,6 +362,22 @@ const newsList = function () {
     }
 }
 Mock.mock('/v1/setting/newsList', 'get', newsList) // 我的消息 - 消息通知
+
+const newsRead = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/setting/newsRead', 'get', newsRead) // 我的消息-消息通知-标记已读
+
+const newsDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/setting/newsDel', 'get', newsDel) // 我的消息-消息通知-删除
 
 const noticeList = function () {
     let list = []
@@ -330,6 +402,22 @@ const noticeList = function () {
 }
 Mock.mock('/v1/setting/noticeList', 'get', noticeList) // 我的消息 - 系统公告
 
+const noticeListRead = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/setting/noticeListRead', 'get', noticeListRead) // 我的消息-系统公告-标记已读
+
+const noticeListDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/setting/noticeListDel', 'get', noticeListDel) // 我的消息-系统公告-删除
+
 const notice = function () {
     let list = []
     for (let i = 0; i < 10; i++) {
@@ -353,9 +441,25 @@ const notice = function () {
 }
 Mock.mock('/v1/setting/notice', 'get', notice) // 系统公告
 
+const noticeEdit = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/setting/noticeEdit', 'get', noticeEdit) // 系统公告-编辑
+
+const noticeDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/setting/noticeDel', 'get', noticeDel) // 系统公告-删除
+
 const adminList = function () {
     let list = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 3; i++) {
         let data = {
             id: Random.id(),
             username: Random.name(),
@@ -379,6 +483,59 @@ const adminList = function () {
     }
 }
 Mock.mock('/v1/admin/adminList', 'get', adminList) // 管理员管理
+
+const adminDetail = function () {
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            id: Random.id(),
+            role: Random.cname(), // 角色
+            username: Random.name(),
+            name: Random.cname(),
+            gender: '男',
+            password: '123456',
+            defeat_times: Math.ceil(Math.random() * 10),
+            role: '管理员',
+            email: Random.email(),
+            tel: 13934293848,
+            status: Random.status()
+        }
+    }
+}
+Mock.mock('/v1/admin/adminDetail', 'get', adminDetail) // 管理员管理-详情
+
+const adminReset = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/admin/adminReset', 'get', adminReset) // 管理员管理-密码重置
+
+const adminAdd = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/admin/adminAdd', 'get', adminAdd) // 管理员管理-添加
+
+const adminEdit = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/admin/adminEdit', 'get', adminEdit) // 管理员管理-编辑
+
+const adminDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/admin/adminDel', 'get', adminDel) // 管理员管理-删除
 
 const logList = function () {
     let list = []
@@ -405,6 +562,33 @@ const logList = function () {
 }
 Mock.mock('/v1/admin/logList', 'get', logList) // 管理员日志
 
+const logDetail = function () {
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            id: Random.id(),
+            admin_id: 3434,
+            username: Random.cname(),
+            url: Random.url(),
+            title: Random.csentence(5,10),
+            content: Random.csentence(5, 30),
+            ip: Random.ip(),
+            useragent: 'useragent',
+            create_time: Random.datetime()
+        }
+    }
+}
+Mock.mock('/v1/admin/logDetail', 'get', logDetail) // 管理员日志-详情
+
+const logDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/admin/logDel', 'get', logDel) // 管理员日志-删除
+
 const userList = function () {
     let list = []
     for (let i = 0; i < 10; i++) {
@@ -426,4 +610,12 @@ const userList = function () {
         }
     }
 }
-Mock.mock('/v1/admin/userList', 'get', userList) // 管理员日志
+Mock.mock('/v1/user/userList', 'get', userList) // 用户管理列表
+
+const userEdit = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/user/userEdit', 'get', userEdit)  // 个人配置

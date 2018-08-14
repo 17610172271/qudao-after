@@ -100,7 +100,7 @@
                 </div>
             </div>
             <div class="text-center m-t-lg">
-                <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+                <el-button type="primary" @click="dailogSubmit">确 定</el-button>
                 <el-button @click="centerDialogVisible = false">重 置</el-button>
             </div>
         </el-dialog>
@@ -214,31 +214,32 @@
                 this.dailogVal.film_name = item.film_name
                 this.centerDialogVisible = true
             },
+            dailogSubmit () {
+                this.$http.get(api.financial.priceSet, {
+                    params: {
+//                        ...this.detailVal
+                    }
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        this.$message({
+                            type: 'success',
+                            message: '保存成功'
+                        })
+                        this.centerDialogVisible = false
+                    } else {
+                        this.$message({
+                            type: 'warning',
+                            message: res.data.msg
+                        })
+                    }
+                })
+            },
             doSearch (data) {
                 this.searchOptions = data
                 this.getList()
             },
             refresh () {
                 this.getList()
-            },
-            delItem () {
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    })
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    })
-                })
-            },
-            handlePreview () {
             },
             addPage () {
                 if (this.page < this.pages) this.page += 1
