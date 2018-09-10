@@ -14,6 +14,20 @@ export const common = {
     telCodeCheck: '/v1/sms/check', // 手机验证码效验
     news: 'v1/Setting/get_num'
 }
+// 应用管理
+export  const application = {
+    list: '/application/list', // 应用审核列表
+}
+// 资源信息管理
+export  const resource = {
+    film: '/resource/film', // 影片库
+    agent: '/resource/agent', // 代理商管理
+}
+// 文件管理
+export  const file = {
+    doc: '/file/doc', // 文档管理
+    sdk: '/file/sdk', // sdk管理
+}
 // 用户功能相关
 export const user = {
     login: '/v1/user/login', // 用户登录
@@ -51,7 +65,8 @@ export const admin = {
 export const financial = {
     list: '/v1/financial/list', // 版权定价
     priceSet: '/v1/copyright/priceSet', // 版权定价-设置
-    income: '/v1/financial/income' // 收入统计
+    income: '/v1/financial/income', // 收入统计
+    order: '/v1/financial/order', // 订单统计
 }
 
 // 系统设置
@@ -84,5 +99,8 @@ export default {
     admin,
     copyright,
     setting,
-    financial
+    financial,
+    application,
+    resource,
+    file
 }

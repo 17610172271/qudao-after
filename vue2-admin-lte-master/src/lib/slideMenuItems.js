@@ -14,15 +14,123 @@ module.exports = [
     },
     {
         type: 'tree',
-        icon: 'fa fa-copyright',
-        name: '版权管理',
+        icon: 'fa fa-support',
+        name: '应用管理',
         items: [
             {
                 type: 'item',
                 icon: 'fa fa-circle-o',
-                name: '版权库',
+                name: '应用审核',
                 router: {
-                    name: 'copyright_list'
+                    name: 'application_list'
+                }
+            }
+        ]
+    },
+    {
+        type: 'tree',
+        icon: 'fa fa-wifi',
+        name: '资源信息',
+        items: [
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '影片库',
+                router: {
+                    name: 'resource_film'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '代理商管理',
+                router: {
+                    name: 'resource_agent'
+                }
+            }
+        ]
+    },
+    {
+        type: 'tree',
+        icon: 'fa fa-bar-chart-o',
+        name: '数据统计',
+        items: [
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '代理商注册统计',
+                router: {
+                    name: 'statistics_agent'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '应用绑定统计',
+                router: {
+                    name: 'statistics_application'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '影片操作统计',
+                router: {
+                    name: 'statistics_film'
+                }
+            }
+        ]
+    },
+    {
+        type: 'tree',
+        icon: 'fa fa-user-o',
+        name: '权限管理',
+        // badge: {
+        //   type: 'Number',
+        //   data: 4
+        // },
+        items: [
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '管理员日志',
+                router: {
+                    name: 'right_log'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '管理员管理',
+                router: {
+                    name: 'right_admin'
+                }
+            }
+        ]
+    },
+    {
+        type: 'tree',
+        icon: 'fa fa-file-text-o',
+        name: '文件管理',
+        // badge: {
+        //   type: 'Number',
+        //   data: 4
+        // },
+        items: [
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '文档管理',
+                router: {
+                    name: 'file_doc'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: 'SDK管理',
+                router: {
+                    name: 'file_sdk'
                 }
             }
         ]
@@ -39,9 +147,17 @@ module.exports = [
             {
                 type: 'item',
                 icon: 'fa fa-circle-o',
-                name: '版权定价',
+                name: '分账设置',
                 router: {
-                    name: 'financial_list'
+                    name: 'financial_setting'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '订单统计',
+                router: {
+                    name: 'financial_order'
                 }
             },
             {
@@ -56,9 +172,64 @@ module.exports = [
     },
     {
         type: 'tree',
+        icon: 'fa fa-address-book-o',
+        name: '常规管理',
+        items: [
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '系统配置',
+                router: {
+                    name: 'normalsetting_system'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '附件管理',
+                router: {
+                    name: 'normalsetting_attachment'
+                }
+            }
+        ]
+    },
+    {
+        type: 'tree',
         icon: 'fa fa-cogs',
         name: '系统设置',
         items: [
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '我的消息',
+                router: {
+                    name: 'setting_news'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '系统公告',
+                router: {
+                    name: 'setting_notice'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '意见处理',
+                router: {
+                    name: 'setting_suggest'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-drivers-license-o',
+                name: '个人配置',
+                router: {
+                    name: 'setting_person'
+                }
+            },
             {
                 type: 'item',
                 icon: 'fa fa-circle-o',
@@ -75,62 +246,19 @@ module.exports = [
                     name: 'setting_company'
                 }
             },
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '我的消息',
-                router: {
-                    name: 'setting_news'
-                }
-            },
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '系统公告',
-                router: {
-                    name: 'setting_notice'
-                }
-            }
         ]
     },
     {
         type: 'tree',
-        icon: 'fa fa-user-o',
-        name: '用户管理',
-        // badge: {
-        //   type: 'Number',
-        //   data: 4
-        // },
+        icon: 'fa fa-copyright',
+        name: '版权管理',
         items: [
             {
                 type: 'item',
                 icon: 'fa fa-circle-o',
-                name: '管理员日志',
+                name: '版权库',
                 router: {
-                    name: 'user_log'
-                }
-            },
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '管理员管理',
-                router: {
-                    name: 'user_admin'
-                }
-            }
-        ]
-    },
-    {
-        type: 'tree',
-        icon: 'fa fa-address-book-o',
-        name: '常规管理',
-        items: [
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '个人配置',
-                router: {
-                    name: 'normalsetting_person'
+                    name: 'copyright_list'
                 }
             }
         ]

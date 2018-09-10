@@ -23,32 +23,40 @@
                         </div>
                         <div class="lk-table m-t-sm">
                             <ul class="table-thead clear">
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('电影ID')!=-1">电影ID</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('电影名称')!=-1">电影名称</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('版权商')!=-1">版权商</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('单价(元)')!=-1">单价(元)</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('录入时间')!=-1">录入时间</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作时间')!=-1">操作时间</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('电影名称')!=-1">电影名称</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('版权商')!=-1">版权商</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('版权商分成')!=-1">版权商分成</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('平台分成')!=-1">平台分成</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('代理商分成')!=-1">代理商分成</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('状态')!=-1">状态</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('审核时间')!=-1">审核时间</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
                             </ul>
                             <ul class="table-tbody clear" v-for="(item, index) in data.rows">
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('电影ID')!=-1">{{item.id}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('电影名称')!=-1">
+                                <li class="col-xs-24 p-n over-omit" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.film_name" v-show="selectVal.indexOf('电影名称')!=-1">
                                     {{item.film_name}}
                                 </li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('版权商')!=-1">
+                                <li class="col-xs-1 p-n over-omit" :title="item.copyright_name" v-show="selectVal.indexOf('版权商')!=-1">
                                     {{item.copyright_name}}
                                 </li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('单价(元)')!=-1">
-                                    {{item.price}}
+                                <li class="col-xs-24 p-n over-omit" :title="item.copyright_devide" v-show="selectVal.indexOf('版权商分成')!=-1">
+                                    {{item.copyright_devide}}
                                 </li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('录入时间')!=-1">
-                                    {{item.create_time}}
+                                <li class="col-xs-24 p-n over-omit" :title="item.platform_devide" v-show="selectVal.indexOf('平台分成')!=-1">
+                                    {{item.platform_devide}}
                                 </li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('操作时间')!=-1">
-                                    {{item.latest_time}}
+                                <li class="col-xs-24 p-n over-omit" :title="item.agent_devide" v-show="selectVal.indexOf('代理商分成')!=-1">
+                                    {{item.agent_devide}}
                                 </li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
+                                <li class="col-xs-24 p-n over-omit" :title="item.status" v-show="selectVal.indexOf('状态')!=-1">
+                                    {{item.status}}
+                                </li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.check_time" v-show="selectVal.indexOf('审核时间')!=-1">
+                                    {{item.check_time}}
+                                </li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
                                     <a href="javascript:;" title="定价" class="candle-btn btn"
                                        @click="setPrice(item)"><i class="fa fa-list-ul"></i></a>
                                 </li>
@@ -123,10 +131,10 @@
                 price: null
             },
             centerDialogVisible: false,
-            selectVal: ['checkbox', '电影ID', '电影名称', '版权商', '单价(元)', '录入时间', '操作时间', '状态', '操作'],
+            selectVal: ['checkbox', '序号', '电影名称', '版权商', '版权商分成', '平台分成', '代理商分成', '状态', '审核时间', '操作'],
             selectedGroup: [],
             selectAll: false,
-            showList: ['checkbox', '电影ID', '电影名称', '版权商', '单价(元)', '录入时间', '操作时间', '状态', '操作'],
+            showList: ['checkbox', '序号', '电影名称', '版权商', '版权商分成', '平台分成', '代理商分成', '状态', '审核时间', '操作'],
             searchOptions: [
                 {
                     type: 'text',
@@ -140,7 +148,7 @@
                 },
                 {
                     type: 'text',
-                    name: '单价(元)',
+                    name: '版权商分成',
                     value: null
                 }
             ],

@@ -22,22 +22,24 @@
                         </div>
                         <div class="lk-table m-t-sm">
                             <ul class="table-thead clear">
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
                                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('日期')!=-1">日期</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('电影编号')!=-1">电影编号</li>
-                                <li class="col-xs-3 p-n" v-show="selectVal.indexOf('电影名称')!=-1">电影名称</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('购买数量')!=-1">购买数量</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('收入(元)')!=-1">收入(元)</li>
+                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('电影名称')!=-1">电影名称</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('应用名称')!=-1">应用名称</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('代理商')!=-1">代理商</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('购买数量')!=-1">购买数量</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('收入(元)')!=-1">收入(元)</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('分成比例(%)')!=-1">分成比例(%)</li>
                             </ul>
                             <ul class="table-tbody clear" v-for="(item,index) in data.rows">
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('日期')!=-1">{{item.date}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('电影编号')!=-1">{{item.id}}</li>
-                                <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('电影名称')!=-1">{{item.film_name}}</li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('购买数量')!=-1">{{item.num}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('收入(元)')!=-1">{{item.income}}</li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('分成比例(%)')!=-1">{{item.ratio}}</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
+                                <li class="col-xs-2 p-n over-omit" :title="item.date" v-show="selectVal.indexOf('日期')!=-1">{{item.date}}</li>
+                                <li class="col-xs-2 p-n over-omit" :title="item.film_name" v-show="selectVal.indexOf('电影名称')!=-1">{{item.film_name}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.app_name" v-show="selectVal.indexOf('应用名称')!=-1">{{item.app_name}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.agent" v-show="selectVal.indexOf('代理商')!=-1">{{item.agent}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.num" v-show="selectVal.indexOf('购买数量')!=-1">{{item.num}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.income" v-show="selectVal.indexOf('收入(元)')!=-1">{{item.income}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.ratio" v-show="selectVal.indexOf('分成比例(%)')!=-1">{{item.ratio}}</li>
                             </ul>
                         </div>
                         <div class="footer clear m-t-md">
@@ -80,9 +82,9 @@
                 </div>
             </div>
             <div class="clear m-b-md">
-                <div class="col-xs-12 col-md-2 line-height-40 text-right attr-edit-name">电影编号:</div>
+                <div class="col-xs-12 col-md-2 line-height-40 text-right attr-edit-name">应用名称:</div>
                 <div class="col-xs-12 col-md-10">
-                    <el-input style="max-width: 300px;" placeholder="请输入电影编号"></el-input>
+                    <el-input style="max-width: 300px;" placeholder="请输入应用名称"></el-input>
                 </div>
             </div>
             <div class="clear m-b-md">
@@ -111,7 +113,7 @@
             <div class="clear m-b-md">
                 <div class="col-xs-12 col-md-2 line-height-40 text-right attr-edit-name">图片:</div>
                 <div class="col-xs-12 col-md-10 clear">
-                    <el-input style="max-width: 300px;" class="pull-left m-r-sm" placeholder="请输入电影编号"></el-input>
+                    <el-input style="max-width: 300px;" class="pull-left m-r-sm" placeholder="请输入应用名称"></el-input>
                     <el-upload
                         action="https://jsonplaceholder.typicode.com/posts/"
                         class="pull-left line-height-40 height-40"
@@ -154,10 +156,10 @@
             total: 1
         },
         centerDialogVisible: false,
-        selectVal: ['序号', '日期', '电影编号', '电影名称', '购买数量', '收入(元)', '分成比例(%)'],
+        selectVal: ['序号', '日期', '电影名称', '应用名称', '代理商', '购买数量', '收入(元)', '分成比例(%)'],
         selectedGroup: [],
         selectAll: false,
-        showList: ['序号', '日期', '电影编号', '电影名称', '购买数量', '收入(元)', '分成比例(%)'],
+        showList: ['序号', '日期', '电影名称', '应用名称', '代理商', '购买数量', '收入(元)', '分成比例(%)'],
         searchOptions: [
             {
                 type: 'time',
@@ -184,7 +186,7 @@
             parentNode: {
                 name: '财务管理',
                 router: {
-                    name: 'financial_list'
+                    name: 'financial_setting'
                 }
             },
             childNode: {

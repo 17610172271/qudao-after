@@ -148,10 +148,10 @@ textarea {
     background-color: #f1f1f1;
 }
 
-.lk-table > ul:hover li {
-    white-space: initial;
-    word-wrap: break-word;
-}
+/*.lk-table > ul:hover li {*/
+    /*white-space: initial;*/
+    /*word-wrap: break-word;*/
+/*}*/
 
 .lk-table .table-thead {
     border-bottom: 1px solid #eaeaea;

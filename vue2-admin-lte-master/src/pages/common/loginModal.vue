@@ -1,7 +1,7 @@
 <template>
 	<div class="login-modal-container">
 		<div class="logo-img"><img src="../../../static/img/login/logo_03.png" alt=""></div>
-		<div class="login-title">版权管理系统</div>
+		<div class="login-title">新光渠道平台</div>
 		<div class="login-username relative">
 			<input type="text" placeholder="请输入用户名" @keydown.13="submit" v-model="username">
 			<i class="fa fa-user-o fa-2x skin-red login-fa-user"></i>

@@ -3,33 +3,33 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
-      <div class="user-panel sidebar-form">
-        <div class="pull-left image slide-avatar-container cursor-p" @click="goSetting">
-          <img :src="getAuthInfo.avatar ? ($bus.url + getAuthInfo.avatar) : '../../../static/img/home/avatar.png'" class="img-circle slide-avatar" alt="User Image">
-        </div>
-        <div class="pull-left info">
-          <p @click="goSetting" class=" cursor-p">{{ getAuthInfo.nickname || '游客' }}</p>
-          <a href="#"><i class="fa fa-circle" style="color:rgb(60, 118, 61);"></i> 在线</a>
-        </div>
-      </div>
-      <!-- search form -->
-      <form class="sidebar-form">
-        <div class="input-group">
-          <!-- <input type="text" class="form-control" placeholder="请输入搜索内容..."> -->
-          <el-autocomplete
-            style="width: 100%;"
-            class="inline-input"
-            v-model="state1"
-            :fetch-suggestions="querySearch"
-            placeholder="请输入搜索内容..."
-            @select="handleSelect"
-          ></el-autocomplete>
-          <span class="input-group-btn">
-            <a href="javascript:;" class="btn"><i class="fa fa-search"></i>
-            </a>
-          </span>
-        </div>
-      </form>
+      <!--<div class="user-panel sidebar-form">-->
+        <!--<div class="pull-left image slide-avatar-container cursor-p" @click="goSetting">-->
+          <!--<img :src="getAuthInfo.avatar ? ($bus.url + getAuthInfo.avatar) : '../../../static/img/home/avatar.png'" class="img-circle slide-avatar" alt="User Image">-->
+        <!--</div>-->
+        <!--<div class="pull-left info">-->
+          <!--<p @click="goSetting" class=" cursor-p">{{ getAuthInfo.nickname || '游客' }}</p>-->
+          <!--<a href="#"><i class="fa fa-circle" style="color:rgb(60, 118, 61);"></i> 在线</a>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--&lt;!&ndash; search form &ndash;&gt;-->
+      <!--<form class="sidebar-form">-->
+        <!--<div class="input-group">-->
+          <!--&lt;!&ndash; <input type="text" class="form-control" placeholder="请输入搜索内容..."> &ndash;&gt;-->
+          <!--<el-autocomplete-->
+            <!--style="width: 100%;"-->
+            <!--class="inline-input"-->
+            <!--v-model="state1"-->
+            <!--:fetch-suggestions="querySearch"-->
+            <!--placeholder="请输入搜索内容..."-->
+            <!--@select="handleSelect"-->
+          <!--&gt;</el-autocomplete>-->
+          <!--<span class="input-group-btn">-->
+            <!--<a href="javascript:;" class="btn"><i class="fa fa-search"></i>-->
+            <!--</a>-->
+          <!--</span>-->
+        <!--</div>-->
+      <!--</form>-->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul data-widget="tree" class="sidebar-menu">

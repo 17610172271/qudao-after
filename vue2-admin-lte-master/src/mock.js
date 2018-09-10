@@ -211,61 +211,7 @@ const copyrightRegist = function () {
 }
 Mock.mock('/v1/copyright/regist', 'get', copyrightRegist) // 版权库-版权登记
 
-const priceList = function () {
-    let list = []
-    for (let i = 0; i < 10; i++) {
-        let data = {
-            id: Random.id(),
-            film_name: Random.filmname(),
-            copyright_name: Random.csentence(5, 10),
-            price: parseInt(Math.random()*10000),
-            create_time: Random.datetime(),
-            latest_time: Random.datetime()
-        }
-        list.push(data)
-    }
-    return {
-        code: 1,
-        msg: 'ok',
-        data: {
-            rows: list,
-            total: 100
-        }
-    }
-}
-Mock.mock('/v1/financial/list', 'get', priceList) // 版权定价列表
 
-const priceSet = function () {
-    return {
-        msg: 'ok',
-        code: 1
-    }
-}
-Mock.mock('/v1/copyright/priceSet', 'get', priceSet) // 版权定价-定价
-
-const incomeList = function () {
-    let list = []
-    for (let i = 0; i < 10; i++) {
-        let data = {
-            id: Random.id(),
-            film_name: Random.filmname(),
-            num: parseInt(Math.random()*1000),
-            income: parseInt(Math.random()*10000),
-            ratio: parseInt(Math.random()*1000) / 100,
-            date: Random.date()
-        }
-        list.push(data)
-    }
-    return {
-        code: 1,
-        msg: 'ok',
-        data: {
-            rows: list,
-            total: 100
-        }
-    }
-}
-Mock.mock('/v1/financial/income', 'get', incomeList) // 版权收入列表
 
 const infoList = function () {
     let list = []
@@ -619,3 +565,218 @@ const userEdit = function () {
     }
 }
 Mock.mock('/v1/user/userEdit', 'get', userEdit)  // 个人配置
+
+const applicationList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            name: Random.csentence(2, 5),
+            type: 'app',
+            agent: Random.csentence(2, 5),
+            bind_time: Random.datetime(),
+            check_time: Random.datetime(),
+            status: Random.status(),
+            remark: Random.csentence(5, 20)
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/application/list', 'post', applicationList) // 应用审核列表
+
+const filmList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            name: Random.csentence(2, 5),
+            type: '偶像',
+            zone: '拉丁美洲',
+            director: '张艺谋,李四,无尽',
+            actor: '张三,李四,王二',
+            release_time: Random.datetime(),
+            status: Random.status(),
+            copyright_name: Random.csentence(3, 10)
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/resource/film', 'post', filmList) // 资源信息管理=>影片库
+
+const agentList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            name: Random.csentence(2, 5),
+            type: '有限责任公司',
+            legal: '李四',
+            leader: '张三',
+            leader_tel: 13883123942,
+            address: Random.csentence(5, 25),
+            address1: Random.csentence(5, 25)
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/resource/agent', 'post', agentList) // 资源信息管理=>代理商管理
+
+const docList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            name: Random.csentence(2, 5),
+            type: 'doc',
+            upload_name: '李四',
+            upload_time: Random.datetime(),
+            remark: Random.csentence(5, 45)
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/file/doc', 'post', docList) // 文件管理=>文档管理
+
+const sdkList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            name: Random.csentence(2, 5),
+            platform: 'Linux',// 支持平台
+            language: 'Java', // 开发语言
+            update_time: Random.datetime(),
+            size: '102.11Kb',
+            introduction: Random.csentence(5, 25)
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/file/sdk', 'post', sdkList) // 文件管理=>sdk
+
+const priceList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            film_name: Random.filmname(),
+            copyright_name: Random.csentence(5, 10),
+            copyright_devide: parseInt(Math.random()*10),
+            platform_devide: parseInt(Math.random()*10),
+            agent_devide: parseInt(Math.random()*10),
+            status: Random.status(),
+            check_time: Random.datetime()
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/v1/financial/list', 'get', priceList) // 财务-分账设置列表
+
+const priceSet = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/v1/copyright/priceSet', 'get', priceSet) // 财务-定价
+
+const incomeList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            film_name: Random.filmname(),
+            app_name: 'app名称',
+            agent: Random.csentence(3, 10),
+            num: parseInt(Math.random()*1000),
+            income: parseInt(Math.random()*10000),
+            ratio: parseInt(Math.random()*1000) / 100,
+            date: Random.date()
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/v1/financial/income', 'get', incomeList) // 财务-收入统计列表
+
+const orderList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            film_name: Random.filmname(),
+            app_name: '猫眼电影',
+            paid_time: Random.datetime(),
+            cope_paid: parseInt(Math.random()*10000),
+            actually_paid: parseInt(Math.random()*10000),
+            paid_name: '付款用户aa',
+            paid_type: '支付宝',
+            status: '支付成功'
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/v1/financial/order', 'get', orderList) // 订单统计列表

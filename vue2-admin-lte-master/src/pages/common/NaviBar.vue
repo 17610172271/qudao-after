@@ -5,7 +5,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini">CR</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>版权管理系统</b></span>
+      <span class="logo-lg"><b>新光渠道平台</b></span>
     </router-link>
 
     <!-- Header Navbar: style can be found in header.less -->

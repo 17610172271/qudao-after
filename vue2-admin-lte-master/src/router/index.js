@@ -19,20 +19,101 @@ const router = new Router({
                     component: rs('home/home')
                 },
                 {
+                    path: '/application',
+                    component: rs('application/index'),
+                    meta: {requreAuth: true},
+                    redirect: '/resource/list',
+                    children: [
+                        {
+                            path: 'list',
+                            name: 'application_list',
+                            component: rs('application/list')
+                        }
+                    ]
+                },
+                {
+                    path: '/resource',
+                    component: rs('resource/index'),
+                    meta: {requreAuth: true},
+                    redirect: '/resource/films',
+                    children: [
+                        {
+                            path: 'films',
+                            name: 'resource_film',
+                            component: rs('resource/film_list')
+                        },
+                        {
+                            path: 'agent',
+                            name: 'resource_agent',
+                            component: rs('resource/agent_list')
+                        }
+                    ]
+                },
+                {
+                    path: '/statistics',
+                    component: rs('statistics/index'),
+                    meta: {requreAuth: true},
+                    redirect: '/statistics/agent',
+                    children: [
+                        {
+                            path: 'agent',
+                            name: 'statistics_agent',
+                            component: rs('statistics/agent_list')
+                        },
+                        {
+                            path: 'application',
+                            name: 'statistics_application',
+                            component: rs('statistics/application_list')
+                        },
+                        {
+                            path: 'film',
+                            name: 'statistics_film',
+                            component: rs('statistics/film_list')
+                        }
+                    ]
+                },
+                {
+                    path: '/right',
+                    component: rs('right/index'),
+                    meta: {requreAuth: true},
+                    redirect: '/right/log',
+                    children: [
+                        {
+                            path: 'log',
+                            name: 'right_log',
+                            component: rs('right/log')
+                        },
+                        {
+                            path: 'admin',
+                            name: 'right_admin',
+                            component: rs('right/admin')
+                        }
+                    ]
+                },
+                {
+                    path: '/file',
+                    component: rs('file/index'),
+                    meta: {requreAuth: true},
+                    redirect: '/file/doc',
+                    children: [
+                        {
+                            path: 'doc',
+                            name: 'file_doc',
+                            component: rs('file/doc_list')
+                        },
+                        {
+                            path: 'sdk',
+                            name: 'file_sdk',
+                            component: rs('file/sdk_list')
+                        }
+                    ]
+                },
+                {
                     path: '/setting',
                     component: rs('setting/index'),
                     meta: {requreAuth: true},
+                    redirect: '/setting/news',
                     children: [
-                        {
-                            path: 'info',
-                            name: 'setting_info',
-                            component: rs('setting/info')
-                        },
-                        {
-                            path: 'company',
-                            name: 'setting_company',
-                            component: rs('setting/company')
-                        },
                         {
                             path: 'news',
                             name: 'setting_news',
@@ -42,6 +123,26 @@ const router = new Router({
                             path: 'notice',
                             name: 'setting_notice',
                             component: rs('setting/notice')
+                        },
+                        {
+                            path: 'suggest',
+                            name: 'setting_suggest',
+                            component: rs('setting/suggest')
+                        },
+                        {
+                            path: 'person',
+                            name: 'setting_person',
+                            component: rs('setting/person')
+                        },
+                        {
+                            path: 'info',
+                            name: 'setting_info',
+                            component: rs('setting/info')
+                        },
+                        {
+                            path: 'company',
+                            name: 'setting_company',
+                            component: rs('setting/company')
                         }
                     ]
                 },
@@ -51,9 +152,14 @@ const router = new Router({
                     meta: {requreAuth: true},
                     children: [
                         {
-                            path: 'setting',
-                            name: 'normalsetting_person',
-                            component: rs('normalsetting/setting')
+                            path: 'system',
+                            name: 'normalsetting_system',
+                            component: rs('normalsetting/system')
+                        },
+                        {
+                            path: 'attachment',
+                            name: 'normalsetting_attachment',
+                            component: rs('normalsetting/attachment')
                         }
                     ]
                 },
@@ -73,33 +179,22 @@ const router = new Router({
                     path: '/financial',
                     component: rs('financial/index'),
                     meta: {requreAuth: true},
+                    redirect: '/financial/setting',
                     children: [
                         {
-                            path: 'financial',
-                            name: 'financial_list',
+                            path: 'setting',
+                            name: 'financial_setting',
                             component: rs('financial/list')
+                        },
+                        {
+                            path: 'order',
+                            name: 'financial_order',
+                            component: rs('financial/order')
                         },
                         {
                             path: 'income',
                             name: 'financial_income',
                             component: rs('financial/income')
-                        }
-                    ]
-                },
-                {
-                    path: '/user',
-                    component: rs('user/index'),
-                    meta: {requreAuth: true},
-                    children: [
-                        {
-                            path: 'admin',
-                            name: 'user_admin',
-                            component: rs('user/admin')
-                        },
-                        {
-                            path: 'log',
-                            name: 'user_log',
-                            component: rs('user/log')
                         }
                     ]
                 },
