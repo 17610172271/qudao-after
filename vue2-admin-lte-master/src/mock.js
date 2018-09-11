@@ -61,36 +61,27 @@ const getNews = function () {
 Mock.mock('v1/Setting/get_num', 'get', getNews) // 获取消息数量
 
 const homeData = function () {
-    let tableData = []
-    let enterData = []
-    let checkData = []
+    let tableData = {
+        turnover: [],
+        income: [],
+        sales: []
+    }
     for (let i = 0; i < 30; i++) {
         let data = {
             date: Random.date(),
             num: Math.ceil(Math.random() * 10000)
         }
-        tableData.push(data)
-    }
-    for (let i =0; i < 10; i++) {
-        let enter = {
-            id: Random.id(),
-            name: Random.cname(),
-            today_films: Math.ceil(Math.random() * 1000),
-            pass_films: Math.ceil(Math.random() * 1000),
-            wait_films: Math.ceil(Math.random() * 1000),
-            notpass_films: Math.ceil(Math.random() * 1000),
-            all_films: Math.ceil(Math.random() * 1000)
+        let data1 = {
+            date: Random.date(),
+            num: Math.ceil(Math.random() * 10000)
         }
-        let check = {
-            id: Random.id(),
-            name: Random.cname(),
-            pass_films: Math.ceil(Math.random() * 1000),
-            wait_films: Math.ceil(Math.random() * 1000),
-            notpass_films: Math.ceil(Math.random() * 1000),
-            all_films: Math.ceil(Math.random() * 1000)
+        let data2 = {
+            date: Random.date(),
+            num: Math.ceil(Math.random() * 10000)
         }
-        enterData.push(enter)
-        checkData.push(check)
+        tableData.turnover.push(data)
+        tableData.income.push(data1)
+        tableData.sales.push(data2)
     }
     return {
         code: 1,
@@ -101,9 +92,7 @@ const homeData = function () {
             copyright_wait: 99,
             copyright_pass: 13888,
             copyright_notpass: 6666,
-            echartsData: tableData,
-            enterData: enterData,
-            checkData:checkData
+            echartsData: tableData
         }
     }
 }
@@ -213,19 +202,18 @@ Mock.mock('/v1/copyright/regist', 'get', copyrightRegist) // 版权库-版权登
 
 
 
-const infoList = function () {
+const suggeestList = function () {
     let list = []
     for (let i = 0; i < 10; i++) {
         let data = {
             id: Random.id(),
-            copyright_name: Random.cname(),
-            company_name: 'xxxx有限公司',
-            company_type: '有限责任公司',
-            legal_person: Random.cname(),
-            contact_person: Random.cname(),
-            contact_tel: 13993412938,
-            address: Random.csentence(5,15),
-            address1: Random.csentence(5,15)
+            type: '产品',
+            content: Random.csentence(5,40),
+            attachment: '有',
+            suggest_name: Random.cname(),
+            suggest_tel: 13678344931,
+            suggest_time: Random.datetime(),
+            status: '已解决'
         }
         list.push(data)
     }
@@ -238,7 +226,7 @@ const infoList = function () {
         }
     }
 }
-Mock.mock('/v1/setting/info', 'get', infoList) // 版权商信息管理
+Mock.mock('/v1/setting/suggest', 'get', suggeestList) // 版权商信息管理
 
 const infoDetail = function () {
     return {
@@ -370,6 +358,7 @@ const notice = function () {
         let data = {
             id: Random.id(),
             title: Random.filmname(),
+            type: '前台消息',
             create_time: Random.datetime(),
             update_time: Random.datetime(),
             status: Random.status()
@@ -592,6 +581,46 @@ const applicationList = function () {
 }
 Mock.mock('/application/list', 'post', applicationList) // 应用审核列表
 
+const appHistoryList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            app_name: Random.csentence(2, 5),
+            candle_name: Random.csentence(2, 5),
+            candle_time: Random.datetime(),
+            status: Random.status(),
+            message: Random.csentence(5, 20)
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/application/history', 'get', appHistoryList) // 应用审核历史列表
+
+const appCheck = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/application/checkPass', 'get', appCheck) // 应用审核
+
+const appFreeze = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/application/freeze', 'get', appFreeze) // 应用冻结,解冻
+
 const filmList = function () {
     let list = []
     for (let i = 0; i < 10; i++) {
@@ -780,3 +809,112 @@ const orderList = function () {
     }
 }
 Mock.mock('/v1/financial/order', 'get', orderList) // 订单统计列表
+
+const attachmentList = function () {
+    let list = []
+    for (let i = 0; i < 10; i++) {
+        let data = {
+            id: Random.id(),
+            image: Random.image(),
+            url: Random.url(),
+            width: parseInt(Math.random()*1000),
+            height: parseInt(Math.random()*1000),
+            type: 'jpeg',
+            storage: 'local',
+            size: '646.00Kb',
+            mime: 'image/jpeg',
+            create_time: Random.datetime()
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/normalsetting/attachment', 'get', attachmentList) // 常规设置-附件管理
+
+const statisticsAgentList = function () {
+    let list = []
+    for (let i = 0; i < 5; i++) {
+        let data = {
+            id: Random.id(),
+            username: Random.word(5, 10),
+            create_time: Random.datetime()
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            dayList: {
+                '2018-09-07': 2,
+                '2018-09-08': 6,
+                '2018-09-09': 3,
+                '2018-09-10': 0,
+                '2018-09-11': 2
+            },
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/statistics/agent', 'get', statisticsAgentList) // 数据统计-代理商注册统计
+
+const statisticsAppList = function () {
+    let list = []
+    for (let i = 0; i < 5; i++) {
+        let data = {
+            id: Random.id(),
+            num: Math.ceil(Math.random() * 100),
+            date: Random.date()
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            dayList: {
+                '2018-09-07': 2,
+                '2018-09-08': 6,
+                '2018-09-09': 3,
+                '2018-09-10': 0,
+                '2018-09-11': 2
+            },
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/statistics/application', 'get', statisticsAppList) // 数据统计-应用绑定统计
+
+const statisticsFilmList = function () {
+    let list = []
+    for (let i = 0; i < 5; i++) {
+        let data = {
+            id: Random.id(),
+            date: Random.date(),
+            film_name: Random.filmname(),
+            app_name: '爱奇艺',
+            click_num: Math.ceil(Math.random() * 100),
+            buy_num: Math.ceil(Math.random() * 100),
+            buy_rate: Math.ceil(Math.random() * 100)
+        }
+        list.push(data)
+    }
+    return {
+        code: 1,
+        msg: 'ok',
+        data: {
+            rows: list,
+            total: 100
+        }
+    }
+}
+Mock.mock('/statistics/film', 'get', statisticsFilmList) // 数据统计-影片操作统计

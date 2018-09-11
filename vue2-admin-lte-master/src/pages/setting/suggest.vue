@@ -27,30 +27,28 @@
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox v-model="selectAll">全选</el-checkbox>
                                 </li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('版权商姓名')!=-1">版权商姓名</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('公司名称')!=-1">公司名称</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('公司类型')!=-1">公司类型</li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('法人')!=-1">法人</li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('联系人')!=-1">联系人</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('联系电话')!=-1">联系电话</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('营业地址')!=-1">营业地址</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('街道地址')!=-1">街道地址</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('意见编号')!=-1">意见编号</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('意见类别')!=-1">意见类别</li>
+                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('意见内容')!=-1">意见内容</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('附件')!=-1">附件</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('反馈用户')!=-1">反馈用户</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('用户电话')!=-1">用户电话</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('反馈时间')!=-1">反馈时间</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('状态')!=-1">状态</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
                             </ul>
                             <ul class="table-tbody clear" v-for="(item, index) in data.rows" @click="selectItem(item.id)">
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('版权商姓名')!=-1">{{item.copyright_name}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('公司名称')!=-1">{{item.company_name}}</li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('公司类型')!=-1">{{item.company_type}}</li>
-                                <li class="col-xs-24 p-n over-omit" v-show="selectVal.indexOf('法人')!=-1">{{item.legal_person}}</li>
-                                <li class="col-xs-24 p-n over-omit" v-show="selectVal.indexOf('联系人')!=-1">{{item.contact_person}}</li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('联系电话')!=-1">{{item.contact_tel}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('营业地址')!=-1">{{item.address}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('街道地址')!=-1">{{item.address1}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.id" v-show="selectVal.indexOf('意见编号')!=-1">{{item.id}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.type" v-show="selectVal.indexOf('意见类别')!=-1">{{item.type}}</li>
+                                <li class="col-xs-2 p-n over-omit" :title="item.content" v-show="selectVal.indexOf('意见内容')!=-1">{{item.content}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.attachment" v-show="selectVal.indexOf('附件')!=-1">{{item.attachment}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.suggest_name" v-show="selectVal.indexOf('反馈用户')!=-1">{{item.suggest_name}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.suggest_tel" v-show="selectVal.indexOf('用户电话')!=-1">{{item.suggest_tel}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.suggest_time" v-show="selectVal.indexOf('反馈时间')!=-1">{{item.suggest_time}}</li>
+                                <li class="col-xs-14 p-n over-omit" :title="item.status" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
                                     <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="showDetail(item.id)"><i class="fa fa-search-plus"></i></a>
                                     <a href="javascript:;" title="编辑" class="candle-btn btn" @click.stop="editItem(item.id)"><i class="fa fa-edit"></i></a>
@@ -93,14 +91,14 @@
             width="60%"
             :close-on-click-modal="false">
             <div class="clear" :class="{'m-b-md': type=='edit'}">
-                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">版权商姓名:</div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">意见类别:</div>
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
                     {{dailogVal.copyright_name}}
                 </div>
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
                     <el-input v-model="dailogVal.copyright_name" disabled></el-input>
                 </div>
-                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">公司名称:</div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">意见内容:</div>
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
                     {{dailogVal.company_name}}
                 </div>
@@ -116,7 +114,7 @@
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
                     <el-input v-model="dailogVal.regist_num"></el-input>
                 </div>
-                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">联系人:</div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">用户电话:</div>
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
                     {{dailogVal.contact_person}}
                 </div>
@@ -132,7 +130,7 @@
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-else>
                     <el-input v-model="dailogVal.license"></el-input>
                 </div>
-                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">联系人电话:</div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">用户电话电话:</div>
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
                     {{dailogVal.contact_tel}}
                 </div>
@@ -141,7 +139,7 @@
                 </div>
             </div>
             <div class="clear" :class="{'m-b-md': type=='edit'}">
-                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">法人:</div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">反馈用户:</div>
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
                     {{dailogVal.legal_person}}
                 </div>
@@ -173,7 +171,7 @@
                 </div>
             </div>
             <div class="clear" :class="{'m-b-md': type=='edit'}">
-                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">公司类型:</div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">附件:</div>
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
                     {{dailogVal.company_type}}
                 </div>
@@ -205,7 +203,7 @@
                 </div>
             </div>
             <div class="clear" :class="{'m-b-md': type=='edit'}">
-                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">营业地址:</div>
+                <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name">状态:</div>
                 <div class="col-xs-12 col-sm-4 p-n line-height-40" v-if="type==='detail'">
                     {{dailogVal.operate_address}}
                 </div>
@@ -269,19 +267,19 @@
             },
             type: '',
             centerDialogVisible: false,
-            selectVal: ['checkbox', '序号', '版权商姓名', '公司名称', '公司类型', '法人', '联系人', '联系电话', '营业地址', '街道地址', '操作'],
+            selectVal: ['checkbox', '意见编号', '意见类别', '意见内容', '附件', '反馈用户', '用户电话', '反馈时间', '状态', '操作'],
             selectedGroup: [],
             selectAll: false,
-            showList: ['checkbox', '序号', '版权商姓名', '公司名称', '公司类型', '法人', '联系人', '联系电话', '营业地址', '街道地址', '操作'],
+            showList: ['checkbox', '意见编号', '意见类别', '意见内容', '附件', '反馈用户', '用户电话', '反馈时间', '状态', '操作'],
             searchOptions: [
                 {
                     type: 'text',
-                    name: '版权商姓名',
+                    name: '意见类别',
                     value: null
                 },
                 {
                     type: 'text',
-                    name: '公司名称',
+                    name: '意见内容',
                     value: null
                 }
             ],

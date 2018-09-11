@@ -1,9 +1,11 @@
 <template>
-    <div class="scroll-x">
-        <div class="p-lg appli-container">
+    <div class="p-lg appli-container">
             <sub-header :list="subNavList"></sub-header>
             <div class="page-container">
                 <div class="m-t-sm" v-loading="loading">
+                    <div id="echarts-agent">
+
+                    </div>
                     <div>
                         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
                         <div class="page-toolbar clear">
@@ -22,26 +24,14 @@
                         </div>
                         <div class="lk-table m-t-sm">
                             <ul class="table-thead clear">
-                                <!-- <li class="col-lg-1 col-md-1 col-sm-1 col-xs-1 clear app-first-item" v-if="selectVal.indexOf('ID')!=-1"><div class="pull-left"><input type="checkbox" v-model="selectAll"></div><div class="pull-left">ID</div></li> -->
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
-                                <li class="col-xs-3 p-n" v-show="selectVal.indexOf('标题')!=-1">标题</li>
-                                <li class="col-xs-3 p-n" v-show="selectVal.indexOf('公告类型')!=-1">公告类型</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('创建时间')!=-1">创建时间</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('更新时间')!=-1">更新时间</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('状态')!=-1">状态</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
+                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
+                                <li class="col-xs-5 p-n" v-show="selectVal.indexOf('注册用户')!=-1">注册用户</li>
+                                <li class="col-xs-5 p-n" v-show="selectVal.indexOf('注册时间')!=-1">注册时间</li>
                             </ul>
-                            <ul class="table-tbody clear" v-for="(item, index) in data.rows">
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                                <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('标题')!=-1">{{item.title}}</li>
-                                <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('公告类型')!=-1">{{item.type}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('创建时间')!=-1">{{item.create_time}}</li>
-                                <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('更新时间')!=-1">{{item.update_time}}</li>
-                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
-                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                                    <a href="javascript:;" title="编辑" class="candle-btn btn"><i class="fa fa-edit"></i></a>
-                                    <a href="javascript:;" title="删除" class="candle-btn btn"><i class="fa fa-trash"></i></a>
-                                </li>
+                            <ul class="table-tbody clear" v-for="(item,index) in data.rows">
+                                <li class="col-xs-2 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
+                                <li class="col-xs-5 p-n over-omit" :title="item.username" v-show="selectVal.indexOf('注册用户')!=-1">{{item.username}}</li>
+                                <li class="col-xs-5 p-n over-omit" :title="item.create_time" v-show="selectVal.indexOf('注册时间')!=-1">{{item.create_time}}</li>
                             </ul>
                         </div>
                         <div class="footer clear m-t-md">
@@ -72,7 +62,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 <script type="text/ecmascript-6">
     import SubHeader from '../common/subheader'
@@ -86,40 +75,16 @@
                 rows: [],
                 total: 1
             },
-            selectVal: ['序号', '标题', '公告类型', '创建时间', '更新时间', '状态', '操作'],
+            centerDialogVisible: false,
+            selectVal: ['序号', '注册用户', '注册时间'],
             selectedGroup: [],
             selectAll: false,
-            showList: ['序号', '标题', '公告类型', '创建时间', '更新时间', '状态', '操作'],
+            showList: ['序号', '注册用户', '注册时间'],
             searchOptions: [
                 {
-                    type: 'text',
-                    name: '标题',
-                    value: null
-                },
-                {
                     type: 'time',
-                    name: '创建时间',
+                    name: '注册时间',
                     value: null
-                },
-                {
-                    type: 'time',
-                    name: '更新时间',
-                    value: null
-                },
-                {
-                    type: 'select',
-                    name: '状态',
-                    value: null,
-                    options: [
-                        {
-                            value: 0,
-                            label: '隐藏'
-                        },
-                        {
-                            value: 1,
-                            label: '正常'
-                        }
-                    ]
                 }
             ],
             options: [10, 25, 50],
@@ -129,16 +94,16 @@
             loading: false,
             subNavList: {
                 parentNode: {
-                    name: '系统设置',
+                    name: '数据统计',
                     router: {
-                        name: 'setting_info'
+                        name: 'statistics_agent'
                     }
                 },
                 childNode: {
-                    name: '系统公告',
-                    desc: '主要用来绑定应用和应用列表的查看',
+                    name: '代理商注册统计',
+                    desc: '主要用于统计代理商用户的注册情况',
                     router: {
-                        name: 'setting_notice'
+                        name: 'statistics_agent'
                     }
                 }
             }
@@ -159,20 +124,19 @@
         methods: {
             getList () {
                 this.loading = true
-                this.$http.get(api.setting.notice, {
+                this.$http.get(api.statistics.agent, {
                     params: {
-//                        offset: this.offset,
-//                        limit: this.limit,
-//                        title: this.searchOptions[0].value,
-//                        create_time: this.searchOptions[1].value,
-//                        update_time: this.searchOptions[2].value,
-//                        status: this.searchOptions[3].value
+//                    offset: this.offset,
+//                    limit: this.limit,
+//                    date: this.searchOptions[0].value,
+//                    film_name: this.searchOptions[1].value,
+//                    film_type: this.searchOptions[2].value
                     }
                 }).then(res => {
                     this.loading = false
                     if (res.data.code === 1) {
                         this.data = res.data.data
-                        console.log(this.data)
+                        this.drawLine()
                     } else {
                         this.data.rows = []
                         this.$message({
@@ -189,6 +153,52 @@
             refresh () {
                 this.getList()
             },
+            drawLine () {
+                // 基于准备好的dom，初始化echarts实例
+                let myChart = this.$echarts.init(document.getElementById('echarts-agent'))
+                // 绘制图表
+                var data = []
+                var column = []
+                for (let key in this.data.dayList) {
+                    data.push(this.data.dayList[key])
+                    column.push(key)
+                }
+                myChart.setOption({
+                    title: {
+                        left: 'center',
+                        text: '注册用户数量统计图'
+                    },
+                    tooltip: {trigger: 'axis'},
+                    legend: {
+                        x: 'center',
+                        y: 'bottom'
+                    },
+                    grid: {
+                        left: '2%', // 图表距边框的距离
+                        top: '20%',
+                        right: '4%',
+                        bottom: '15%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: column
+                    },
+                    yAxis: {},
+                    series: [
+                        {
+                            name: '营业额',
+                            color: ['RGBA(252, 214, 131)'],
+                            type: 'line',
+//                            smooth: true,
+//                            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                            data: data
+                        }
+                    ]
+                })
+                myChart.resize()
+            },
             addPage () {
                 if (this.page < this.pages) this.page += 1
             },
@@ -200,26 +210,16 @@
         created () {
             this.page = this.$route.query.page ? parseInt(this.$route.query.page) : 1
             this.getList()
+        } ,
+        mounted () {
+            let that = this
+            window.addEventListener('resize', function () {
+                that.drawLine()
+            })
         },
         watch: {
-            selectedGroup (val) {
-                console.log(val)
-                if (val.length === this.data.rows.length) {
-                    this.selectAll = true
-                }
-            },
-            selectAll (val) {
-                if (val) {
-                    this.selectedGroup = []
-                    this.data.rows.map(val => {
-                        this.selectedGroup.push(val.id)
-                    })
-                } else {
-                    this.selectedGroup = []
-                }
-            },
             page (val) {
-                this.$router.replace({name: 'setting_notice', query: {page: val}})
+                // this.$router.replace({name: 'application_list', query: {page: val}})
                 this.getList()
             },
             limit (val) {
@@ -228,9 +228,8 @@
         }
     }
 </script>
-<style scoped>
-    .lk-table .p-n {
-        padding-left: 0;
-        padding-right: 0;
+<style>
+    #echarts-agent {
+        height: 300px;
     }
 </style>

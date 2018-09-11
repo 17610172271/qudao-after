@@ -11,7 +11,7 @@
                 <div class="pull-left m-r-sm opacity-8" title="列">
                     <select-checkbox :list="showList" v-model="selectVal" style="width: 60px;"></select-checkbox>
                 </div>
-                <div class="pull-left btn opacity-8 search-btn" :class="{'bg-eee': searchShow}" @click="openSearch">
+                <div class="pull-left btn opacity-8 search-btn" :class="{'bg-eee': searchShow}" @click="searchShow = !this.searchShow">
                     <i class="fa fa-search" title="搜索"></i>
                 </div>
             </div>
@@ -41,11 +41,11 @@
                 <li :title="item.status" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
                 <li :title="item.remark" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('备注')!=-1">{{item.remark}}</li>
                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                    <a href="javascript:;" title="通过" class="candle-btn btn"><i class="fa fa-check"></i></a>
-                    <a href="javascript:;" title="不通过" class="candle-btn btn"><i class="fa fa-close"></i></a>
-                    <a href="javascript:;" title="冻结" class="candle-btn btn"><i class="fa fa-ban"></i></a>
+                    <a href="javascript:;" title="通过" class="candle-btn btn" @click.stop="checkFilm('pass', item.id)"><i class="fa fa-check"></i></a>
+                    <a href="javascript:;" title="不通过" class="candle-btn btn" @click.stop="checkFilm('notpass', item.id)"><i class="fa fa-close"></i></a>
+                    <a href="javascript:;" :title="item.status==='已上线'?'解冻':'冻结'" class="candle-btn btn" @click.stop="doFreeze(item)"><i class="fa" :class="item.status==='已上线' ? 'fa-lightbulb-o' : 'fa-ban'"></i></a>
                     <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="openDetail(item.id)"><i class="fa fa-search-plus"></i></a>
-                    <a href="javascript:;" title="审核历史" class="candle-btn btn"><i class="fa fa-history"></i></a>
+                    <a href="javascript:;" title="审核历史" class="candle-btn btn" @click="openHistory(item.id)"><i class="fa fa-history"></i></a>
                 </li>
             </ul>
         </div>
@@ -80,18 +80,27 @@
             :close-on-click-modal="false">
             <detail :id="detailId"></detail>
         </el-dialog>
+        <el-dialog
+            title="审核历史"
+            :visible.sync="historyDailog"
+            custom-class="dialog-modal1"
+            :close-on-click-modal="false">
+            <history :id="history_id"></history>
+        </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import SelectCheckbox from '@/components/SelectCheckbox'
     import SearchIpts from '../common/searchIpts'
     import Detail from './detail.vue'
+    import History from './history.vue'
     import api from '@/api'
     export default {
         components: {
             SelectCheckbox,
             SearchIpts,
-            Detail
+            Detail,
+            History
         },
         data: () => ({
             data: {
@@ -100,8 +109,10 @@
             },
             loading: false,
             centerDialogVisible: false,
+            historyDailog: false,
             detailId: null,
             is_options: true,
+            history_id: null,
             selectVal: ['序号', '应用名称', '应用类别', '代理商', '绑定时间', '审核时间', '状态', '备注', '操作'],
             selectedGroup: [],
             selectAll: false,
@@ -200,53 +211,118 @@
                     }
                 })
             },
-            openSearch () {
-                if (this.is_options) {
-                    this.getOptions()
+            checkFilm(type, id) {
+                if (type === 'pass') {
+                    this.$confirm('您将让该应用通过审核', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$http.get(api.application.checkApp, {
+                            params: {
+//                                id: id
+                            }
+                        }).then(res => {
+                            if (res.data.code === 1) {
+                                this.getList()
+                                this.$message({
+                                    type: 'success',
+                                    message: '操作成功'
+                                })
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
+
+                    })
+                } else {
+                    this.$prompt('请输入不通过原因', '审核', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        if (value) {
+                            this.$http.get(api.application.checkApp, {
+                                params: {
+//                                    id: id,
+//                                    reason: value
+                                }
+                            }).then(res => {
+                                if (res.data.code === 1) {
+                                    this.$message({
+                                        type: 'success',
+                                        message: '操作成功'
+                                    })
+                                    this.getList()
+                                } else {
+                                    this.$message({
+                                        type: 'error',
+                                        message: res.data.msg
+                                    })
+                                }
+                            })
+                        } else {
+                            this.$message({
+                                type: 'warning',
+                                message: '请输入审核不通过原因'
+                            })
+                        }
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '取消输入'
+                        })
+                    })
                 }
-                this.searchShow = !this.searchShow
             },
-            getOptions () {
-                this.getPersonList()
-                this.getLanguageList()
-                this.getTypeList()
-                this.is_options = false
+            doFreeze (item) {
+              if (item.status === '已上线') {
+                  this.$confirm('您将解冻该应用', '提示', {
+                      confirmButtonText: '确定',
+                      cancelButtonText: '取消',
+                      type: 'warning'
+                  }).then(() => {
+                    this.$http.get(api.application.freeze, {
+                        params: {
+//                            id: item.id
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$message({
+                                type: 'success',
+                                message: '操作成功'
+                            })
+                            item.status = '已下线'
+                        }
+                    })
+                  })
+              } else {
+                  this.$confirm('您将冻结该应用', '提示', {
+                      confirmButtonText: '确定',
+                      cancelButtonText: '取消',
+                      type: 'warning'
+                  }).then(() => {
+                      this.$http.get(api.application.freeze, {
+                          params: {
+//                            id: item.id
+                          }
+                      }).then(res => {
+                          if (res.data.code === 1) {
+                              this.$message({
+                                  type: 'success',
+                                  message: '操作成功'
+                              })
+                              item.status = '已上线'
+                          }
+                      })
+                  })
+              }
             },
-            getPersonList () {
-                this.$http.get(api.films.person).then(res => {
-                    if (res.data.code === 1) {
-                        this.searchOptions[3].options = this.searchOptions[4].options = res.data.data.map(val => {
-                            return {
-                                value: val.id,
-                                label: val.name
-                            }
-                        })
-                    }
-                })
-            },
-            getLanguageList () {
-                this.$http.get(api.films.language).then(res => {
-                    if (res.data.code === 1) {
-                        this.searchOptions[2].options = res.data.data.map(val => {
-                            return {
-                                value: val.id,
-                                label: val.name
-                            }
-                        })
-                    }
-                })
-            },
-            getTypeList () {
-                this.$http.get(api.films.type).then(res => {
-                    if (res.data.code === 1) {
-                        this.searchOptions[5].options = res.data.data.map(val => {
-                            return {
-                                value: val.id,
-                                label: val.name
-                            }
-                        })
-                    }
-                })
+            openHistory (id) {
+                this.historyDailog = true
+                this.history_id = id
             },
             openDetail (id) {
                 this.detailId = id

@@ -17,6 +17,9 @@ export const common = {
 // 应用管理
 export  const application = {
     list: '/application/list', // 应用审核列表
+    history: '/application/history', // 应用审核历史列表
+    checkApp: '/application/checkPass', // 审核应用
+    freeze: '/application/freeze', // 冻结应用
 }
 // 资源信息管理
 export  const resource = {
@@ -71,7 +74,7 @@ export const financial = {
 
 // 系统设置
 export const setting = {
-    info: '/v1/setting/info', // 版权商信息管理
+    info: '/v1/setting/suggest', // 版权商信息管理
     infoDetail: '/v1/setting/infoDetail', //版权商信息-详情
     infoEdit: '/v1/setting/infoEdit', // 版权商信息-编辑
     infoDel: '/v1/setting/infoDel', // 版权商信息-删除
@@ -84,6 +87,18 @@ export const setting = {
     notice: '/v1/setting/notice', // 系统公告列表
     noticeEdit: '/v1/setting/noticeEdit', // 系统公告-编辑
     noticeDel: '/v1/setting/noticeDel' // 系统公告-删除
+}
+
+// 常规设置
+export const normalsetting = {
+    attachment: '/normalsetting/attachment', // 附件管理列表
+}
+
+// 数据统计
+export const statistics = {
+    agent: '/statistics/agent', // 代理商注册统计
+    application: '/statistics/application', // 应用绑定统计
+    film: '/statistics/film' //影片操作统计
 }
 
 // 首页
@@ -102,5 +117,7 @@ export default {
     financial,
     application,
     resource,
-    file
+    file,
+    normalsetting,
+    statistics
 }

@@ -25,31 +25,37 @@
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox v-model="selectAll">全选</el-checkbox>
                                 </li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('代理商名称')!=-1">代理商名称</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('公司类型')!=-1">公司类型</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('法人')!=-1">法人</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('负责人')!=-1">负责人</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('负责人电话')!=-1">负责人电话</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('营业地址')!=-1">营业地址</li>
-                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('街道地址')!=-1">街道地址</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('ID')!=-1">ID</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('预览')!=-1">预览</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('物理路径')!=-1">物理路径</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('宽度')!=-1">宽度</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('高度')!=-1">高度</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('图片类型')!=-1">图片类型</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('存储引擎')!=-1">存储引擎</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('文件大小')!=-1">文件大小</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('Mime类型')!=-1">Mime类型</li>
+                                <li class="col-xs-1 p-n" v-show="selectVal.indexOf('创建日期')!=-1">创建日期</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
                             </ul>
                             <ul class="table-tbody clear" v-for="(item,index) in data.rows" @click="selectItem(item.id)">
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.name" v-show="selectVal.indexOf('代理商名称')!=-1">{{item.name}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.type" v-show="selectVal.indexOf('公司类型')!=-1">{{item.type}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.legal" v-show="selectVal.indexOf('法人')!=-1">{{item.legal}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.leader" v-show="selectVal.indexOf('负责人')!=-1">{{item.leader}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.leader_tel" v-show="selectVal.indexOf('负责人电话')!=-1">{{item.leader_tel}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.address" v-show="selectVal.indexOf('营业地址')!=-1">{{item.address}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.address1" v-show="selectVal.indexOf('街道地址')!=-1">{{item.address1}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.id" v-show="selectVal.indexOf('ID')!=-1">{{item.id}}</li>
+                                <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('预览')!=-1">
+                                    <img :src="item.image" alt="" width="70%">
+                                </li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.image" v-show="selectVal.indexOf('物理路径')!=-1">{{item.image}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.width" v-show="selectVal.indexOf('宽度')!=-1">{{item.width}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.height" v-show="selectVal.indexOf('高度')!=-1">{{item.height}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.type" v-show="selectVal.indexOf('图片类型')!=-1">{{item.type}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.storage" v-show="selectVal.indexOf('存储引擎')!=-1">{{item.storage}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.size" v-show="selectVal.indexOf('文件大小')!=-1">{{item.size}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.mime" v-show="selectVal.indexOf('Mime类型')!=-1">{{item.mime}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.create_time" v-show="selectVal.indexOf('创建日期')!=-1">{{item.create_time}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                                    <a href="javascript:;" title="详情" class="candle-btn btn"><i class="fa fa-search-plus"></i></a>
                                     <a href="javascript:;" title="编辑" class="candle-btn btn"><i class="fa fa-edit"></i></a>
+                                    <a href="javascript:;" title="删除" class="candle-btn btn"><i class="fa fa-trash"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -96,29 +102,29 @@
                 total: 1
             },
             centerDialogVisible: false,
-            selectVal: ['checkbox', '序号', '代理商名称', '公司类型', '法人', '负责人', '负责人电话', '营业地址', '街道地址', '操作'],
+            selectVal: ['checkbox', 'ID', '预览', '物理路径', '宽度', '高度', '图片类型', '存储引擎', '文件大小', 'Mime类型', '创建日期', '操作'],
             selectedGroup: [],
             selectAll: false,
-            showList: ['checkbox', '序号', '代理商名称', '公司类型', '法人', '负责人',  '负责人电话', '营业地址', '街道地址', '操作'],
+            showList: ['checkbox', 'ID', '预览', '物理路径', '宽度', '高度',  '图片类型', '存储引擎', '文件大小', 'Mime类型', '创建日期', '操作'],
             searchOptions: [
                 {
                     type: 'text',
-                    name: '代理商名称',
+                    name: 'ID',
                     value: null
                 },
                 {
                     type: 'text',
-                    name: '公司类型',
+                    name: '物理路径',
                     value: null
                 },
                 {
                     type: 'time1',
-                    name: '法人',
+                    name: '宽度',
                     value: null
                 },
                 {
                     type: 'select',
-                    name: '负责人',
+                    name: '高度',
                     value: null,
                     options: [
                         {
@@ -133,7 +139,7 @@
                 },
                 {
                     type: 'text',
-                    name: '负责人电话',
+                    name: '图片类型',
                     value: null
                 }
             ],
@@ -144,16 +150,16 @@
             loading: false,
             subNavList: {
                 parentNode: {
-                    name: '资源信息',
+                    name: '常规管理',
                     router: {
-                        name: 'resource_film'
+                        name: 'normalsetting_system'
                     }
                 },
                 childNode: {
-                    name: '影片库',
-                    desc: '主要用来查看历史审核记录及其管理',
+                    name: '附件管理',
+                    desc: '主要用图片等附件的查看及操作',
                     router: {
-                        name: 'resource_film'
+                        name: 'normalsetting_attachment'
                     }
                 }
             }
@@ -174,7 +180,7 @@
         methods: {
             getList () {
                 this.loading = true
-                this.$http.post(api.resource.agent, {
+                this.$http.get(api.normalsetting.attachment, {
 //                    page: this.page,
 //                    rows: this.limit, // 每页限制数量
 //                    time: this.searchOptions[2].value ? this.searchOptions[2].value / 1000 : null,

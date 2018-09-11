@@ -229,37 +229,6 @@ module.exports = [
                 router: {
                     name: 'setting_person'
                 }
-            },
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '版权商信息管理',
-                router: {
-                    name: 'setting_info'
-                }
-            },
-            {
-                type: 'item',
-                icon: 'fa fa-drivers-license-o',
-                name: '公司信息',
-                router: {
-                    name: 'setting_company'
-                }
-            },
-        ]
-    },
-    {
-        type: 'tree',
-        icon: 'fa fa-copyright',
-        name: '版权管理',
-        items: [
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '版权库',
-                router: {
-                    name: 'copyright_list'
-                }
             }
         ]
     }

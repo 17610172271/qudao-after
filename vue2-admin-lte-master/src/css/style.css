@@ -75,32 +75,32 @@ textarea {
 
 /*皮肤*/
 .skin-blue .main-header .navbar {
-    background-color: #e74c3c;
+    background-color: #18bc9c;
 }
 
 .skin-blue .main-header .logo {
-    background-color: #e43725;
+    background-color: #15a589;
 }
 
 .skin-blue .main-header .logo:hover {
-    background-color: #e43725;
+    background-color: #15a589;
 }
 
 .navbar .link-home-icon:hover,
 .skin-blue .main-header .navbar .sidebar-toggle:hover {
-    background-color: #e43725;
+    background-color: #15a589;
 }
 
 .navbar .link-home-icon:hover, .skin-blue .main-header .navbar .sidebar-toggle:hover {
-    background-color: #cf4436;
+    background-color: #16a98c;
 }
 
 .skin-red {
-    color: #e74c3c;
+    color: #18bc9c;
 }
 
 .skin-blue .main-header li.user-header {
-    background-color: #e74c3c;
+    background-color: #18bc9c;
 }
 
 .el-dialog__header {
@@ -159,12 +159,12 @@ textarea {
 
 .lk-table .table-thead li {
     font-weight: bold;
-    padding: 15px 0;
+    padding: 12px 0;
     height: 100%;
 }
 
 .lk-table .table-tbody li {
-    padding: 17px 0px;
+    padding: 8px 0px;
     height: 100%;
 }
 
@@ -918,7 +918,7 @@ textarea {
 .page-container {
     margin-top: 24px;
     background-color: #fff;
-    padding: 35px 25px;
+    padding: 15px 25px;
 }
 
 .toolbar-candle .fa-refresh {
@@ -1041,7 +1041,12 @@ a:hover .fa-edit {
 .fa-check {
     color: #4dbb7b;
 }
-
+.fa-ban {
+    color: #666;
+}
+.fa-lightbulb-o {
+    font-size: 20px;
+}
 .fa-close,
 .fa-trash {
     color: #dd4b39;
@@ -1053,7 +1058,7 @@ a:hover .fa-edit {
 }
 
 .fa-edit {
-    color: #01dcde;
+    color: #18bc9c;
 }
 
 .fa-check-square-o,

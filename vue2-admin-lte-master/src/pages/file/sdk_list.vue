@@ -34,7 +34,7 @@
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('简介说明')!=-1">简介说明</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">操作</li>
                             </ul>
-                            <ul class="table-tbody clear" v-for="(item,index) in data.rows">
+                            <ul class="table-tbody clear" v-for="(item,index) in data.rows" @click="selectItem(item.id)">
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
@@ -194,6 +194,13 @@
                         })
                     }
                 })
+            },
+            selectItem (id) {
+                if (this.selectedGroup.indexOf(id) !== -1) {
+                    this.selectedGroup.splice(this.selectedGroup.indexOf(id), 1)
+                } else {
+                    this.selectedGroup.push(id)
+                }
             },
             doSearch (data) {
                 this.searchOptions = data

@@ -133,16 +133,6 @@ const router = new Router({
                             path: 'person',
                             name: 'setting_person',
                             component: rs('setting/person')
-                        },
-                        {
-                            path: 'info',
-                            name: 'setting_info',
-                            component: rs('setting/info')
-                        },
-                        {
-                            path: 'company',
-                            name: 'setting_company',
-                            component: rs('setting/company')
                         }
                     ]
                 },
@@ -160,18 +150,6 @@ const router = new Router({
                             path: 'attachment',
                             name: 'normalsetting_attachment',
                             component: rs('normalsetting/attachment')
-                        }
-                    ]
-                },
-                {
-                    path: '/copyright',
-                    component: rs('copyright/index'),
-                    meta: {requreAuth: true},
-                    children: [
-                        {
-                            path: 'copyright',
-                            name: 'copyright_list',
-                            component: rs('copyright/list')
                         }
                     ]
                 },
