@@ -7,48 +7,98 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
                             <div class="home-data-item ">
-                                <div class="data-item-icon bg-blue1"><i class="fa fa-copyright"></i></div>
-                                <div class="text-md data-item-title">电影版权量</div>
-                                <div class="text-lg data-item-content" v-if="data.copyright_num<10000"><span class="text-bold text-xlg">{{data.copyright_num}}</span> 部</div>
-                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_num / 100) / 100}}</span> 万部</div>
+                                <div class="data-item-icon bg-blue1"><i class="fa fa-cny"></i></div>
+                                <div class="text-md data-item-title">总营业额</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_num<10000"><span class="text-bold text-xlg">{{data.copyright_num}}</span> 元</div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_num / 100) / 100}}</span> 万元</div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
                             <div class="home-data-item">
-                                <div class="data-item-icon bg-green"><i class="fa fa-wpforms"></i></div>
-                                <div class="text-md data-item-title">今日录入版权</div>
-                                <div class="text-lg data-item-content" v-if="data.copyright_today<10000"><span class="text-bold text-xlg">{{data.copyright_today}}</span> 部</div>
-                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_today / 100)/100}}</span> 万部</div>
+                                <div class="data-item-icon bg-green"><i class="fa fa-bitcoin"></i></div>
+                                <div class="text-md data-item-title">总净收入</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_today<10000"><span class="text-bold text-xlg">{{data.copyright_today}}</span> 元</div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_today / 100)/100}}</span> 万元</div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
                             <div class="home-data-item">
-                                <div class="data-item-icon bg-orange"><i class="fa fa-question-circle-o text-40"></i>
+                                <div class="data-item-icon bg-orange"><i class="fa fa-wpforms"></i>
                                 </div>
-                                <div class="text-md data-item-title">未审核版权</div>
+                                <div class="text-md data-item-title">总售卖影片</div>
                                 <div class="text-lg data-item-content" v-if="data.copyright_wait < 10000"><span class="text-bold text-xlg">{{data.copyright_wait}}</span> 部</div>
                                 <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_wait/100)/100}}</span> 万部</div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
                             <div class="home-data-item">
-                                <div class="data-item-icon bg-yellow"><i class="fa fa-check-circle-o text-40"></i></div>
-                                <div class="text-md data-item-title">审核通过版权</div>
-                                <div class="text-lg data-item-content" v-if="data.copyright_pass<10000"><span class="text-bold text-xlg">{{data.copyright_pass}}</span> 部</div>
-                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_pass/100)/100}}</span> 万部</div>
+                                <div class="data-item-icon bg-yellow"><i class="fa fa-viacoin"></i></div>
+                                <div class="text-md data-item-title">总绑定应用</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_pass<10000"><span class="text-bold text-xlg">{{data.copyright_pass}}</span> 个</div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_pass/100)/100}}</span> 万个</div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
                             <div class="home-data-item">
-                                <div class="data-item-icon bg-red"><i class="fa fa-times-circle-o text-40"></i></div>
-                                <div class="text-md data-item-title">审核未通过版权</div>
-                                <div class="text-lg data-item-content" v-if="data.copyright_notpass<10000"><span class="text-bold text-xlg">{{data.copyright_notpass}}</span> 部</div>
-                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_notpass/100)/100}}</span> 万部</div>
+                                <div class="data-item-icon bg-red"><i class="fa fa-paw"></i></div>
+                                <div class="text-md data-item-title">总注册量</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_notpass<10000"><span class="text-bold text-xlg">{{data.copyright_notpass}}</span> </div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_notpass/100)/100}}</span> 万</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="today-data m-t-lg">
+                <h3>今日数据<span class="text-lg">今日数据统计</span></h3>
+                <div class="container-fluid m-t-md">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
+                            <div class="home-data-item ">
+                                <div class="data-item-icon bg-blue1"><i class="fa fa-dollar"></i></div>
+                                <div class="text-md data-item-title">今日营业额</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_num<10000"><span class="text-bold text-xlg">{{data.copyright_num}}</span> 元</div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_num / 100) / 100}}</span> 万元</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
+                            <div class="home-data-item">
+                                <div class="data-item-icon bg-green"><i class="fa fa-money"></i></div>
+                                <div class="text-md data-item-title">今日净收入</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_today<10000"><span class="text-bold text-xlg">{{data.copyright_today}}</span> 元</div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_today / 100)/100}}</span> 万元</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
+                            <div class="home-data-item">
+                                <div class="data-item-icon bg-orange"><i class="fa fa-film" style="font-size: 26px;"></i>
+                                </div>
+                                <div class="text-md data-item-title">今日影片量</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_wait < 10000"><span class="text-bold text-xlg">{{data.copyright_wait}}</span> 部</div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_wait/100)/100}}</span> 万部</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
+                            <div class="home-data-item">
+                                <div class="data-item-icon bg-yellow"><i class="fa fa-hand-o-up"></i></div>
+                                <div class="text-md data-item-title">今日点击量</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_pass<10000"><span class="text-bold text-xlg">{{data.copyright_pass}}</span> 次</div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_pass/100)/100}}</span> 万次</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3-5 p-r-sm p-n">
+                            <div class="home-data-item">
+                                <div class="data-item-icon bg-red"><i class="fa fa-question-circle-o"></i></div>
+                                <div class="text-md data-item-title">未审核应用</div>
+                                <div class="text-lg data-item-content" v-if="data.copyright_notpass<10000"><span class="text-bold text-xlg">{{data.copyright_notpass}}</span> 个</div>
+                                <div class="text-lg data-item-content" v-else><span class="text-bold text-xlg">{{parseInt(data.copyright_notpass/100)/100}}</span> 万个</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="home-chart m-t-lg bg-white">
                 <div class="home-chart-title clear">
                     <div class="pull-left text-xxlg p-l-lg today-chart-title"><span
@@ -196,7 +246,7 @@
                         left: '2%', // 图表距边框的距离
                         top: '30px',
                         right: '4%',
-                        bottom: '18%',
+                        bottom: '20',
                         containLabel: true
                     },
                     xAxis: {
@@ -221,7 +271,10 @@
             this.getData()
         },
         mounted () {
-            // this.drawLine()
+            let that = this
+            window.addEventListener('resize', function () {
+                that.drawLine()
+            })
         }
     }
 </script>

@@ -175,16 +175,16 @@
             userData: {},
             subNavList: {
                 parentNode: {
-                    name: '常规管理',
+                    name: '系统设置',
                     router: {
-                        name: 'normalsetting_person'
+                        name: 'setting_person'
                     }
                 },
                 childNode: {
                     name: '个人配置',
-                    desc: '主要用来绑定应用和应用列表的查看',
+                    desc: '主要用于个人资料的查看及修改',
                     router: {
-                        name: 'normalsetting_person'
+                        name: 'setting_person'
                     }
                 }
             }
