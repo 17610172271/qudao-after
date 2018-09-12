@@ -17,14 +17,14 @@
 			<div class="login-code-img pull-right cursor-p" @click="updateId"><img :src="codeImg" alt="" width="100%" height="100%"></div>
 		</div> -->
 		<div><button class="login-btn" @click="submit">登录</button></div>
-		<div class="login-other text-lg clear m-t-lg">
-			<label class="pull-left">
-				<input type="checkbox" v-model="remeberPwd">
-				<span>记住密码</span>
-			</label>
-			<router-link :to="{name: 'login', query: {action: 'password'}}" class="pull-right btn-link">忘记密码</router-link>
-			<router-link :to="{name: 'login', query: {action: 'register'}}" class="pull-right m-r-sm btn-link">注册</router-link>
-		</div>
+		<!--<div class="login-other text-lg clear m-t-lg">-->
+			<!--<label class="pull-left">-->
+				<!--<input type="checkbox" v-model="remeberPwd">-->
+				<!--<span>记住密码</span>-->
+			<!--</label>-->
+			<!--&lt;!&ndash;<router-link :to="{name: 'login', query: {action: 'password'}}" class="pull-right btn-link">忘记密码</router-link>&ndash;&gt;-->
+			<!--&lt;!&ndash;<router-link :to="{name: 'login', query: {action: 'register'}}" class="pull-right m-r-sm btn-link">注册</router-link>&ndash;&gt;-->
+		<!--</div>-->
 	</div>
 </template>
 <script type="text/ecmascript-6">
@@ -44,14 +44,12 @@ export default {
 	  submit () {
 		  if (this.username && this.password) {
 			  this.$http.post(api.user.login, {
-//				  account: this.username,
-//				  password: this.password
+				  username: this.username,
+				  password: this.password
 			  }).then(res => {
 				  if (res.data.code === 1) {
-					  window.localStorage.setItem('Auth', res.data.data.userinfo.token)
-					  window.localStorage.setItem('authInfo', JSON.stringify(res.data.data.userinfo))
-					  this.setAuthInfo(res.data.data.userinfo)
-					  this.$bus.token = window.localStorage.getItem('Auth')
+					  window.localStorage.setItem('authInfo', JSON.stringify(res.data.data))
+					  this.setAuthInfo(res.data.data)
 					  this.$router.push({name: 'home'})
 				  } else {
 					  this.$message({
@@ -81,9 +79,10 @@ export default {
 	}
 	.login-modal-container {
 		width: 430px;
-		background: rgba(255,255,255,1);
+		background: rgba(0,0,0, .6);
 		border-radius: 11px;
-		box-shadow: 0px 0px 9px rgba(14,15,18,0.42);
+		box-shadow: 0px 0px 9px rgba(255,255,255,.7);
+		border-radius: 8px;
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -106,7 +105,7 @@ export default {
 		height: 34px;
 		line-height: 34px;
 		font-family: MicrosoftYaHeiUI;
-		color: rgba(40,40,40,1);
+		color: #fff;
 		text-align: center;
 		margin-bottom: 32px;
 	}
@@ -118,11 +117,10 @@ export default {
 		font-size: 18px;
 		width: 100%;
 		height: 100%;
-		color: #ABABAB;
-		background: rgba(0,0,0,1);
-		opacity: 0.7;
+        color: #807A93;
+		background: #fff;
 		border-radius: 5px;
-		box-shadow: 2px 0px 0px rgba(234,230,238,1);
+        box-shadow: 1px 0px 0px rgba(234,230,238,1);
 		padding-left: 110px;
 		padding-right: 30px;
 	}
@@ -168,7 +166,7 @@ export default {
 	.login-btn {
 		width:337px;
 		height:65px; 
-		background: #e74c3c;
+		/*background: #e74c3c;*/
 		border-radius: 5px;
 		margin-top: 16px;
 		font-size: 24px;
@@ -176,7 +174,7 @@ export default {
 	}
 	.login-other {
 		height: 18px;
-		color: #282828;
+		color: #fff;
 	}
 	.login-other label input {
 		width: 18px;
@@ -187,7 +185,7 @@ export default {
 		.login-modal-container {
 			width: 308px;
 			border-radius: 8px;
-			box-shadow: 0px 0px 6px rgba(14,15,18,0.42);
+			box-shadow: 0px 0px 9px rgba(255,255,255,.7);
 			padding: 37px 34px 26px;
 		}
 		.logo-img {

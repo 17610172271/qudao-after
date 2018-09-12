@@ -561,12 +561,17 @@ const applicationList = function () {
         let data = {
             id: Random.id(),
             name: Random.csentence(2, 5),
-            type: 'app',
+            type: 'app应用',
             agent: Random.csentence(2, 5),
             bind_time: Random.datetime(),
             check_time: Random.datetime(),
             status: Random.status(),
-            remark: Random.csentence(5, 20)
+            remark: Random.csentence(5, 20),
+            domain: Random.domain(),
+            industry: '视频',
+            logo: Random.image(),
+            introduction: Random.csentence(5, 50),
+            copyright: Random.image()
         }
         list.push(data)
     }
@@ -683,7 +688,8 @@ const docList = function () {
             type: 'doc',
             upload_name: '李四',
             upload_time: Random.datetime(),
-            remark: Random.csentence(5, 45)
+            url: Random.url(),
+            remark: Random.csentence(5, 145)
         }
         list.push(data)
     }
@@ -698,6 +704,14 @@ const docList = function () {
 }
 Mock.mock('/file/doc', 'post', docList) // 文件管理=>文档管理
 
+const docDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/file/docDel', 'get', docDel) // 文档管理-删除
+
 const sdkList = function () {
     let list = []
     for (let i = 0; i < 10; i++) {
@@ -708,7 +722,10 @@ const sdkList = function () {
             language: 'Java', // 开发语言
             update_time: Random.datetime(),
             size: '102.11Kb',
-            introduction: Random.csentence(5, 25)
+            introduction: Random.csentence(5, 25),
+            url: Random.url(),
+            version: '1.11',
+            status: '正常'
         }
         list.push(data)
     }
@@ -837,6 +854,14 @@ const attachmentList = function () {
     }
 }
 Mock.mock('/normalsetting/attachment', 'get', attachmentList) // 常规设置-附件管理
+
+const attachmentDel = function () {
+    return {
+        msg: 'ok',
+        code: 1
+    }
+}
+Mock.mock('/normalsetting/attachmentDel', 'get', attachmentDel) // 附件管理-删除
 
 const statisticsAgentList = function () {
     let list = []

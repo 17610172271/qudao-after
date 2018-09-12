@@ -8,8 +8,8 @@
                         <search-ipts :options="searchOptions" @submit="doSearch" v-show="searchShow"></search-ipts>
                         <div class="page-toolbar clear">
                             <div class="pull-left toolbar-candle">
-                                <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i
-                                    class="fa fa-refresh"></i></div>
+                                <a href="javascript:;" title="删除" class="app-add btn bg-red1 text-white" @click="delItem(selectedGroup.join(','))"><i class="fa fa-trash"></i>删除</a>
+                                <div class="app-refresh btn bg-gray1" title="刷新" @click="refresh"><i class="fa fa-refresh"></i></div>
                             </div>
                             <div class="pull-right clear">
                                 <div class="pull-left m-r-sm opacity-8" title="列">
@@ -43,7 +43,9 @@
                                 </li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.id" v-show="selectVal.indexOf('ID')!=-1">{{item.id}}</li>
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('预览')!=-1">
-                                    <img :src="item.image" alt="" width="70%">
+                                    <a class="block" :href="item.image" @click.stop target="_blank" style="max-height: 100px;overflow: hidden">
+                                        <img :src="item.image" alt="" width="70%">
+                                    </a>
                                 </li>
                                 <li class="col-xs-1 p-n over-omit" :title="item.image" v-show="selectVal.indexOf('物理路径')!=-1">{{item.image}}</li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.width" v-show="selectVal.indexOf('宽度')!=-1">{{item.width}}</li>
@@ -54,8 +56,8 @@
                                 <li class="col-xs-24 p-n over-omit" :title="item.mime" v-show="selectVal.indexOf('Mime类型')!=-1">{{item.mime}}</li>
                                 <li class="col-xs-1 p-n over-omit" :title="item.create_time" v-show="selectVal.indexOf('创建日期')!=-1">{{item.create_time}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                                    <a href="javascript:;" title="编辑" class="candle-btn btn"><i class="fa fa-edit"></i></a>
-                                    <a href="javascript:;" title="删除" class="candle-btn btn"><i class="fa fa-trash"></i></a>
+                                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click.stop="editItem(item)"><i class="fa fa-edit"></i></a>
+                                    <a href="javascript:;" title="删除" class="candle-btn btn" @click.stop="delItem(item.id)"><i class="fa fa-trash"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -87,6 +89,92 @@
                 </div>
             </div>
         </div>
+        <el-dialog
+            title="编辑"
+            :visible.sync="editShow"
+            custom-class="dialog-modal1"
+            :modal-append-to-body="false"
+            :close-on-click-modal="false">
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name text-bold">标题</div>
+                <div class="col-xs-12 col-md-10 line-height-40 text-bold">内容</div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">物理路径</div>
+                <div class="col-xs-12 col-md-10 line-height-40 p-r-80 relative">
+                    <el-input placeholder="请上传文件" v-model="dailogVal.image"></el-input>
+                    <el-upload
+                        class=" btn-upload"
+                        :action="uploadUrl"
+                        :on-success="picUpload"
+                        :before-upload="uploadBefore"
+                        :headers="header"
+                        accept="image/*"
+                        :show-file-list="false"
+                        list-type="text">
+                        <a href="javascript:;" class="btn bg-blue1 text-white add-upload-btn" style="height: 40px;line-height: 26px;">上传</a>
+                    </el-upload>
+                </div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">宽度</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    <el-input placeholder="请输入SDK名称" v-model="dailogVal.width"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">高度</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    <el-input placeholder="请输入版本号" v-model="dailogVal.height"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">图片类型</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    <el-input placeholder="请输入支持平台" v-model="dailogVal.type"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">图片帧数</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    <el-input placeholder="请输入开发语言" v-model="dailogVal.type"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">文件大小</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    <el-input v-model="dailogVal.size"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name p-r-n">Mime类型</div>
+                <div class="col-xs-12 col-md-10">
+                    <el-input placeholder="请输入备注" v-model="dailogVal.mime"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">透传数据</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    <el-input v-model="dailogVal.size"></el-input>
+                </div>
+            </div>
+            <div class="clear m-b-sm">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">上传时间</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    <el-input v-model="dailogVal.create_time"></el-input>
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">存储引擎</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    <el-input v-model="dailogVal.storage"></el-input>
+                </div>
+            </div>
+            <div class="text-center m-t-lg">
+                <el-button type="primary" @click="submit">确 定</el-button>
+                <el-button @click="reset">重 置</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -101,7 +189,10 @@
                 rows: [],
                 total: 1
             },
-            centerDialogVisible: false,
+            editShow: false,
+            dailogVal: {},
+            dailogVal1: {},
+            header: {ContentType: 'application/x-www-form-urlencoded'},
             selectVal: ['checkbox', 'ID', '预览', '物理路径', '宽度', '高度', '图片类型', '存储引擎', '文件大小', 'Mime类型', '创建日期', '操作'],
             selectedGroup: [],
             selectAll: false,
@@ -175,6 +266,9 @@
             },
             offset () {
                 return (this.page - 1) * this.limit
+            },
+            uploadUrl () {
+                return api.common.upload
             }
         },
         methods: {
@@ -201,6 +295,64 @@
                     }
                 })
             },
+            delItem (id) {
+                id += ''
+                if (id) {
+                    this.$confirm(id.split(',').length>1 ? '此操作将批量删除选中图片, 是否继续?' : '此操作将删除该图片, 是否继续?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        this.$http.get(api.normalsetting.attachmentDel, {
+                            params: {
+//                                id: id
+                            }
+                        }).then(res => {
+                            if (res.data.code === 1) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功'
+                                })
+                                this.getList()
+                            } else {
+                                this.$message({
+                                    type: 'error',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
+                    })
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: '请选中需要删除的项'
+                    })
+                }
+            },
+            editItem (item) {
+                this.dailogVal = JSON.parse(JSON.stringify(item))
+                this.dailogVal1 = JSON.parse(JSON.stringify(item))
+                this.editShow = true
+            },
+            submit () {
+                console.log(this.dailogVal)
+                this.editShow = false
+            },
+            reset () {
+                if (this.type === 'add') {
+                    this.dailogVal = {
+                        name: '',
+                        version: '',
+                        platform: '',
+                        language: '',
+                        url: '',
+                        size: '',
+                        introduction: ''
+                    }
+                } else {
+                    this.dailogVal = JSON.parse(JSON.stringify(this.dailogVal1))
+                }
+            },
             selectItem (id) {
                 if (this.selectedGroup.indexOf(id) !== -1) {
                     this.selectedGroup.splice(this.selectedGroup.indexOf(id), 1)
@@ -215,7 +367,9 @@
             refresh () {
                 this.getList()
             },
-            handlePreview () {
+            picUpload () {
+            },
+            uploadBefore () {
             },
             addPage () {
                 if (this.page < this.pages) this.page += 1

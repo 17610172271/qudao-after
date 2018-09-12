@@ -1,16 +1,16 @@
 <template>
 	<div class="login-container">
 		<div class="login-bg">
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_01.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_02.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_03.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_04.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_05.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_06.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_07.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_08.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_09.jpg" alt="" width="100%" height="100%"></div>
-			<div class="login-bg-item"><img src="../../../static/img/login/登陆_10.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_01.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_02.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_03.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_04.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_05.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_06.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_07.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_08.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_09.jpg" alt="" width="100%" height="100%"></div>
+			<div class="login-bg-item"><img src="../../../static/img/login/login_10.jpg" alt="" width="100%" height="100%"></div>
 		</div>
 		
     <password v-if="$route.query.action=='password'"></password>
@@ -19,7 +19,7 @@
 
 	</div>
 </template>
-<script>
+<script type="text/ecmascript-6">
   import loginModal from './loginModal.vue'
   import Password from './Password.vue'
   import Register from './Register.vue'

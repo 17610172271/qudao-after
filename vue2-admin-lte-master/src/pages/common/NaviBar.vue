@@ -20,7 +20,7 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav p-r-md">
                     <li class="dropdown top-nav-username hidden-xs"><a href="javascript:;">欢迎您， {{getAuthInfo.nickname
-                        || '游客'}} !</a></li>
+                        || getAuthInfo.username}} !</a></li>
                     <!-- Notifications: style can be found in dropdown.less -->
                     <li class="dropdown notifications-menu">
                         <router-link :to="{name: 'setting_person'}" class="dropdown-toggle" title="消息">
@@ -32,7 +32,7 @@
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img
-                                :src="getAuthInfo.avatar ? ($bus.url + getAuthInfo.avatar) : '../../../static/img/home/avatar.png'"
+                                :src="getAuthInfo.avatar ? getAuthInfo.avatar : '../../../static/img/home/avatar.png'"
                                 class="user-image nav-avatar-container" alt="">
                             <i class="fa fa-chevron-down"></i>
                         </a>
@@ -40,12 +40,12 @@
                             <!-- User image -->
                             <li class="user-header navbar-drop-menu">
                                 <div class="slide-avatar"><img
-                                    :src="getAuthInfo.avatar ? ($bus.url + getAuthInfo.avatar) : '../../../static/img/home/avatar.png'"
+                                    :src="getAuthInfo.avatar ? getAuthInfo.avatar : '../../../static/img/home/avatar.png'"
                                     class="img-circle" alt="User Image"></div>
 
                                 <p>
-                                    {{getAuthInfo.nickname || '游客'}}
-                                    <small class="m-t-sm">电话: {{getAuthInfo.mobile}}</small>
+                                    {{getAuthInfo.nickname || getAuthInfo.username}}
+                                    <small class="m-t-sm">电话: {{getAuthInfo.phone}}</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
@@ -101,7 +101,6 @@
             signOut () {
                 this.$http.get(api.user.logout).then(res => {
                 })
-                window.localStorage.removeItem('Auth')
                 this.$router.replace({name: 'login'})
             },
             getNewsData () {
@@ -186,48 +185,4 @@
 
     }
 
-    @media (min-width: 1500px) {
-        /*.main-header .logo {*/
-        /*height: 82px;*/
-        /*line-height: 82px;*/
-        /*font-size: 28px;*/
-        /*}*/
-        /*.navbar.navbar-static-top > a {*/
-        /*padding: 30px 18px;*/
-        /*}*/
-        /*.navbar.navbar-static-top .sidebar-toggle {*/
-        /*padding: 22px 18px;*/
-        /*}*/
-        /*.navbar.navbar-static-top > a:before {*/
-        /*font-size: 26px;*/
-        /*}*/
-        /*.navbar.navbar-static-top > a > span {*/
-        /*font-size: 26px;*/
-        /*}*/
-        /*.nav.navbar-nav > li > a {*/
-        /*padding: 30px 8px;*/
-        /*}*/
-        /*.main-header .navbar .nav>li>a>.label {*/
-        /*top: 25px;*/
-        /*right: 2px;*/
-        /*}*/
-        /*.top-nav-username {*/
-        /*font-size: 18px;*/
-        /*}*/
-        /*.notifications-menu > a >i {*/
-        /*font-size: 20px;*/
-        /*}*/
-        /*.navbar-nav>.user-menu .user-image {*/
-        /*width: 36px;*/
-        /*height: 36px;*/
-        /*border: 0.5px solid #f5f5f5;*/
-        /*}*/
-        /*.main-header .navbar .user-menu > a {*/
-        /*padding: 22px 8px;*/
-        /*height: 80px;*/
-        /*}*/
-        /*.main-header .navbar .user-menu > a > i {*/
-        /*vertical-align: -8px;*/
-        /*}*/
-    }
 </style>

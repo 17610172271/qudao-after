@@ -8,7 +8,7 @@
           <!--<img :src="getAuthInfo.avatar ? ($bus.url + getAuthInfo.avatar) : '../../../static/img/home/avatar.png'" class="img-circle slide-avatar" alt="User Image">-->
         <!--</div>-->
         <!--<div class="pull-left info">-->
-          <!--<p @click="goSetting" class=" cursor-p">{{ getAuthInfo.nickname || '游客' }}</p>-->
+          <!--<p @click="goSetting" class=" cursor-p">{{ getAuthInfo.nickname || getAuthInfo.username }}</p>-->
           <!--<a href="#"><i class="fa fa-circle" style="color:rgb(60, 118, 61);"></i> 在线</a>-->
         <!--</div>-->
       <!--</div>-->

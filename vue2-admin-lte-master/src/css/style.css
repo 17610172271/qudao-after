@@ -77,7 +77,9 @@ textarea {
 .skin-blue .main-header .navbar {
     background-color: #18bc9c;
 }
-
+.login-btn {
+    background-color: #18bc9c;
+}
 .skin-blue .main-header .logo {
     background-color: #15a589;
 }
@@ -107,6 +109,12 @@ textarea {
     background-color: #409eff;
     /*margin-bottom: 20px;*/
 }
+
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
+    color: #fff;
+    background-color: #409eff;
+}
+
 .el-dialog__title {
     color: #fff;
 }
@@ -485,7 +493,14 @@ textarea {
 .p-r-n {
     padding-right: 0;
 }
-
+.p-r-80 {
+    padding-right: 80px;
+}
+.btn-upload {
+    position: absolute;
+    right: 15px;
+    top: 0px;
+}
 .p-sm {
     padding: 10px;
 }
@@ -1033,9 +1048,9 @@ a:hover .fa-edit {
     max-width: 700px;
 }
 
-/*.dailog-p-t-n .el-dialog__body {*/
-    /*padding-top: 0;*/
-/*}*/
+.dailog-p-t-n .el-dialog__body {
+    padding-top: 0;
+}
 
 /*操作图标颜色*/
 .fa-check {

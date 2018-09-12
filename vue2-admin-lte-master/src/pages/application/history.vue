@@ -17,8 +17,8 @@
             <ul class="table-tbody clear" v-for="(item, index) in data.rows">
                 <li class="col-xs-1 p-n" :title="item.id">{{offset + index + 1}}</li>
                 <li class="col-xs-2 p-n over-omit" :title="item.app_name">{{item.app_name}}</li>
-                <li class="col-xs-2 p-n over-omit" :title="item.create_by">{{item.candle_name}}</li>
-                <li class="col-xs-2 p-n over-omit" :title="item.create_time">{{item.candle_time}}</li>
+                <li class="col-xs-2 p-n over-omit" :title="item.candle_name">{{item.candle_name}}</li>
+                <li class="col-xs-2 p-n over-omit" :title="item.candle_time">{{item.candle_time}}</li>
                 <li class="col-xs-2 p-n over-omit" :title="item.status">{{item.status}}</li>
                 <li class="col-xs-3 p-n over-omit" :title="item.message">{{item.message}}</li>
             </ul>

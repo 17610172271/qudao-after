@@ -3,16 +3,16 @@ export const BASE_URL = '/v1'
 
 // 通用api
 export const common = {
-    auth: 'v1/common/auth_check', // auth效验
-    province: '/v1/common/getProvince',
-    city: '/v1/common/getCity',
-    area: '/v1/common/getArea',
-    upload: '/v1/common/upload',
-    codeGet: '/v1/captcha/get', // 图片验证码获取
-    codeCheck: '/v1/captcha/check', // 图片验证
-    telCodeSend: '/v1/sms/send', // 手机验证码发送
-    telCodeCheck: '/v1/sms/check', // 手机验证码效验
-    news: 'v1/Setting/get_num'
+    upload: '/api/5b74dbba919d0', // 上传文件
+    uploadXML: '/api/5b74dc0ed7a92', // 上传xml
+    uploadCover: '/api/5b74d91c459bd', // 上传封面
+    uploadJson: '/api/5b7b7f8c67ecc', // 上传JSON
+    codeGet: '/api/5b7aa559d235a', // 图片验证码获取
+    codeCheck: '/api/5b7baa07e56f9', // 图片验证
+    news: 'v1/Setting/get_num', // 消息数量
+    emailCodeSend: '/api/5b7f731b36b0e', // 发送邮箱验证码
+    emailCodeCheck: '/api/5b7f73451beb6', // 邮箱验证码验证
+    setPassword: '/api/5b7f7377a59c1' // 找回密码
 }
 // 应用管理
 export  const application = {
@@ -29,12 +29,13 @@ export  const resource = {
 // 文件管理
 export  const file = {
     doc: '/file/doc', // 文档管理
+    docDel: '/file/docDel', // 文档删除
     sdk: '/file/sdk', // sdk管理
 }
 // 用户功能相关
 export const user = {
-    login: '/v1/user/login', // 用户登录
-    logout: '/v1/user/logout', // 退出登录
+    login: '/api/5b986c8703d90', // 用户登录
+    logout: '/api/5b986cc1c7013', // 退出登录
     userList: '/v1/user/userList', // 用户管理列表
     userEdit: '/v1/user/userEdit', // 个人配置
     findPsd: '/v1/user/lostpwd' // 找回密码
@@ -53,16 +54,15 @@ export const copyright = {
 }
 
 // 用户管理
-export const admin = {
-    admin: '/v1/admin/adminList', // 管理员管理
-    adminReset: '/v1/admin/adminReset', // 管理员管理-密码重置
-    adminDetail: '/v1/admin/adminDetail', // 管理员管理-详情
-    adminEdit: '/v1/admin/adminEdit', // 管理员管理-编辑
-    adminAdd: '/v1/admin/adminAdd', // 管理员管理-添加
-    adminDel: '/v1/admin/adminReset', // 管理员管理-删除
-    log: '/v1/admin/logList', // 管理员日志-列表
-    logDetail: '/v1/admin/logDetail', // 管理员日志-详情
-    logDel: '/v1/admin/logDel' // 管理员日志-删除
+export const right = {
+    adminTeam: '/api/5b72b499caa23', // 管理员组别
+    admin: '/api/5b97b5cecad8c', // 管理员管理
+    adminAdd: '/api/5b9893a41a3d4', // 管理员新增
+    adminEdit: '/api/5b98941c187f3', // 管理员编辑
+    passReset: '/api/5b863c5aa6915', // 重置管理员密码
+    adminDel: '/api/5b9894d269e68', // 管理员删除
+    log: '/api/5b727e92a9c0f', //管理员日志
+    logDel: '/api/5b7290d07b8f6' // 日志删除
 }
 // 财务管理
 export const financial = {
@@ -92,6 +92,7 @@ export const setting = {
 // 常规设置
 export const normalsetting = {
     attachment: '/normalsetting/attachment', // 附件管理列表
+    attachmentDel: '/normalsetting/attachmentDel', // 附件删除
 }
 
 // 数据统计
@@ -111,7 +112,7 @@ export default {
     common,
     home,
     user,
-    admin,
+    right,
     copyright,
     setting,
     financial,

@@ -93,17 +93,17 @@ module.exports = [
             {
                 type: 'item',
                 icon: 'fa fa-circle-o',
-                name: '管理员日志',
+                name: '管理员管理',
                 router: {
-                    name: 'right_log'
+                    name: 'right_admin'
                 }
             },
             {
                 type: 'item',
                 icon: 'fa fa-circle-o',
-                name: '管理员管理',
+                name: '管理员日志',
                 router: {
-                    name: 'right_admin'
+                    name: 'right_log'
                 }
             }
         ]

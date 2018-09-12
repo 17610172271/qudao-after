@@ -66,7 +66,6 @@ axios.interceptors.response.use(
 Vue.prototype.$echarts = echarts
 Vue.prototype.$bus = EventBus
 Vue.prototype.$http = axios
-Vue.prototype.$bus.token = window.localStorage.getItem('Auth') || ''
 //Vue.prototype.$bus.url = window.location.host === 'localhost:8080' ? 'http://www.agent_api.com/' : 'http://192.168.120.216:8004/'
 Vue.prototype.$bus.authInfo = JSON.parse(window.localStorage.getItem('authInfo'))
 /* eslint-disable no-new */

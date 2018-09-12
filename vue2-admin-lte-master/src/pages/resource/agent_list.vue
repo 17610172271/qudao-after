@@ -48,7 +48,7 @@
                                 <li class="col-xs-1 p-n over-omit" :title="item.address" v-show="selectVal.indexOf('营业地址')!=-1">{{item.address}}</li>
                                 <li class="col-xs-1 p-n over-omit" :title="item.address1" v-show="selectVal.indexOf('街道地址')!=-1">{{item.address1}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                                    <a href="javascript:;" title="详情" class="candle-btn btn"><i class="fa fa-search-plus"></i></a>
+                                    <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="openDetail(item)"><i class="fa fa-search-plus"></i></a>
                                     <a href="javascript:;" title="编辑" class="candle-btn btn"><i class="fa fa-edit"></i></a>
                                 </li>
                             </ul>
@@ -81,6 +81,22 @@
                 </div>
             </div>
         </div>
+        <el-dialog
+            title="详情"
+            :visible.sync="detailShow"
+            custom-class="dialog-modal1  dailog-p-t-n"
+            :modal-append-to-body="false"
+            :close-on-click-modal="false">
+            <detail :data="dailogVal" :show="detailShow"></detail>
+        </el-dialog>
+        <el-dialog
+            :title="type=='edit'?'编辑':'添加'"
+            :visible.sync="editShow"
+            custom-class="dialog-modal1  dailog-p-t-n"
+            :modal-append-to-body="false"
+            :close-on-click-modal="false">
+            <edit-page :data="dailogVal" :show="editShow"></edit-page>
+        </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -89,13 +105,19 @@
     import format from '@/tools/format'
     import SelectCheckbox from '@/components/SelectCheckbox'
     import SearchIpts from '../common/searchIpts'
+    import Detail from './detail'
+    import EditPage from './editPage'
     export default {
         data: () => ({
             data: {
                 rows: [],
                 total: 1
             },
-            centerDialogVisible: false,
+            detailShow: false,
+            editShow: false,
+            dailogVal: {},
+            dailogVal1: {},
+            type: 'add',
             selectVal: ['checkbox', '序号', '代理商名称', '公司类型', '法人', '负责人', '负责人电话', '营业地址', '街道地址', '操作'],
             selectedGroup: [],
             selectAll: false,
@@ -161,7 +183,9 @@
         components: {
             SubHeader,
             SelectCheckbox,
-            SearchIpts
+            SearchIpts,
+            Detail,
+            EditPage
         },
         computed: {
             pages () {
@@ -201,6 +225,10 @@
                 } else {
                     this.selectedGroup.push(id)
                 }
+            },
+            openDetail (item) {
+                this.detailId = item
+                this.detailShow = true
             },
             doSearch (data) {
                 this.searchOptions = data

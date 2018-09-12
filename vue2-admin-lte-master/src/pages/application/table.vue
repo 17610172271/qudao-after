@@ -44,7 +44,7 @@
                     <a href="javascript:;" title="通过" class="candle-btn btn" @click.stop="checkFilm('pass', item.id)"><i class="fa fa-check"></i></a>
                     <a href="javascript:;" title="不通过" class="candle-btn btn" @click.stop="checkFilm('notpass', item.id)"><i class="fa fa-close"></i></a>
                     <a href="javascript:;" :title="item.status==='已上线'?'解冻':'冻结'" class="candle-btn btn" @click.stop="doFreeze(item)"><i class="fa" :class="item.status==='已上线' ? 'fa-lightbulb-o' : 'fa-ban'"></i></a>
-                    <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="openDetail(item.id)"><i class="fa fa-search-plus"></i></a>
+                    <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="openDetail(item)"><i class="fa fa-search-plus"></i></a>
                     <a href="javascript:;" title="审核历史" class="candle-btn btn" @click="openHistory(item.id)"><i class="fa fa-history"></i></a>
                 </li>
             </ul>
@@ -78,14 +78,14 @@
             custom-class="dialog-modal1 dailog-p-t-n"
             :modal-append-to-body="false"
             :close-on-click-modal="false">
-            <detail :id="detailId"></detail>
+            <detail :data="detailId" :show="centerDialogVisible"></detail>
         </el-dialog>
         <el-dialog
             title="审核历史"
             :visible.sync="historyDailog"
             custom-class="dialog-modal1"
             :close-on-click-modal="false">
-            <history :id="history_id"></history>
+            <history :data="history_id"></history>
         </el-dialog>
     </div>
 </template>
@@ -324,8 +324,8 @@
                 this.historyDailog = true
                 this.history_id = id
             },
-            openDetail (id) {
-                this.detailId = id
+            openDetail (item) {
+                this.detailId = item
                 this.centerDialogVisible = true
             },
             selectItem (id) {
