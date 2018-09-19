@@ -109,7 +109,7 @@
 </script>
 <style>
     .address-item {
-        min-width: 150px;
+        min-width: 140px;
         float: left;
     }
 </style>

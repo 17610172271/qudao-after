@@ -40,15 +40,15 @@
                                     <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
                                 <li class="col-xs-24 p-n over-omit" v-show="selectVal.indexOf('ID')!=-1">{{item.id}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.name" v-show="selectVal.indexOf('文档名称')!=-1">{{item.name}}</li>
-                                <li class="col-xs-24 p-n over-omit" :title="item.type" v-show="selectVal.indexOf('文档类型')!=-1">{{item.type}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.upload_name" v-show="selectVal.indexOf('上传人')!=-1">{{item.upload_name}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.upload_time" v-show="selectVal.indexOf('上传时间')!=-1">{{item.upload_time}}</li>
-                                <li class="col-xs-2 p-n over-omit" :title="item.remark" v-show="selectVal.indexOf('备注')!=-1">{{item.remark}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.doc_name" v-show="selectVal.indexOf('文档名称')!=-1">{{item.doc_name}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.doc_type" v-show="selectVal.indexOf('文档类型')!=-1">{{item.doc_type}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.upload_by" v-show="selectVal.indexOf('上传人')!=-1">{{item.upload_by}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="format(item.upload_time*1000)" v-show="selectVal.indexOf('上传时间')!=-1">{{format(item.upload_time*1000)}}</li>
+                                <li class="col-xs-2 p-n over-omit" :title="item.doc_desc" v-show="selectVal.indexOf('备注')!=-1">{{item.doc_desc}}</li>
                                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
                                     <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="openDetail(item)"><i class="fa fa-search-plus"></i></a>
                                     <a href="javascript:;" title="编辑" class="candle-btn btn" @click.stop="editItem(item)"><i class="fa fa-edit"></i></a>
-                                    <a :href="item.url" title="下载" download class="candle-btn btn" @click.stop><i class="fa fa-download"></i></a>
+                                    <a :href="url + '?id=' + item.id" title="下载" download class="candle-btn btn" @click.stop><i class="fa fa-download"></i></a>
                                     <a href="javascript:;" title="删除" class="candle-btn btn" @click.stop="delItem(item.id)"><i class="fa fa-trash"></i></a>
                                 </li>
                             </ul>
@@ -94,31 +94,31 @@
             <div class="clear bg-f9">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">文档类型</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    {{dailogVal.type}}
+                    {{dailogVal.doc_type}}
                 </div>
             </div>
             <div class="clear">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">文档名称</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    {{dailogVal.name}}
+                    {{dailogVal.doc_name}}
                 </div>
             </div>
             <div class="clear bg-f9">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">上传人</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    {{dailogVal.upload_name}}
+                    {{dailogVal.upload_by}}
                 </div>
             </div>
             <div class="clear">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">上传路径</div>
                 <div class="col-xs-12 col-md-10 p-v-sm">
-                    {{dailogVal.url}}
+                    {{dailogVal.doc_path}}
                 </div>
             </div>
             <div class="clear bg-f9">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">备注</div>
                 <div class="col-xs-12 col-md-10 p-v-sm">
-                    {{dailogVal.remark}}
+                    {{dailogVal.doc_desc}}
                 </div>
             </div>
             <div class="text-center m-t-lg">
@@ -138,26 +138,29 @@
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">文档类型</div>
-                <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入文档类型" v-model="dailogVal.type"></el-input>
+                <div class="col-xs-12 col-md-10">
+                    <el-input placeholder="请输入文档类型" v-model="dailogVal.doc_type" @blur="typeError=(dailogVal.doc_type?false:true)"></el-input>
+                    <p class="text-red" v-if="typeError">文档类型不能为空</p>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">文档名称</div>
-                <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入文档名称" v-model="dailogVal.name"></el-input>
+                <div class="col-xs-12 col-md-10">
+                    <el-input placeholder="请输入文档名称" v-model="dailogVal.doc_name" @blur="nameError=(dailogVal.doc_name?false:true)"></el-input>
+                    <p class="text-red" v-if="nameError">文档名称不能为空</p>
                 </div>
             </div>
             <div class="clear m-b-sm" v-if="type=='edit'">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">上传人</div>
-                <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入上传人" v-model="dailogVal.upload_name"></el-input>
+                <div class="col-xs-12 col-md-10">
+                    <el-input placeholder="请输入上传人" v-model="dailogVal.upload_by" @blur="uploadError=(dailogVal.upload_by?false:true)"></el-input>
+                    <p class="text-red" v-if="uploadError">上传人不能为空</p>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">上传路径</div>
-                <div class="col-xs-12 col-md-10 line-height-40 p-r-80 relative">
-                    <el-input placeholder="请上传文件" v-model="dailogVal.url"></el-input>
+                <div class="col-xs-12 col-md-10 p-r-80 relative">
+                    <el-input placeholder="请上传文件" v-model="dailogVal.doc_path" disabled></el-input>
                     <el-upload
                         class=" btn-upload"
                         :action="uploadUrl"
@@ -169,12 +172,13 @@
                         list-type="text">
                         <a href="javascript:;" class="btn bg-blue1 text-white add-upload-btn" style="height: 40px;line-height: 26px;">上传</a>
                     </el-upload>
+                    <p class="text-red" v-if="pathError">上传文件不能为空</p>
                 </div>
             </div>
             <div class="clear">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">备注</div>
                 <div class="col-xs-12 col-md-10">
-                    <el-input placeholder="请输入备注" type="textarea" rows="4" v-model="dailogVal.remark"></el-input>
+                    <el-input placeholder="请输入备注" type="textarea" rows="4" v-model="dailogVal.doc_desc"></el-input>
                 </div>
             </div>
             <div class="text-center m-t-lg">
@@ -197,10 +201,20 @@
                 total: 1
             },
             detailShow: false,
-            dailogVal: {},
+            dailogVal: {
+                doc_type: '',
+                doc_name: '',
+                upload_by: null,
+                doc_path: '',
+                doc_desc: ''
+            },
             dailogVal1: {},
             editShow: false,
             type: 'add',
+            nameError: false,
+            typeError: false,
+            uploadError: false,
+            pathError: false,
             header: {ContentType: 'application/x-www-form-urlencoded'},
             selectVal: ['checkbox', 'ID', '文档名称', '文档类型', '上传人', '上传时间', '备注', '操作'],
             selectedGroup: [],
@@ -215,31 +229,6 @@
                 {
                     type: 'text',
                     name: '文档类型',
-                    value: null
-                },
-                {
-                    type: 'time1',
-                    name: '上传人',
-                    value: null
-                },
-                {
-                    type: 'select',
-                    name: '上传时间',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '未通过'
-                        },
-                        {
-                            value: 2,
-                            label: '已通过'
-                        }
-                    ]
-                },
-                {
-                    type: 'text',
-                    name: '备注',
                     value: null
                 }
             ],
@@ -278,19 +267,21 @@
             },
             uploadUrl () {
                 return api.common.upload
+            },
+            url () {
+                return api.file.sdkDown
             }
         },
         methods: {
             getList () {
                 this.loading = true
                 this.$http.post(api.file.doc, {
-//                    page: this.page,
-//                    rows: this.limit, // 每页限制数量
-//                    time: this.searchOptions[2].value ? this.searchOptions[2].value / 1000 : null,
-//                    status: this.searchOptions[3].value,
-//                    name: this.searchOptions[0].value,
-//                    user: this.searchOptions[1].value,
-//                    msg: this.searchOptions[4].value
+                    page: this.page,
+                    limit: this.limit, // 每页限制数量
+                    options: {
+                        doc_name: this.searchOptions[0].value,
+                        doc_type: this.searchOptions[1].value
+                    }
                 }).then(res => {
                     this.loading = false
                     if (res.data.code === 1) {
@@ -311,10 +302,11 @@
             addItem () {
                 this.type = 'add'
                 this.dailogVal = {
-                    type: '',
-                    name: '',
-                    url: '',
-                    remark: ''
+                    doc_type: '',
+                    doc_name: '',
+                    upload_by: null,
+                    doc_path: '',
+                    doc_desc: ''
                 }
                 this.editShow = true
             },
@@ -325,16 +317,59 @@
                 this.editShow = true
             },
             submit () {
-                console.log(this.dailogVal)
-                this.editShow = false
+                console.log(1);
+                if (!this.dailogVal.doc_name) this.nameError = true
+                if (!this.dailogVal.doc_type) this.typeError = true
+                if (!this.dailogVal.doc_path) this.pathError = true
+                console.log(2);
+                if (this.nameError || this.typeError || this.pathError) {
+                    console.log(this.nameError, this.typeError, this.uploadError, this.pathError)
+                    return
+                } else {
+                    console.log(123);
+                    if (this.type === 'add') {
+                        this.$http.post(api.file.docAdd, this.dailogVal).then(res => {
+                            if (res.data.code === 1) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '添加成功'
+                                })
+                                this.editShow = false
+                                this.getList()
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
+                    } else {
+                        this.$http.post(api.file.docEdit, this.dailogVal).then(res => {
+                            if (res.data.code === 1) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '编辑成功'
+                                })
+                                this.editShow = false
+                                this.getList()
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
+                    }
+                }
             },
             reset () {
                 if (this.type === 'add') {
                     this.dailogVal = {
-                        type: '',
-                        name: '',
-                        url: '',
-                        remark: ''
+                        doc_type: '',
+                        doc_name: '',
+                        upload_by: null,
+                        doc_path: '',
+                        doc_desc: ''
                     }
                 } else {
                     this.dailogVal = JSON.parse(JSON.stringify(this.dailogVal1))
@@ -343,14 +378,14 @@
             delItem (id) {
                 id += ''
                 if (id) {
-                    this.$confirm(id.split(',').length>1 ? '此操作将批量删除选中图片, 是否继续?' : '此操作将删除该图片, 是否继续?', '提示', {
+                    this.$confirm(id.split(',').length>1 ? '此操作将批量删除选中文档, 是否继续?' : '此操作将删除该文档, 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
                         this.$http.get(api.file.docDel, {
                             params: {
-//                                id: id
+                                id: id
                             }
                         }).then(res => {
                             if (res.data.code === 1) {
@@ -374,6 +409,13 @@
                     })
                 }
             },
+//            download (id) {
+//                this.$http.get(api.file.sdkDown, {
+//                    params: {
+//                        id: id
+//                    }
+//                })
+//            },
             selectItem (id) {
                 if (this.selectedGroup.indexOf(id) !== -1) {
                     this.selectedGroup.splice(this.selectedGroup.indexOf(id), 1)
@@ -388,7 +430,22 @@
             refresh () {
                 this.getList()
             },
-            picUpload () {
+            picUpload (res) {
+                if (res.code === 1) {
+                    this.dailogVal.doc_path = res.data.url
+                } else if (res.code === -14) {
+                    window.sessionStorage.removeItem('authInfo')
+                    this.$router.replace({name: 'login'})
+                    this.$message({
+                        type: 'error',
+                        message: '登录信息已失效,请重新登录'
+                    })
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: '上传失败'
+                    })
+                }
             },
             uploadBefore () {
 

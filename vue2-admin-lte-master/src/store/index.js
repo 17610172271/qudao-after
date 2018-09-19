@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-    authInfo: window.localStorage.getItem('authInfo') ? JSON.parse(window.localStorage.getItem('authInfo')) : '',
+    authInfo: window.sessionStorage.getItem('authInfo') ? JSON.parse(window.sessionStorage.getItem('authInfo')) : '',
     newsNum: 0
   },
   getters:{

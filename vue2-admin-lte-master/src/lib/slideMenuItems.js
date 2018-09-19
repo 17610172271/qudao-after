@@ -83,6 +83,41 @@ module.exports = [
     },
     {
         type: 'tree',
+        icon: 'fa fa-gg-circle',
+        name: '财务管理',
+        // badge: {
+        //   type: 'Number',
+        //   data: 4
+        // },
+        items: [
+            //{
+            //    type: 'item',
+            //    icon: 'fa fa-circle-o',
+            //    name: '分账设置',
+            //    router: {
+            //        name: 'financial_setting'
+            //    }
+            //},
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '订单统计',
+                router: {
+                    name: 'financial_order'
+                }
+            },
+            {
+                type: 'item',
+                icon: 'fa fa-circle-o',
+                name: '收入统计',
+                router: {
+                    name: 'financial_income'
+                }
+            }
+        ]
+    },
+    {
+        type: 'tree',
         icon: 'fa fa-user-o',
         name: '权限管理',
         // badge: {
@@ -135,41 +170,7 @@ module.exports = [
             }
         ]
     },
-    {
-        type: 'tree',
-        icon: 'fa fa-gg-circle',
-        name: '财务管理',
-        // badge: {
-        //   type: 'Number',
-        //   data: 4
-        // },
-        items: [
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '分账设置',
-                router: {
-                    name: 'financial_setting'
-                }
-            },
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '订单统计',
-                router: {
-                    name: 'financial_order'
-                }
-            },
-            {
-                type: 'item',
-                icon: 'fa fa-circle-o',
-                name: '收入统计',
-                router: {
-                    name: 'financial_income'
-                }
-            }
-        ]
-    },
+
     {
         type: 'tree',
         icon: 'fa fa-address-book-o',

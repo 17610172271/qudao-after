@@ -40,16 +40,16 @@
                                     <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.name" v-show="selectVal.indexOf('代理商名称')!=-1">{{item.name}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.type" v-show="selectVal.indexOf('公司类型')!=-1">{{item.type}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.legal" v-show="selectVal.indexOf('法人')!=-1">{{item.legal}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.leader" v-show="selectVal.indexOf('负责人')!=-1">{{item.leader}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.leader_tel" v-show="selectVal.indexOf('负责人电话')!=-1">{{item.leader_tel}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.address" v-show="selectVal.indexOf('营业地址')!=-1">{{item.address}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.address1" v-show="selectVal.indexOf('街道地址')!=-1">{{item.address1}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.username" v-show="selectVal.indexOf('代理商名称')!=-1">{{item.username}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.company?item.company.company_type:''" v-show="selectVal.indexOf('公司类型')!=-1">{{item.company?item.company.company_type:''}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.company?item.company.legal:''" v-show="selectVal.indexOf('法人')!=-1">{{item.company?item.company.legal:''}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.company?item.company.linkman:''" v-show="selectVal.indexOf('负责人')!=-1">{{item.company?item.company.linkman:''}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.company?item.company.linkman_phone:''" v-show="selectVal.indexOf('负责人电话')!=-1">{{item.company?item.company.linkman_phone:''}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.company?item.company.business_address:''" v-show="selectVal.indexOf('营业地址')!=-1">{{item.company?item.company.business_address:''}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.company?item.company.place2:''" v-show="selectVal.indexOf('街道地址')!=-1">{{item.company?item.company.place2:''}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
                                     <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="openDetail(item)"><i class="fa fa-search-plus"></i></a>
-                                    <a href="javascript:;" title="编辑" class="candle-btn btn"><i class="fa fa-edit"></i></a>
+                                    <a href="javascript:;" title="编辑" class="candle-btn btn" @click.stop="editItem(item)"><i class="fa fa-edit"></i></a>
                                 </li>
                             </ul>
                         </div>
@@ -84,18 +84,18 @@
         <el-dialog
             title="详情"
             :visible.sync="detailShow"
-            custom-class="dialog-modal1  dailog-p-t-n"
+            custom-class="dialog-modal2  dailog-p-t-n"
             :modal-append-to-body="false"
             :close-on-click-modal="false">
-            <detail :data="dailogVal" :show="detailShow"></detail>
+            <detail :data="dailogVal" @close="detailShow=false" :show="detailShow"></detail>
         </el-dialog>
         <el-dialog
-            :title="type=='edit'?'编辑':'添加'"
+            title="编辑"
             :visible.sync="editShow"
-            custom-class="dialog-modal1  dailog-p-t-n"
+            custom-class="dialog-modal2  dailog-p-t-n"
             :modal-append-to-body="false"
             :close-on-click-modal="false">
-            <edit-page :data="dailogVal" :show="editShow"></edit-page>
+            <edit-page :data="dailogVal" :show="editShow" @close="editShow=false"></edit-page>
         </el-dialog>
     </div>
 </template>
@@ -110,7 +110,45 @@
     export default {
         data: () => ({
             data: {
-                rows: [],
+                rows: [
+                    {
+                        id: '',
+                        username: '代理商名称',
+                        nickname: '',
+                        address: '',
+                        email: '',
+                        mobile: '',
+                        tel: '',
+                        avatar: '',
+                        company: {
+                            agent_id: '',
+                            company_name: '',
+                            registration_number: '',
+                            license: '',
+                            legal: '',
+                            organizing_code: '',
+                            company_type: '',
+                            registration_address: '',
+                            business_address: '',
+                            payee: '',
+                            bank: '',
+                            linkman: '',
+                            linkman_phone: '',
+                            company_phone: '',
+                            taxpayer_code: '',
+                            founding_date: '',
+                            bank_account: '',
+                            open_bank: '',
+                            createtime: '',
+                            updatetime: '',
+                            place1: '',
+                            place2: '',
+                            registered_capital: '',
+                            business_term: '',
+                            business_scope: ''
+                        }
+                    }
+                ],
                 total: 1
             },
             detailShow: false,
@@ -127,36 +165,6 @@
                     type: 'text',
                     name: '代理商名称',
                     value: null
-                },
-                {
-                    type: 'text',
-                    name: '公司类型',
-                    value: null
-                },
-                {
-                    type: 'time1',
-                    name: '法人',
-                    value: null
-                },
-                {
-                    type: 'select',
-                    name: '负责人',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '未通过'
-                        },
-                        {
-                            value: 2,
-                            label: '已通过'
-                        }
-                    ]
-                },
-                {
-                    type: 'text',
-                    name: '负责人电话',
-                    value: null
                 }
             ],
             options: [10, 25, 50],
@@ -172,10 +180,10 @@
                     }
                 },
                 childNode: {
-                    name: '影片库',
+                    name: '代理商管理',
                     desc: '主要用来查看历史审核记录及其管理',
                     router: {
-                        name: 'resource_film'
+                        name: 'resource_agent'
                     }
                 }
             }
@@ -199,17 +207,16 @@
             getList () {
                 this.loading = true
                 this.$http.post(api.resource.agent, {
-//                    page: this.page,
-//                    rows: this.limit, // 每页限制数量
-//                    time: this.searchOptions[2].value ? this.searchOptions[2].value / 1000 : null,
-//                    status: this.searchOptions[3].value,
-//                    name: this.searchOptions[0].value,
-//                    user: this.searchOptions[1].value,
-//                    msg: this.searchOptions[4].value
+                    page: this.page,
+                    limit: this.limit, // 每页限制数量
+                    options: {
+                        username: this.searchOptions[0].value
+                    }
                 }).then(res => {
                     this.loading = false
                     if (res.data.code === 1) {
                         this.data = res.data.data
+                        console.log(this.data.rows[0])
                     } else {
                         this.data.rows = []
                         this.$message({
@@ -227,8 +234,12 @@
                 }
             },
             openDetail (item) {
-                this.detailId = item
+                this.dailogVal = item
                 this.detailShow = true
+            },
+            editItem (item) {
+                this.dailogVal = item
+                this.editShow = true
             },
             doSearch (data) {
                 this.searchOptions = data

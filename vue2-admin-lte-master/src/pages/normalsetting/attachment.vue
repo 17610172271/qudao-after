@@ -43,18 +43,18 @@
                                 </li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.id" v-show="selectVal.indexOf('ID')!=-1">{{item.id}}</li>
                                 <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('预览')!=-1">
-                                    <a class="block" :href="item.image" @click.stop target="_blank" style="max-height: 100px;overflow: hidden">
-                                        <img :src="item.image" alt="" width="70%">
+                                    <a class="block" :href="item.url" @click.stop target="_blank" style="max-height: 100px;overflow: hidden">
+                                        <img :src="item.url" alt="" width="70%">
                                     </a>
                                 </li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.image" v-show="selectVal.indexOf('物理路径')!=-1">{{item.image}}</li>
-                                <li class="col-xs-24 p-n over-omit" :title="item.width" v-show="selectVal.indexOf('宽度')!=-1">{{item.width}}</li>
-                                <li class="col-xs-24 p-n over-omit" :title="item.height" v-show="selectVal.indexOf('高度')!=-1">{{item.height}}</li>
-                                <li class="col-xs-24 p-n over-omit" :title="item.type" v-show="selectVal.indexOf('图片类型')!=-1">{{item.type}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.url" v-show="selectVal.indexOf('物理路径')!=-1">{{item.url}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.imagewidth" v-show="selectVal.indexOf('宽度')!=-1">{{item.imagewidth}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.imageheight" v-show="selectVal.indexOf('高度')!=-1">{{item.imageheight}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.imagetype" v-show="selectVal.indexOf('图片类型')!=-1">{{item.imagetype}}</li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.storage" v-show="selectVal.indexOf('存储引擎')!=-1">{{item.storage}}</li>
-                                <li class="col-xs-24 p-n over-omit" :title="item.size" v-show="selectVal.indexOf('文件大小')!=-1">{{item.size}}</li>
-                                <li class="col-xs-24 p-n over-omit" :title="item.mime" v-show="selectVal.indexOf('Mime类型')!=-1">{{item.mime}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.create_time" v-show="selectVal.indexOf('创建日期')!=-1">{{item.create_time}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="switchSize(item.filesize)" v-show="selectVal.indexOf('文件大小')!=-1">{{switchSize(item.filesize)}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.mimetype" v-show="selectVal.indexOf('Mime类型')!=-1">{{item.mimetype}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="format(item.createtime*1000)" v-show="selectVal.indexOf('创建日期')!=-1">{{format(item.createtime*1000)}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
                                     <a href="javascript:;" title="编辑" class="candle-btn btn" @click.stop="editItem(item)"><i class="fa fa-edit"></i></a>
                                     <a href="javascript:;" title="删除" class="candle-btn btn" @click.stop="delItem(item.id)"><i class="fa fa-trash"></i></a>
@@ -102,7 +102,7 @@
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">物理路径</div>
                 <div class="col-xs-12 col-md-10 line-height-40 p-r-80 relative">
-                    <el-input placeholder="请上传文件" v-model="dailogVal.image"></el-input>
+                    <el-input placeholder="请上传文件" v-model="dailogVal.url" disabled></el-input>
                     <el-upload
                         class=" btn-upload"
                         :action="uploadUrl"
@@ -116,62 +116,70 @@
                     </el-upload>
                 </div>
             </div>
+            <div class="m-b-md clear" v-if="dailogVal.url">
+                <div class="col-xs-12 col-sm-offset-2 col-sm-10">
+                    <a :href="dailogVal.pic" target="_blank" class="pic-container block over-hidden">
+                        <img :src="dailogVal.url" alt="" style="width: 100%;">
+                    </a>
+                    <a href="javascript:;" class="btn btn-danger btn-xs btn-trash center m-t-sm" style="width: 115px;"@click="dailogVal.url=''"><span class="fa fa-trash" style="color: #fff;"></span></a>
+                </div>
+            </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">宽度</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入SDK名称" v-model="dailogVal.width"></el-input>
+                    <el-input placeholder="请输入图片宽度" v-model="dailogVal.imagewidth"></el-input>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">高度</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入版本号" v-model="dailogVal.height"></el-input>
+                    <el-input placeholder="请输入图片高度" v-model="dailogVal.imageheight"></el-input>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">图片类型</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入支持平台" v-model="dailogVal.type"></el-input>
+                    <el-input placeholder="请输入图片类型" v-model="dailogVal.imagetype"></el-input>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">图片帧数</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入开发语言" v-model="dailogVal.type"></el-input>
+                    <el-input placeholder="请输入图片帧数" v-model="dailogVal.imageframes"></el-input>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">文件大小</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input v-model="dailogVal.size"></el-input>
+                    <el-input placeholder="请输入文件大小" v-model="dailogVal.filesize"></el-input>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name p-r-n">Mime类型</div>
                 <div class="col-xs-12 col-md-10">
-                    <el-input placeholder="请输入备注" v-model="dailogVal.mime"></el-input>
+                    <el-input placeholder="请输入Mime类型" v-model="dailogVal.mimetype"></el-input>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">透传数据</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input v-model="dailogVal.size"></el-input>
+                    <el-input placeholder="请输入透传数据" v-model="dailogVal.extparam"></el-input>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">上传时间</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input v-model="dailogVal.create_time"></el-input>
+                    <el-input placeholder="请输入上传时间" v-model="dailogVal.uploadtime"></el-input>
                 </div>
             </div>
             <div class="clear">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">存储引擎</div>
                 <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input v-model="dailogVal.storage"></el-input>
+                    <el-input placeholder="请输入存储引擎" v-model="dailogVal.storage"></el-input>
                 </div>
             </div>
             <div class="text-center m-t-lg">
-                <el-button type="primary" @click="submit">确 定</el-button>
+                <el-button type="primary" @click="dailogSubmit">确 定</el-button>
                 <el-button @click="reset">重 置</el-button>
             </div>
         </el-dialog>
@@ -200,33 +208,8 @@
             searchOptions: [
                 {
                     type: 'text',
-                    name: 'ID',
-                    value: null
-                },
-                {
-                    type: 'text',
                     name: '物理路径',
                     value: null
-                },
-                {
-                    type: 'time1',
-                    name: '宽度',
-                    value: null
-                },
-                {
-                    type: 'select',
-                    name: '高度',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '未通过'
-                        },
-                        {
-                            value: 2,
-                            label: '已通过'
-                        }
-                    ]
                 },
                 {
                     type: 'text',
@@ -274,14 +257,13 @@
         methods: {
             getList () {
                 this.loading = true
-                this.$http.get(api.normalsetting.attachment, {
-//                    page: this.page,
-//                    rows: this.limit, // 每页限制数量
-//                    time: this.searchOptions[2].value ? this.searchOptions[2].value / 1000 : null,
-//                    status: this.searchOptions[3].value,
-//                    name: this.searchOptions[0].value,
-//                    user: this.searchOptions[1].value,
-//                    msg: this.searchOptions[4].value
+                this.$http.post(api.normalsetting.attachment, {
+                    page: this.page,
+                    limit: this.limit, // 每页限制数量
+                    options: {
+                        url: this.searchOptions[0].value,
+                        imagetype: this.searchOptions[1].value
+                    }
                 }).then(res => {
                     this.loading = false
                     if (res.data.code === 1) {
@@ -305,7 +287,7 @@
                     }).then(() => {
                         this.$http.get(api.normalsetting.attachmentDel, {
                             params: {
-//                                id: id
+                                id: id
                             }
                         }).then(res => {
                             if (res.data.code === 1) {
@@ -332,26 +314,24 @@
             editItem (item) {
                 this.dailogVal = JSON.parse(JSON.stringify(item))
                 this.dailogVal1 = JSON.parse(JSON.stringify(item))
+                this.dailogVal.uploadtime = this.format(this.dailogVal.uploadtime * 1000)
+                this.dailogVal.filesize = this.switchSize(this.dailogVal.filesize)
                 this.editShow = true
             },
-            submit () {
-                console.log(this.dailogVal)
-                this.editShow = false
+            dailogSubmit () {
+                this.$http.post(api.normalsetting.attachEdit, this.dailogVal).then(res => {
+                    if (res.data.code === 1) {
+                        this.$message({
+                            type: 'success',
+                            message: '编辑成功'
+                        })
+                        this.editShow = false
+                        this.getList()
+                    }
+                })
             },
             reset () {
-                if (this.type === 'add') {
-                    this.dailogVal = {
-                        name: '',
-                        version: '',
-                        platform: '',
-                        language: '',
-                        url: '',
-                        size: '',
-                        introduction: ''
-                    }
-                } else {
-                    this.dailogVal = JSON.parse(JSON.stringify(this.dailogVal1))
-                }
+                this.dailogVal = JSON.parse(JSON.stringify(this.dailogVal1))
             },
             selectItem (id) {
                 if (this.selectedGroup.indexOf(id) !== -1) {
@@ -367,7 +347,26 @@
             refresh () {
                 this.getList()
             },
-            picUpload () {
+            picUpload (res) {
+                if (res.code === 1) {
+                    this.dailogVal.url = res.data.url
+                    this.dailogVal.filesize = this.switchSize(res.data.size)
+                    this.dailogVal.imagewidth = res.data.sizeinfo.split('*')[0]
+                    this.dailogVal.imageheight = res.data.sizeinfo.split('*')[1]
+                    this.dailogVal.uploadtime = this.format(Date.parse(new Date()))
+                } else if (res.code === -14) {
+                    window.sessionStorage.removeItem('authInfo')
+                    this.$router.replace({name: 'login'})
+                    this.$message({
+                        type: 'error',
+                        message: '登录信息已失效,请重新登录'
+                    })
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: '图片上传失败'
+                    })
+                }
             },
             uploadBefore () {
             },
@@ -376,6 +375,21 @@
             },
             delPage () {
                 if (this.page > 1) this.page -= 1
+            },
+            switchSize (size) {
+                var format_text = ['Kb', 'Mb', 'Gb', 'Tb',];
+                if (size === '') return '';
+                size = parseInt(size);
+                var i = 0;
+                while (size >= 1024) {
+                    size /= 1024;
+                    i++;
+                }
+                if (size == 0) {
+                    return '0 Kb';
+                } else {
+                    return size.toFixed(2) + ' ' + format_text[i];
+                }
             },
             format: format
         },

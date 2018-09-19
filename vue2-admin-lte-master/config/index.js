@@ -42,6 +42,13 @@ module.exports = {
                     '^/api': '/xg_channel_api/ApiAdmin/public/api'
                 }
             },
+            '/uploads': {
+                target: 'http://192.168.58.57',
+                        changeOrigin: true,
+                        pathRewrite: {
+                    '^/uploads': '/xg_channel_api/ApiAdmin/public/uploads'
+                }
+            },
             '/assets': {
                 target: 'http://192.168.58.57',
                 changeOrigin: true,

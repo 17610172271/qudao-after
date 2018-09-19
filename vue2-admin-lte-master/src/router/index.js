@@ -198,7 +198,7 @@ const router = new Router({
 })
 //router.beforeEach((to, from, next) => {
 //    // 判断去往的页面是否需要登录
-//    if (to.matched.some(record => record.meta.requreAuth) && !window.localStorage.getItem('Auth')) {
+//    if (to.matched.some(record => record.meta.requreAuth) && !window.sessionStorage.getItem('Auth')) {
 //        next({
 //            path: '/login',
 //            query: {from: to.fullPath}

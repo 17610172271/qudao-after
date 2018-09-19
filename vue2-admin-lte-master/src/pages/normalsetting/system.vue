@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <div class="p-lg appli-container" style="position: relative;" v-loading="loading">
+        <div class="p-lg system-container" style="position: relative;" v-loading="loading">
             <sub-header :list="subNavList"></sub-header>
             <div class="page-container">
                 <div class="m-t-sm">
@@ -47,7 +47,9 @@
                                             <ul class="clear m-b-sm" v-for="(item, index) in data.languages.value">
                                                 <li class="pull-left col-xs-5"><el-input v-model="item.name"></el-input></li>
                                                 <li class="pull-left col-xs-5 p-l-n"><el-input v-model="item.value"></el-input></li>
-                                                <li class="pull-left col-xs-2 p-n"><a href="javascript:;" @click="delLanguage(index)" title="删除" class="btn bg-red text-white"><i class="fa fa-trash"></i></a></li>
+                                                <li class="pull-left col-xs-2 p-n">
+                                                    <a href="javascript:;" @click="delLanguage(index)" title="删除" class="btn bg-red text-white"><i class="fa fa-trash" style="color: #fff;"></i></a>
+                                                </li>
                                             </ul>
                                             <div class=" p-l-15"><a href="javascript:;" @click="addLanguage" title="追加" class="btn bg-blue1 text-white">追加</a></div>
                                         </div>
@@ -67,7 +69,7 @@
                                     <div class="m-t-lg row">
                                         <div class="col-xs-offset-3 col-xs-6">
                                             <a href="javascript:;" class="btn bg-blue1 text-white m-r-sm" @click="normalSubmit">确定</a>
-                                            <a href="javascript:;" class="btn btn-default">重置</a>
+                                            <a href="javascript:;" class="btn btn-default" @click="reset">重置</a>
                                         </div>
                                     </div>
                                 </div>
@@ -137,13 +139,16 @@
                                     </div>
                                     <div class="bg-f9 row p-v-sm line-height-40">
                                         <div class="col-xs-3">发件人邮箱</div>
-                                        <div class="col-xs-8"><el-input v-model="data.mail_from.value" placeholder="请填写发件人邮箱" style="max-width: 500px;"></el-input></div>
+                                        <div class="col-xs-8">
+                                            <el-input v-model="data.mail_from.value" placeholder="请填写发件人邮箱" style="max-width: 500px;"></el-input>
+                                            <!--<a href="javascript:;" class="btn bg-blue1 text-white emai-test-btn" @click="testEmail">测试邮件</a>-->
+                                        </div>
                                         <!--<div class="col-xs-3">{$site.mail_from}</div>-->
                                     </div>
                                     <div class="m-t-lg row">
                                         <div class="col-xs-offset-3 col-xs-8">
                                             <a href="javascript:;" class="btn bg-blue1 text-white m-r-sm" @click="emailSubmit">确定</a>
-                                            <a href="javascript:;" class="btn btn-default">重置</a>
+                                            <a href="javascript:;" class="btn btn-default" @click="reset">重置</a>
                                         </div>
                                     </div>
                                 </div>
@@ -226,17 +231,17 @@
         },
         methods: {
             getData () {
-//                this.loading = true
-//                this.$http.get(api.setting.systemDetail ).then(res => {
-//                    this.loading = false
-//                    if (res.data.code === 1) {
-//                        this.data = res.data.data
-//                    }
-//                })
+                this.loading = true
+                this.$http.post(api.normalsetting.system).then(res => {
+                    this.loading = false
+                    if (res.data.code === 1) {
+                        this.data = res.data.data
+                    }
+                })
             },
             normalSubmit () {
                 this.loading = true
-                this.$http.post(api.setting.systemEdit, {
+                this.$http.post(api.normalsetting.systemEdit, {
                     data: [
                         {
                             id: this.data.name.id,
@@ -269,6 +274,14 @@
                         {
                             id: this.data.fixedpage.id,
                             value: this.data.fixedpage.value
+                        },
+                        {
+                            id: this.data.copyright.id,
+                            value: this.data.copyright.value
+                        },
+                        {
+                            id: this.data.copyright_url.id,
+                            value: this.data.copyright_url.value
                         }
                     ]
                 }).then(res => {
@@ -288,7 +301,7 @@
             },
             emailSubmit () {
                 this.loading = true
-                this.$http.post(api.setting.systemEdit, {
+                this.$http.post(api.normalsetting.systemEdit, {
                     data: [
                         {
                             id: this.data.mail_type.id,
@@ -339,6 +352,35 @@
                     name: '',
                     value: ''
                 })
+            },
+            testEmail () {
+                if (this.data.mail_from.value) {
+                    this.$http.get(api.normalsetting.emailTest, {
+                        params: {
+                            email: this.data.mail_from.value
+                        }
+                    }).then(res => {
+                        if (res.data.code === 1) {
+                            this.$message({
+                                type: 'success',
+                                message: '邮件发送成功'
+                            })
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: res.data.msg
+                            })
+                        }
+                    })
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入邮箱'
+                    })
+                }
+            },
+            reset () {
+                this.getData()
             },
             delLanguage (index) {
                 this.data.languages.value.splice(index, 1)

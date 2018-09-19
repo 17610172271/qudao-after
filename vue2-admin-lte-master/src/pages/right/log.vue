@@ -55,8 +55,8 @@
                                 <li class="col-xs-1 p-n over-omit" :title="item.useragent" v-show="selectVal.indexOf('Browser')!=-1">
                                     {{item.useragent}}
                                 </li>
-                                <li class="col-xs-2 p-n over-omit" :title="item.createtime" v-show="selectVal.indexOf('创建时间')!=-1">
-                                    {{item.createtime}}
+                                <li class="col-xs-2 p-n over-omit" :title="(item.createtime*1000)" v-show="selectVal.indexOf('创建时间')!=-1">
+                                    {{format(item.createtime*1000)}}
                                 </li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
                                     <a href="javascript:;" title="详情" class="candle-btn btn"
@@ -139,7 +139,7 @@
                 </ul>
                 <ul class="clear bg-f9">
                     <li class="col-xs-3 line-height-40 attr-edit-name">创建时间</li>
-                    <li class="col-xs-9 line-height-40">{{dailogVal.createtime}}</li>
+                    <li class="col-xs-9 line-height-40">{{format(dailogVal.createtime*1000)}}</li>
                 </ul>
             </div>
             <div class="text-center m-t-lg">
@@ -187,26 +187,6 @@
                     type: 'text',
                     name: '标题',
                     value: null
-                },
-                {
-                    type: 'text',
-                    name: 'Url',
-                    value: null
-                },
-                {
-                    type: 'text',
-                    name: 'IP',
-                    value: null
-                },
-//                {
-//                    type: 'text',
-//                    name: 'Browser',
-//                    value: null
-//                },
-                {
-                    type: 'time1',
-                    name: '创建时间',
-                    value: null
                 }
             ],
             options: [10, 25, 50],
@@ -251,11 +231,7 @@
                     limit: this.limit,
                     options: {
                         username: this.searchOptions[0].value,
-                        title: this.searchOptions[1].value,
-                        url: this.searchOptions[2].value,
-                        ip: this.searchOptions[3].value,
-//                        browser: this.searchOptions[4].value,
-                        createtime: this.searchOptions[4].value ? this.searchOptions[4].value / 1000 : null
+                        title: this.searchOptions[1].value
                     }
                 }).then(res => {
                     this.selectedGroup = []

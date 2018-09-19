@@ -11,7 +11,7 @@
                 <div class="pull-left m-r-sm opacity-8" title="列">
                     <select-checkbox :list="showList" v-model="selectVal" style="width: 60px;"></select-checkbox>
                 </div>
-                <div class="pull-left btn opacity-8 search-btn" :class="{'bg-eee': searchShow}" @click="searchShow = !this.searchShow">
+                <div class="pull-left btn opacity-8 search-btn" :class="{'bg-eee': searchShow}" @click="searchShow = !searchShow">
                     <i class="fa fa-search" title="搜索"></i>
                 </div>
             </div>
@@ -33,17 +33,17 @@
                     <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                 </li>
                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                <li :title="item.name" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('应用名称')!=-1">{{item.name}}</li>
-                <li :title="item.type" class="col-xs-24 p-n over-omit" v-show="selectVal.indexOf('应用类别')!=-1">{{item.type}}</li>
-                <li :title="item.agent" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('代理商')!=-1">{{item.agent}}</li>
-                <li :title="item.bind_time" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('绑定时间')!=-1">{{item.bind_time}}</li>
-                <li :title="item.check_time" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('审核时间')!=-1">{{item.check_time}}</li>
-                <li :title="item.status" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
-                <li :title="item.remark" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('备注')!=-1">{{item.remark}}</li>
+                <li :title="item.webname" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('应用名称')!=-1">{{item.webname}}</li>
+                <li :title="item.apptype" class="col-xs-24 p-n over-omit" v-show="selectVal.indexOf('应用类别')!=-1">{{item.apptype}}</li>
+                <li :title="item.agent_name" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('代理商')!=-1">{{item.agent_name}}</li>
+                <li :title="format(item.bind_time*1000)" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('绑定时间')!=-1">{{format(item.bind_time*1000)}}</li>
+                <li :title="format(item.check_time*1000)" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('审核时间')!=-1">{{format(item.check_time*1000)}}</li>
+                <li :title="item.audit_status" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1" :class="{'text-red': item.audit_status=='未通过','text-orange': item.audit_status=='未审核','text-green': item.audit_status=='已通过'}">{{item.audit_status}}</li>
+                <li :title="item.audit_desc" class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('备注')!=-1">{{item.audit_desc}}</li>
                 <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
                     <a href="javascript:;" title="通过" class="candle-btn btn" @click.stop="checkFilm('pass', item.id)"><i class="fa fa-check"></i></a>
                     <a href="javascript:;" title="不通过" class="candle-btn btn" @click.stop="checkFilm('notpass', item.id)"><i class="fa fa-close"></i></a>
-                    <a href="javascript:;" :title="item.status==='已上线'?'解冻':'冻结'" class="candle-btn btn" @click.stop="doFreeze(item)"><i class="fa" :class="item.status==='已上线' ? 'fa-lightbulb-o' : 'fa-ban'"></i></a>
+                    <a href="javascript:;" :title="item.is_freeze===1?'解冻':'冻结'" class="candle-btn btn" @click.stop="doFreeze(item)"><i class="fa" :class="item.is_freeze===1 ? 'fa-lightbulb-o' : 'fa-ban'"></i></a>
                     <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="openDetail(item)"><i class="fa fa-search-plus"></i></a>
                     <a href="javascript:;" title="审核历史" class="candle-btn btn" @click="openHistory(item.id)"><i class="fa fa-history"></i></a>
                 </li>
@@ -85,13 +85,14 @@
             :visible.sync="historyDailog"
             custom-class="dialog-modal1"
             :close-on-click-modal="false">
-            <history :data="history_id"></history>
+            <history :id="history_id"></history>
         </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
     import SelectCheckbox from '@/components/SelectCheckbox'
     import SearchIpts from '../common/searchIpts'
+    import format from '@/tools/format'
     import Detail from './detail.vue'
     import History from './history.vue'
     import api from '@/api'
@@ -122,47 +123,6 @@
                     type: 'text',
                     name: '应用名称',
                     value: ''
-                },
-                {
-                    type: 'select',
-                    name: '应用类别',
-                    value: ''
-                },
-                {
-                    type: 'texi',
-                    name: '代理商',
-                    value: ''
-                },
-                {
-                    type: 'time',
-                    name: '绑定时间',
-                    value: ''
-                },
-                {
-                    type: 'time',
-                    name: '审核时间',
-                    value: '',
-                    options: []
-                },
-                {
-                    type: 'select',
-                    name: '状态',
-                    value: '',
-                    options: [
-                        {
-                            value: 1,
-                            label: '已上线'
-                        },
-                        {
-                            value: 2,
-                            label: '已下线'
-                        }
-                    ]
-                },
-                {
-                    type: 'text',
-                    name: '备注',
-                    value: ''
                 }
             ],
             options: [10, 25, 50],
@@ -182,21 +142,12 @@
             getList () {
                 this.loading = true
                 this.$http.post(api.application.list, {
-//                    page: this.page,
-//                    limit: this.limit,
-//                    type: this.$route.query.type || '3',
-//                    options: {
-//                        title: this.searchOptions[0].value,
-//                        length: this.searchOptions[1].value,
-//                        language: this.searchOptions[2].value,
-//                        director: this.searchOptions[3].value,
-//                        actor: this.searchOptions[4].value,
-//                        class: this.searchOptions[5].value,
-//                        release_date: this.searchOptions[6].value,
-//                        examine: this.searchOptions[7].value,
-//                        status: this.searchOptions[8].value,
-//                        reason: this.searchOptions[9].value
-//                    }
+                    page: this.page,
+                    limit: this.limit,
+                    type: this.$route.query.type || 'all',
+                    options: {
+                        webname: this.searchOptions[0].value
+                    }
                 }).then(res => {
                     this.selectedGroup = []
                     this.loading = false
@@ -211,6 +162,7 @@
                     }
                 })
             },
+            format: format,
             checkFilm(type, id) {
                 if (type === 'pass') {
                     this.$confirm('您将让该应用通过审核', '提示', {
@@ -218,9 +170,9 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        this.$http.get(api.application.checkApp, {
+                        this.$http.get(api.application.checkPass, {
                             params: {
-//                                id: id
+                                id: id
                             }
                         }).then(res => {
                             if (res.data.code === 1) {
@@ -244,11 +196,9 @@
                         cancelButtonText: '取消',
                     }).then(({ value }) => {
                         if (value) {
-                            this.$http.get(api.application.checkApp, {
-                                params: {
-//                                    id: id,
-//                                    reason: value
-                                }
+                            this.$http.post(api.application.checkNotPass, {
+                                id: id,
+                                audit_desc: value
                             }).then(res => {
                                 if (res.data.code === 1) {
                                     this.$message({
@@ -278,7 +228,7 @@
                 }
             },
             doFreeze (item) {
-              if (item.status === '已上线') {
+              if (item.is_freeze === 1) {
                   this.$confirm('您将解冻该应用', '提示', {
                       confirmButtonText: '确定',
                       cancelButtonText: '取消',
@@ -286,7 +236,7 @@
                   }).then(() => {
                     this.$http.get(api.application.freeze, {
                         params: {
-//                            id: item.id
+                            id: item.id
                         }
                     }).then(res => {
                         if (res.data.code === 1) {
@@ -294,7 +244,7 @@
                                 type: 'success',
                                 message: '操作成功'
                             })
-                            item.status = '已下线'
+                            item.is_freeze = 0
                         }
                     })
                   })
@@ -306,7 +256,7 @@
                   }).then(() => {
                       this.$http.get(api.application.freeze, {
                           params: {
-//                            id: item.id
+                            id: item.id
                           }
                       }).then(res => {
                           if (res.data.code === 1) {
@@ -314,7 +264,7 @@
                                   type: 'success',
                                   message: '操作成功'
                               })
-                              item.status = '已上线'
+                              item.is_freeze = 1
                           }
                       })
                   })

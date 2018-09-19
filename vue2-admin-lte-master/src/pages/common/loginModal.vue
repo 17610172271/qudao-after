@@ -48,7 +48,7 @@ export default {
 				  password: this.password
 			  }).then(res => {
 				  if (res.data.code === 1) {
-					  window.localStorage.setItem('authInfo', JSON.stringify(res.data.data))
+					  window.sessionStorage.setItem('authInfo', JSON.stringify(res.data.data))
 					  this.setAuthInfo(res.data.data)
 					  this.$router.push({name: 'home'})
 				  } else {

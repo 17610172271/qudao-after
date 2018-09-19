@@ -36,6 +36,18 @@
                     </el-select>
                 </div>
             </div>
+            <div v-if="item.type=='time1'">
+                <div class="col-xs-4 p-n search-name">{{item.name}}</div>
+                <div class="col-xs-8 p-n">
+                    <el-date-picker
+                        v-model="item.value"
+                        type="date"
+                        value-format="timestamp"
+                        style="width: 100%;"
+                        placeholder="选择日期">
+                    </el-date-picker>
+                </div>
+            </div>
         </div>
         <div class="search-btns col-xs-4 col-sm-4 col-md-4 col-lg-3 m-b-sm p-l-n text-center">
             <a href="javascript:;" class="btn bg-blue1 text-white app-add m-r-sm" @click="submit">提交</a>

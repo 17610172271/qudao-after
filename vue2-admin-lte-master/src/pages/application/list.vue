@@ -5,18 +5,18 @@
             <div class="page-container">
                 <div class="m-t-sm">
                     <el-tabs type="card" v-model="tab" @tab-click="handleClick">
-                        <el-tab-pane label="全部" name="3">
+                        <el-tab-pane label="全部" name="all">
 
-                            <tab v-if="tab==='3'"></tab>
+                            <tab v-if="tab==='all'"></tab>
                         </el-tab-pane>
-                        <el-tab-pane label="未审核" name="0">
-                            <tab v-if="tab==='0'"></tab>
+                        <el-tab-pane label="未审核" name="unaudited">
+                            <tab v-if="tab==='unaudited'"></tab>
                         </el-tab-pane>
-                        <el-tab-pane label="未通过" name="1">
-                            <tab v-if="tab==='1'"></tab>
+                        <el-tab-pane label="未通过" name="nopass">
+                            <tab v-if="tab==='nopass'"></tab>
                         </el-tab-pane>
-                        <el-tab-pane label="已通过" name="2">
-                            <tab v-if="tab==='2'"></tab>
+                        <el-tab-pane label="已通过" name="pass">
+                            <tab v-if="tab==='pass'"></tab>
                         </el-tab-pane>
                     </el-tabs>
                 </div>
@@ -32,7 +32,7 @@
     export default {
         data: () => ({
             data: '',
-            tab: '3',
+            tab: 'all',
             subNavList: {
                 parentNode: {
                     name: '应用管理',

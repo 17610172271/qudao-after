@@ -139,14 +139,11 @@
         methods: {
             getList () {
                 this.loading = true
-                this.$http.get(api.setting.newsList, {
-                    params: {
-//                        offset: this.offset,
-//                        limit: this.limit,
-//                        token: this.$bus.token,
-//                        webname: this.searchName,
-//                        audit_status: this.status ? this.status : null,
-//                        bind_time: this.calendarVal
+                this.$http.post(api.setting.newsList, {
+                    page: this.page,
+                    limit: this.limit,
+                    options: {
+                        title: this.searchOptions[0].value
                     }
                 }).then(res => {
                     this.selectedGroup = []
@@ -167,7 +164,7 @@
                 if (id) {
                     this.$http.get(api.setting.newsRead, {
                         params: {
-//                        id: id
+                            id: id
                         }
                     }).then(res => {
                         if (res.data.code === 1) {
@@ -201,7 +198,7 @@
                     }).then(() => {
                         this.$http.get(api.setting.newsDel, {
                             params: {
-//                            id: id
+                                id: id
                             }
                         }).then(res => {
                             if (res.data.code === 1) {

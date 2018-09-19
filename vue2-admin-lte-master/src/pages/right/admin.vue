@@ -136,7 +136,7 @@
                 <div class="clear m-b-sm">
                     <div class="col-xs-12 col-sm-2 line-height-40 text-right attr-edit-name p-n">手机号:</div>
                     <div class="col-xs-12 col-sm-8">
-                        <el-input placeholder="请输入手机号" v-model="dailogVal.mobile" @blur="validateTel"></el-input>
+                        <el-input placeholder="请输入手机号" v-model="dailogVal.phone" @blur="validateTel"></el-input>
                         <p v-if="telError" class="text-red"><span class="fa fa-close m-r-xs"></span>请输入有效的手机号码</p>
                     </div>
                 </div>
@@ -184,11 +184,11 @@
             centerDialogVisible: false,
             type: 'add',
             dailogVal: {
-                group: null,
+                group: 100,
                 username: null,
                 email: null,
                 nickname: null,
-                mobile: null,
+                phone: null,
                 password: null,
                 loginfailure: null,
                 status: 'normal'
@@ -218,26 +218,6 @@
                 {
                     type: 'text',
                     name: 'E-mail',
-                    value: null
-                },
-                {
-                    type: 'select',
-                    name: '状态',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '已上线'
-                        },
-                        {
-                            value: 2,
-                            label: '已下线'
-                        }
-                    ]
-                },
-                {
-                    type: 'time',
-                    name: '最后登录',
                     value: null
                 }
             ],
@@ -292,9 +272,7 @@
                     options: {
                         username: this.searchOptions[0].value,
                         nickname: this.searchOptions[1].value,
-                        email: this.searchOptions[2].value,
-                        status: this.searchOptions[3].value,
-                        logintime: this.searchOptions[4].value ? this.searchOptions[4].value / 1000 : null
+                        email: this.searchOptions[2].value
                     }
                 }).then(res => {
                     this.selectedGroup = []
@@ -387,11 +365,11 @@
             },
             resetData () {
                 this.dailogVal = {
-                    group: null,
+                    group: 100,
                     username: null,
                     email: null,
                     nickname: null,
-                    mobile: null,
+                    phone: null,
                     password: null,
                     login_default: null,
                     status: 'normal'
@@ -449,7 +427,7 @@
 
                 if (this.type === 'add') {
                     if (this.groupError || this.usernameError || this.emailError || this.nicknameError || this.telError || this.psdError) return
-                    if (this.dailogVal.username && this.dailogVal.group && this.dailogVal.email && this.dailogVal.nickname && this.dailogVal.mobile
+                    if (this.dailogVal.username && this.dailogVal.group && this.dailogVal.email && this.dailogVal.nickname && this.dailogVal.phone
                         && this.dailogVal.password && this.dailogVal.status) {
                         this.dailogLoading = true
                         this.$http.post(api.right.adminAdd, {
@@ -458,7 +436,7 @@
                                 username: this.dailogVal.username,
                                 email: this.dailogVal.email,
                                 password: this.dailogVal.password,
-                                mobile: this.dailogVal.mobile,
+                                phone: this.dailogVal.phone,
                                 status: this.dailogVal.status
                             },
                             group: this.dailogVal.group
@@ -486,7 +464,7 @@
                     }
                 } else {
                     if (this.groupError || this.usernameError || this.emailError || this.nicknameError || this.telError) return
-                    if (this.dailogVal.username && this.dailogVal.group && this.dailogVal.email && this.dailogVal.nickname && this.dailogVal.mobile && this.dailogVal.status) {
+                    if (this.dailogVal.username && this.dailogVal.group && this.dailogVal.email && this.dailogVal.nickname && this.dailogVal.phone && this.dailogVal.status) {
                         this.dailogLoading = true
                         this.$http.post(api.right.adminEdit, {
                             row: {
@@ -494,7 +472,7 @@
                                 username: this.dailogVal.username,
                                 email: this.dailogVal.email,
                                 password: $.trim(this.dailogVal.password) ? $.trim(this.dailogVal.password) : '',
-                                mobile: this.dailogVal.mobile,
+                                phone: this.dailogVal.phone,
                                 loginfailure: this.dailogVal.loginfailure,
                                 status: this.dailogVal.status
                             },
@@ -547,7 +525,7 @@
                 }
             },
             validateTel () {
-                if (!this.dailogVal.mobile || !/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/.test(this.dailogVal.mobile)) {
+                if (!this.dailogVal.phone || !/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/.test(this.dailogVal.phone)) {
                     this.telError = true
                 } else {
                     this.telError = false

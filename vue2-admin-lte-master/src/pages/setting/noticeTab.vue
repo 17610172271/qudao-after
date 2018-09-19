@@ -33,13 +33,13 @@
                         <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                     </li>
                     <li class="col-xs-1 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                    <li class="col-xs-3 p-n over-omit" v-show="selectVal.indexOf('标题')!=-1">{{item.title}}</li>
-                    <li class="col-xs-2 p-n over-omit" v-show="selectVal.indexOf('发送时间')!=-1">{{item.send_time}}</li>
-                    <li class="col-xs-1 p-n over-omit" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
+                    <li class="col-xs-3 p-n over-omit" :title="item.title" v-show="selectVal.indexOf('标题')!=-1">{{item.title}}</li>
+                    <li class="col-xs-2 p-n over-omit" :title="format(item.create_time*1000)" v-show="selectVal.indexOf('发送时间')!=-1">{{format(item.create_time*1000)}}</li>
+                    <li class="col-xs-1 p-n over-omit" :title="item.read_status==1?'已读':'未读'" :class="{'text-red': item.read_status==0,'text-green': item.read_status==1}" v-show="selectVal.indexOf('状态')!=-1">{{item.read_status==1?'已读':'未读'}}</li>
                     <li class="col-xs-2 p-n" v-show="selectVal.indexOf('操作')!=-1">
-                        <a href="javascript:;" title="标记已读" class="candle-btn btn" @click="readItem(item.id)"><i class="fa fa-check-square-o"></i></a>
-                        <a href="javascript:;" title="详情" class="candle-btn btn" @click="showDetail(item.id)"><i class="fa fa-search-plus"></i></a>
-                        <a href="javascript:;" title="删除" class="candle-btn btn" @click="delItem(item.id)"><i class="fa fa-trash"></i></a>
+                        <a href="javascript:;" title="标记已读" class="candle-btn btn" @click.stop="readItem(item.id)"><i class="fa fa-check-square-o"></i></a>
+                        <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="showDetail(item)"><i class="fa fa-search-plus"></i></a>
+                        <a href="javascript:;" title="删除" class="candle-btn btn" @click.stop="delItem(item.id)"><i class="fa fa-trash"></i></a>
                     </li>
                 </ul>
             </div>
@@ -67,6 +67,39 @@
                 </el-pagination>
             </div>
         </div>
+        <el-dialog
+            title="详情"
+            :visible.sync="detailShow"
+            custom-class="dialog-modal1"
+            :modal-append-to-body="false"
+            :close-on-click-modal="false">
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name text-bold">公告标题</div>
+                <div class="col-xs-12 col-md-10 line-height-40">{{dailogVal.title}}</div>
+            </div>
+            <div class="clear bg-f9">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name text-bold">公告内容</div>
+                <div class="col-xs-12 col-md-10 p-v-sm">
+                    {{dailogVal.content}}
+                </div>
+            </div>
+            <div class="clear">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name text-bold">阅读状态</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{dailogVal.read_status==1?'已读':'未读'}}
+                </div>
+            </div>
+            <div class="clear bg-f9">
+                <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name text-bold">发送时间</div>
+                <div class="col-xs-12 col-md-10 line-height-40">
+                    {{format(dailogVal.create_time*1000)}}
+                </div>
+            </div>
+            <div class="text-center m-t-lg">
+                <el-button type="primary" @click="detailShow = false">确 定</el-button>
+                <!--<el-button @click="centerDialogVisible = false">取 消</el-button>-->
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -81,6 +114,8 @@
                 total: 1
             },
             loading: false,
+            dailogVal: {},
+            detailShow: false,
             selectVal: ['checkbox', '序号', '标题', '发送时间', '状态', '操作'],
             showList: ['checkbox', '序号', '标题', '发送时间', '状态', '操作'],
             selectedGroup: [],
@@ -89,11 +124,6 @@
                 {
                     type: 'text',
                     name: '标题',
-                    value: null
-                },
-                {
-                    type: 'time',
-                    name: '发送时间',
                     value: null
                 },
                 {
@@ -132,14 +162,12 @@
         methods: {
             getList () {
                 this.loading = true
-                this.$http.get(api.setting.noticeList, {
-                    params: {
-//                        offset: this.offset,
-//                        limit: this.limit,
-//                        token: this.$bus.token,
-//                        webname: this.searchName,
-//                        audit_status: this.status ? this.status : null,
-//                        bind_time: this.calendarVal
+                this.$http.post(api.setting.noticeList, {
+                    offset: this.offset,
+                    limit: this.limit,
+                    options: {
+                        title: this.searchOptions[0].value,
+                        read_status: this.searchOptions[1].value
                     }
                 }).then(res => {
                     this.selectedGroup = []
@@ -160,7 +188,7 @@
                 if (id) {
                     this.$http.get(api.setting.noticeListRead, {
                         params: {
-//                        id: id
+                            id: id
                         }
                     }).then(res => {
                         if (res.data.code === 1) {
@@ -183,7 +211,24 @@
                     })
                 }
             },
-            showDetail (id) {},
+            showDetail (item) {
+                this.$http.get(api.setting.noticeListRead, {
+                    params: {
+                        id: item.id
+                    }
+                }).then(res => {
+                    if (res.data.code === 1) {
+                        this.getList()
+                    } else {
+                        this.$message({
+                            type: 'warning',
+                            message: res.data.msg
+                        })
+                    }
+                })
+                this.dailogVal = item
+                this.detailShow = true
+            },
             delItem (id) {
                 if (id) {
                     this.$confirm('此操作将永久删除该消息, 是否继续?', '提示', {
@@ -193,7 +238,7 @@
                     }).then(() => {
                         this.$http.get(api.setting.noticeListDel, {
                             params: {
-//                            id: id
+                                id: id
                             }
                         }).then(res => {
                             if (res.data.code === 1) {

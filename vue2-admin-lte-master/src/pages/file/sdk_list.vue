@@ -26,7 +26,7 @@
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox v-model="selectAll">全选</el-checkbox>
                                 </li>
-                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('ID')!=-1">ID</li>
+                                <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">序号</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('SDK名称')!=-1">SDK名称</li>
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('支持平台')!=-1">支持平台</li>
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('开发语言')!=-1">开发语言</li>
@@ -39,17 +39,17 @@
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('checkbox')!=-1">
                                     <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
-                                <li class="col-xs-24 p-n over-omit" :title="item.id" v-show="selectVal.indexOf('ID')!=-1">{{item.id}}</li>
+                                <li class="col-xs-24 p-n over-omit" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
                                 <li class="col-xs-1 p-n over-omit" :title="item.name" v-show="selectVal.indexOf('SDK名称')!=-1">{{item.name}}</li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.platform" v-show="selectVal.indexOf('支持平台')!=-1">{{item.platform}}</li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.language" v-show="selectVal.indexOf('开发语言')!=-1">{{item.language}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.update_time" v-show="selectVal.indexOf('更新时间')!=-1">{{item.update_time}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="format(item.create_time*1000)" v-show="selectVal.indexOf('更新时间')!=-1">{{format(item.create_time*1000)}}</li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.size" v-show="selectVal.indexOf('文件大小')!=-1">{{item.size}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.introduction" v-show="selectVal.indexOf('简介说明')!=-1">{{item.introduction}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.intro" v-show="selectVal.indexOf('简介说明')!=-1">{{item.intro}}</li>
                                 <li class="col-xs-1 p-n" v-show="selectVal.indexOf('操作')!=-1">
                                     <a href="javascript:;" title="详情" class="candle-btn btn" @click.stop="openDetail(item)"><i class="fa fa-search-plus"></i></a>
                                     <a href="javascript:;" title="编辑" class="candle-btn btn" @click.stop="editItem(item)"><i class="fa fa-edit"></i></a>
-                                    <a :href="item.url" title="下载" class="candle-btn btn"  @click.stop><i class="fa fa-download"></i></a>
+                                    <a :href="url + '?id=' + item.id" title="下载" class="candle-btn btn"  @click.stop><i class="fa fa-download"></i></a>
                                     <a href="javascript:;" title="删除" class="candle-btn btn" @click.stop="delItem(item.id)"><i class="fa fa-trash"></i></a>
                                 </li>
                             </ul>
@@ -125,25 +125,25 @@
             <div class="clear">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">文件路径</div>
                 <div class="col-xs-12 col-md-10 p-v-sm">
-                    {{dailogVal.language}}
+                    {{dailogVal.file_path}}
                 </div>
             </div>
             <div class="clear bg-f9">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">版本号</div>
                 <div class="col-xs-12 col-md-10 p-v-sm">
-                    {{dailogVal.size}}
+                    {{dailogVal.version}}
                 </div>
             </div>
             <div class="clear">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">简介</div>
                 <div class="col-xs-12 col-md-10 p-v-sm">
-                    {{dailogVal.introduction}}
+                    {{dailogVal.intro}}
                 </div>
             </div>
             <div class="clear bg-f9">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">更新时间</div>
                 <div class="col-xs-12 col-md-10 p-v-sm">
-                    {{dailogVal.update_time}}
+                    {{format(dailogVal.create_time*1000)}}
                 </div>
             </div>
             <div class="clear">
@@ -169,32 +169,36 @@
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">SDK名称</div>
-                <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入SDK名称" v-model="dailogVal.name"></el-input>
+                <div class="col-xs-12 col-md-10">
+                    <el-input placeholder="请输入SDK名称" v-model="dailogVal.name" @blur="nameError=(dailogVal.name?false:true)"></el-input>
+                    <p class="text-red" v-if="nameError">sdk名称不能为空</p>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">版本号</div>
-                <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入版本号" v-model="dailogVal.version"></el-input>
+                <div class="col-xs-12 col-md-10">
+                    <el-input placeholder="请输入版本号" v-model="dailogVal.version" @blur="versionError=(dailogVal.version?false:true)"></el-input>
+                    <p class="text-red" v-if="versionError">版本号不能为空</p>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">支持平台</div>
-                <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入支持平台" v-model="dailogVal.platform"></el-input>
+                <div class="col-xs-12 col-md-10">
+                    <el-input placeholder="请输入支持平台" v-model="dailogVal.platform" @blur="platformError=(dailogVal.platform?false:true)"></el-input>
+                    <p class="text-red" v-if="platformError">支持平台不能为空</p>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">开发语言</div>
-                <div class="col-xs-12 col-md-10 line-height-40">
-                    <el-input placeholder="请输入开发语言" v-model="dailogVal.language"></el-input>
+                <div class="col-xs-12 col-md-10">
+                    <el-input placeholder="请输入开发语言" v-model="dailogVal.language" @blur="languageError=(dailogVal.language?false:true)"></el-input>
+                    <p class="text-red" v-if="languageError">开发语言不能为空</p>
                 </div>
             </div>
             <div class="clear m-b-sm">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">上传路径</div>
                 <div class="col-xs-12 col-md-10 line-height-40 p-r-80 relative">
-                    <el-input placeholder="请上传文件" v-model="dailogVal.url"></el-input>
+                    <el-input placeholder="请上传文件" v-model="dailogVal.file_path" disabled></el-input>
                     <el-upload
                         class=" btn-upload"
                         :action="uploadUrl"
@@ -206,6 +210,7 @@
                         list-type="text">
                         <a href="javascript:;" class="btn bg-blue1 text-white add-upload-btn" style="height: 40px;line-height: 26px;">上传</a>
                     </el-upload>
+                    <p class="text-red" v-if="urlError">文件不能为空</p>
                 </div>
             </div>
             <div class="clear m-b-sm">
@@ -217,7 +222,8 @@
             <div class="clear">
                 <div class="col-xs-12 col-md-2 line-height-40 attr-edit-name">简介说明</div>
                 <div class="col-xs-12 col-md-10">
-                    <el-input placeholder="请输入备注" type="textarea" rows="4" v-model="dailogVal.introduction"></el-input>
+                    <el-input placeholder="请输入备注" type="textarea" rows="4" v-model="dailogVal.intro" @blur="introError=(dailogVal.intro?false:true)"></el-input>
+                    <p class="text-red" v-if="introError">简介说明不能为空</p>
                 </div>
             </div>
             <div class="text-center m-t-lg">
@@ -240,15 +246,29 @@
                 total: 1
             },
             detailShow: false,
-            dailogVal: {},
+            dailogVal: {
+                name: '',
+                version: '',
+                platform: '',
+                language: '',
+                file_path: '',
+                size: '',
+                intro: ''
+            },
             dailogVal1: {},
             editShow: false,
             type: 'add',
+            nameError: false,
+            versionError: false,
+            platformError: false,
+            languageError: false,
+            urlError: false,
+            introError: false,
             header: {ContentType: 'application/x-www-form-urlencoded'},
-            selectVal: ['checkbox', 'ID', 'SDK名称', '支持平台', '开发语言', '更新时间', '文件大小', '简介说明', '操作'],
+            selectVal: ['checkbox', '序号', 'SDK名称', '支持平台', '开发语言', '更新时间', '文件大小', '简介说明', '操作'],
             selectedGroup: [],
             selectAll: false,
-            showList: ['checkbox', 'ID', 'SDK名称', '支持平台', '开发语言', '更新时间',  '文件大小', '简介说明', '操作'],
+            showList: ['checkbox', '序号', 'SDK名称', '支持平台', '开发语言', '更新时间',  '文件大小', '简介说明', '操作'],
             searchOptions: [
                 {
                     type: 'text',
@@ -261,28 +281,8 @@
                     value: null
                 },
                 {
-                    type: 'time1',
-                    name: '开发语言',
-                    value: null
-                },
-                {
-                    type: 'select',
-                    name: '更新时间',
-                    value: null,
-                    options: [
-                        {
-                            value: 1,
-                            label: '未通过'
-                        },
-                        {
-                            value: 2,
-                            label: '已通过'
-                        }
-                    ]
-                },
-                {
                     type: 'text',
-                    name: '文件大小',
+                    name: '开发语言',
                     value: null
                 }
             ],
@@ -321,19 +321,22 @@
             },
             uploadUrl () {
                 return api.common.upload
+            },
+            url () {
+                return api.file.sdkDown
             }
         },
         methods: {
             getList () {
                 this.loading = true
                 this.$http.post(api.file.sdk, {
-//                    page: this.page,
-//                    rows: this.limit, // 每页限制数量
-//                    time: this.searchOptions[2].value ? this.searchOptions[2].value / 1000 : null,
-//                    status: this.searchOptions[3].value,
-//                    name: this.searchOptions[0].value,
-//                    user: this.searchOptions[1].value,
-//                    msg: this.searchOptions[4].value
+                    page: this.page,
+                    limit: this.limit, // 每页限制数量
+                    options: {
+                        name: this.searchOptions[0].value,
+                        platform: this.searchOptions[1].value,
+                        language: this.searchOptions[2].value
+                    }
                 }).then(res => {
                     this.loading = false
                     if (res.data.code === 1) {
@@ -358,9 +361,9 @@
                     version: '',
                     platform: '',
                     language: '',
-                    url: '',
+                    file_path: '',
                     size: '',
-                    introduction: ''
+                    intro: ''
                 }
                 this.editShow = true
             },
@@ -371,8 +374,49 @@
                 this.editShow = true
             },
             submit () {
-                console.log(this.dailogVal)
-                this.editShow = false
+                if (!this.dailogVal.name) this.nameError = true
+                if (!this.dailogVal.version) this.versionError = true
+                if (!this.dailogVal.platform) this.platformError = true
+                if (!this.dailogVal.language) this.languageError = true
+                if (!this.dailogVal.file_path) this.urlError = true
+                if (!this.dailogVal.intro) this.introError = true
+                if (this.nameError || this.versionError || this.platformError || this.languageError || this.urlError || this.introError) {
+                    return
+                } else {
+                    if (this.type === 'add') {
+                        this.$http.post(api.file.sdkAdd, this.dailogVal).then(res => {
+                            if (res.data.code === 1) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '添加成功'
+                                })
+                                this.editShow = false
+                                this.getList()
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
+                    } else {
+                        this.$http.post(api.file.sdkEdit, this.dailogVal).then(res => {
+                            if (res.data.code === 1) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '编辑成功'
+                                })
+                                this.editShow = false
+                                this.getList()
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.data.msg
+                                })
+                            }
+                        })
+                    }
+                }
             },
             reset () {
                 if (this.type === 'add') {
@@ -381,9 +425,9 @@
                         version: '',
                         platform: '',
                         language: '',
-                        url: '',
+                        file_path: '',
                         size: '',
-                        introduction: ''
+                        intro: ''
                     }
                 } else {
                     this.dailogVal = JSON.parse(JSON.stringify(this.dailogVal1))
@@ -397,9 +441,9 @@
                         cancelButtonText: '取消',
                         type: 'warning'
                     }).then(() => {
-                        this.$http.get(api.file.docDel, {
+                        this.$http.get(api.file.sdkDel, {
                             params: {
-//                                id: id
+                                id: id
                             }
                         }).then(res => {
                             if (res.data.code === 1) {
@@ -430,6 +474,13 @@
                     this.selectedGroup.push(id)
                 }
             },
+//            download (id) {
+//                this.$http.get(api.file.sdkDown, {
+//                    params: {
+//                        id: id
+//                    }
+//                })
+//            },
             doSearch (data) {
                 this.searchOptions = data
                 this.getList()
@@ -437,7 +488,22 @@
             refresh () {
                 this.getList()
             },
-            picUpload () {
+            picUpload (res) {
+                if (res.code === 1) {
+                    this.dailogVal.file_path = res.data.url
+                } else if (res.code === -14) {
+                    window.sessionStorage.removeItem('authInfo')
+                    this.$router.replace({name: 'login'})
+                    this.$message({
+                        type: 'error',
+                        message: '登录信息已失效,请重新登录'
+                    })
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: '上传失败'
+                    })
+                }
             },
             uploadBefore () {
             },

@@ -16,13 +16,13 @@
             </ul>
             <ul class="table-tbody clear" v-for="(item, index) in data.rows">
                 <li class="col-xs-1 p-n" :title="item.id">{{offset + index + 1}}</li>
-                <li class="col-xs-2 p-n over-omit" :title="item.app_name">{{item.app_name}}</li>
-                <li class="col-xs-2 p-n over-omit" :title="item.candle_name">{{item.candle_name}}</li>
-                <li class="col-xs-2 p-n over-omit" :title="item.candle_time">{{item.candle_time}}</li>
-                <li class="col-xs-2 p-n over-omit" :title="item.status">{{item.status}}</li>
+                <li class="col-xs-2 p-n over-omit" :title="item.join_id_alias">{{item.join_id_alias}}</li>
+                <li class="col-xs-2 p-n over-omit" :title="item.create_by_alias">{{item.create_by_alias}}</li>
+                <li class="col-xs-2 p-n over-omit" :title="format(item.create_time*1000)">{{format(item.create_time*1000)}}</li>
+                <li class="col-xs-2 p-n over-omit" :title="item.join_state_alias">{{item.join_state_alias}}</li>
                 <li class="col-xs-3 p-n over-omit" :title="item.message">{{item.message}}</li>
             </ul>
-            <ul class="table-tbody" v-if="data.length===0">
+            <ul class="table-tbody" v-if="data.rows.length===0">
                 <li>暂时没有审核记录</li>
             </ul>
         </div>
@@ -40,13 +40,15 @@
 </template>
 <script type="text/ecmascript-6">
     import api from '@/api'
-
+    import format from '@/tools/format'
     export default {
         props: {
             id: ''
         },
         data: () => ({
-            data: {},
+            data: {
+                rows: []
+            },
             loading: false,
             options: [8, 20, 50],
             limit: 8,
@@ -66,7 +68,7 @@
                 this.loading = true
                 this.$http.get(api.application.history, {
                     params: {
-//                        id: this.id
+                        id: this.id
                     }
                 }).then(res => {
                     this.loading = false
@@ -81,6 +83,7 @@
                     }
                 })
             },
+            format: format,
             refresh () {
                 this.getList()
             },
@@ -91,7 +94,7 @@
                 if (this.page > 1) this.page -= 1
             }
         },
-        created() {
+        mounted () {
             this.getList()
         },
         watch: {

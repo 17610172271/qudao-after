@@ -40,13 +40,13 @@
                                     <el-checkbox :label="item.id" v-model="selectedGroup"></el-checkbox>
                                 </li>
                                 <li class="col-xs-24 p-n" v-show="selectVal.indexOf('序号')!=-1">{{offset + index + 1}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.name" v-show="selectVal.indexOf('电影名称')!=-1">{{item.name}}</li>
-                                <li class="col-xs-24 p-n over-omit" :title="item.type" v-show="selectVal.indexOf('电影类型')!=-1">{{item.type}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.name" v-show="selectVal.indexOf('电影名称')!=-1">{{item.title}}</li>
+                                <li class="col-xs-24 p-n over-omit" :title="item.type" v-show="selectVal.indexOf('电影类型')!=-1">{{item.class}}</li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.zone" v-show="selectVal.indexOf('地区')!=-1">{{item.zone}}</li>
                                 <li class="col-xs-1 p-n over-omit" :title="item.actor" v-show="selectVal.indexOf('主演')!=-1">{{item.actor}}</li>
                                 <li class="col-xs-1 p-n over-omit" :title="item.director" v-show="selectVal.indexOf('导演')!=-1">{{item.director}}</li>
                                 <li class="col-xs-1 p-n over-omit" :title="item.copyright_name" v-show="selectVal.indexOf('版权商名称')!=-1">{{item.copyright_name}}</li>
-                                <li class="col-xs-1 p-n over-omit" :title="item.release_time" v-show="selectVal.indexOf('上映时间')!=-1">{{item.release_time}}</li>
+                                <li class="col-xs-1 p-n over-omit" :title="item.release_time" v-show="selectVal.indexOf('上映时间')!=-1">{{item.release_date}}</li>
                                 <li class="col-xs-24 p-n over-omit" :title="item.status" v-show="selectVal.indexOf('状态')!=-1">{{item.status}}</li>
                             </ul>
                         </div>
@@ -104,34 +104,19 @@
                     value: null
                 },
                 {
-                    type: 'text',
-                    name: '电影类型',
-                    value: null
-                },
-                {
-                    type: 'time1',
-                    name: '地区',
-                    value: null
-                },
-                {
                     type: 'select',
-                    name: '主演',
+                    name: '状态',
                     value: null,
                     options: [
                         {
                             value: 1,
-                            label: '未通过'
+                            label: '上线'
                         },
                         {
                             value: 2,
-                            label: '已通过'
+                            label: '下线'
                         }
                     ]
-                },
-                {
-                    type: 'text',
-                    name: '导演',
-                    value: null
                 }
             ],
             options: [10, 25, 50],
@@ -172,13 +157,12 @@
             getList () {
                 this.loading = true
                 this.$http.post(api.resource.film, {
-//                    page: this.page,
-//                    rows: this.limit, // 每页限制数量
-//                    time: this.searchOptions[2].value ? this.searchOptions[2].value / 1000 : null,
-//                    status: this.searchOptions[3].value,
-//                    name: this.searchOptions[0].value,
-//                    user: this.searchOptions[1].value,
-//                    msg: this.searchOptions[4].value
+                    page: this.page,
+                    limit: this.limit, // 每页限制数量
+                    options: {
+                        title: this.searchOptions[0].value,
+                        status: this.searchOptions[1].value
+                    }
                 }).then(res => {
                     this.loading = false
                     if (res.data.code === 1) {

@@ -29,7 +29,7 @@
                 parentNode: {
                     name: '系统设置',
                     router: {
-                        name: 'setting_info'
+                        name: 'setting_news'
                     }
                 },
                 childNode: {
